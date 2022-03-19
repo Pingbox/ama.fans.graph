@@ -1,74 +1,76 @@
 type ExampleEntity @entity {
   id: ID!
   count: BigInt!
-  sender: Bytes! # address
-  value: BigInt! # uint256
+  sender: Bytes! 
+  value: BigInt! 
 }
 
 
-type AmaUser @entity {
+type AmaUserEntity @entity {
   id: ID!
-  questionsSent: Int
-  questionsReceived: Int
+  questionsCreated: BigInt
+  tipsCreated: BigInt
+  blockuserCreated: BigInt
+  answersCreated: BigInt
+
+
+  questionsReceived: BigInt
+  answersReceived: BigInt
+  blockUserReceived: BigInt
+
+
+
   valueSpentOnQuestions: BigInt
-  questionsClaimedBack: Int
-  questionsValueClaimedBack: BigInt
-  valueReceivedOnQuestions: BigInt
-  answersReceived: Int
-  valueSpentOnAnswers: BigInt
-  answersMade: Int
-  MadeBlock: Int
-  ReceivedBlock: Int
-  address: Bytes
-  twitterId: Int  
-  createdAt: Int!
-  tips: Int
   valueSpentOnTips: BigInt
+
+
+  valueReceivedOnQuestions: BigInt
+
+  "The value which you get when you answer a question"
+  valueReceivedOnAnswers: BigInt
+
+  "The aggragte value in tips which your questions have received" 
+  valueReceivedOnTips: BigInt 
+
+
+  questionsClaimedBack: BigInt
+  tipsClaimedBack: BigInt
+
+  questionsValueClaimedBack: BigInt
+  tipsValueClaimedBack: BigInt
+
+
+
+
+  address: String!
+  twitterId: BigInt
+  createdAt: BigInt!
   twitterUsername: String
 }
 
 
 
-type UnconfirmedAmaUser @entity {
+type DomainRegisteredEntity @entity {
   id: ID!
-  questionsSent: Int
-  questionsReceived: Int
-  valueSpentOnQuestions: BigInt
-  questionsClaimedBack: Int
-  questionsValueClaimedBack: BigInt
-  valueReceivedOnQuestions: BigInt
-  answersReceived: Int
-  valueSpentOnAnswers: BigInt
-  address: Bytes
-  twitterId: Int  
-  createdAt: Int!
-}
-
-
-
-
-
-type DomainRegistered @entity {
-  id: ID!
-  useraddress: Bytes! # address
+  useraddress: String! 
   nodeHash: Bytes! # bytes32
-  twitterId: BigInt! # uint256
-  twitterUsername: String # string
-  label: String! # string
-  createdAt: Int!
+  twitterId: BigInt! 
+  twitterUsername: String 
+  label: String! 
+  createdAt: BigInt!
 }
 
 
-type RequestErrored @entity {
+type RequestErroredEntity @entity {
   id: ID!
-  address: Bytes! # address
+  address: String! 
   bytes: Bytes! # bytes
 
 }
 
-type RequestFulfilled @entity {
+type RequestFulfilledEntity @entity {
   id: ID!
-  address: Bytes! # address
+  address: String! 
   bytes: Bytes! # bytes
 }
 
@@ -76,67 +78,69 @@ type RequestFulfilled @entity {
 
 
 
-type QuestionCreated @entity {
+type QuestionCreatedEntity @entity {
   id: ID!
-  socialId: BigInt!
-  questionId: Bytes! # address
-  createdBy: Bytes! # address
-  value: BigInt! # uint256
-  timelimit: BigInt! # uint256
-  link: String! # uint256
-  socialNetworkId: BigInt! # uint256
+  recipient: String!
+  questionId: Bytes! 
+  createdBy: String! 
+  value: BigInt!
+  expiryTime: BigInt! 
+  link: String! 
   answered: Boolean
   claimed: Boolean
-  createdAt: Int!
+  createdAt: BigInt!
+  tips: BigInt!
+  tipsTotalValue: BigInt!
 }
 
 
-type QuestionAnswered @entity {
+type QuestionAnsweredEntity @entity {
   id: ID!
-  questionId: Bytes! # address
-  owner: Bytes! # address
-  creator: Bytes! # address
-  tokenId: BigInt! # uint256
-  value: BigInt! # uint256
-  createdAt: Int!
+  questionId: Bytes! 
+  owner: String! 
+  creator: String! 
+  tokenId: BigInt! 
+  answerLink: String! 
+  value: BigInt! 
+  createdAt: BigInt!
 }
 
 
-type QuestionValueClaimed @entity {
+type QuestionValueClaimedEntity @entity {
   id: ID!
-  questionId: Bytes! # address
-  createdBy: Bytes! # address
-  valueClaimed: BigInt! # uint256
-  createdAt: Int!
+  questionId: Bytes! 
+  createdBy: String! 
+  value: BigInt! 
+  createdAt: BigInt!
 }
 
 
-type TipCreated @entity {
+type TipCreatedEntity @entity {
   id: ID!
-  questionId: Bytes! # address
-  tipId: Bytes! # address
-  createdBy: Bytes! # address
-  value: BigInt! # uint256
+  questionId: Bytes! 
+  tipId: Bytes! 
+  createdBy: String! 
+  value: BigInt! 
   claimed: Boolean
-  createdAt: Int!
+  createdAt: BigInt!
 }
 
 
-type TipValueClaimed @entity {
+type TipValueClaimedEntity @entity {
   id: ID!
   questionId: Bytes! # bytes32
   tipId: Bytes! # bytes32
-  createdBy: Bytes! # address
-  value: BigInt! # uint256
-  createdAt: Int!
+  createdBy: String! 
+  value: BigInt! 
+  createdAt: BigInt!
 }
 
 
-type AmountReceived @entity {
+type AmountReceivedEntity @entity {
   id: ID!
-  sender: Bytes! # address
-  value: BigInt! # uint256
-  createdAt: Int!
+  sender: String! 
+  value: BigInt! 
+  createdAt: BigInt!
 }
 
 

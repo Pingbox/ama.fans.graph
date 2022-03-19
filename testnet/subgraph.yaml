@@ -66,9 +66,9 @@ dataSources:
           handler: handleBlocked
         - event: Paused(address)
           handler: handlePaused
-        - event: QuestionAnswered(indexed bytes32,indexed address,indexed address,uint256,uint256)
+        - event: QuestionAnswered(indexed bytes32,indexed address,indexed address,string,uint256,uint256)
           handler: handleQuestionAnswered
-        - event: QuestionCreated(indexed uint256,indexed bytes32,indexed address,uint256,uint256,string,uint256)
+        - event: QuestionCreated(indexed address,indexed bytes32,indexed address,uint256,uint256,string)
           handler: handleQuestionCreated
         - event: QuestionValueClaimed(indexed bytes32,indexed address,uint256)
           handler: handleQuestionValueClaimed

@@ -97,12 +97,16 @@ export class QuestionAnswered__Params {
     return this._event.parameters[2].value.toAddress();
   }
 
+  get answerLink(): string {
+    return this._event.parameters[3].value.toString();
+  }
+
   get tokenId(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
+    return this._event.parameters[4].value.toBigInt();
   }
 
   get value(): BigInt {
-    return this._event.parameters[4].value.toBigInt();
+    return this._event.parameters[5].value.toBigInt();
   }
 }
 
@@ -119,8 +123,8 @@ export class QuestionCreated__Params {
     this._event = event;
   }
 
-  get socialId(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
+  get recipient(): Address {
+    return this._event.parameters[0].value.toAddress();
   }
 
   get questionId(): Bytes {
@@ -135,16 +139,12 @@ export class QuestionCreated__Params {
     return this._event.parameters[3].value.toBigInt();
   }
 
-  get timelimit(): BigInt {
+  get expiryTime(): BigInt {
     return this._event.parameters[4].value.toBigInt();
   }
 
   get link(): string {
     return this._event.parameters[5].value.toString();
-  }
-
-  get socialNetworkId(): BigInt {
-    return this._event.parameters[6].value.toBigInt();
   }
 }
 
@@ -169,7 +169,7 @@ export class QuestionValueClaimed__Params {
     return this._event.parameters[1].value.toAddress();
   }
 
-  get valueClaimed(): BigInt {
+  get value(): BigInt {
     return this._event.parameters[2].value.toBigInt();
   }
 }
@@ -414,7 +414,6 @@ export class AmaFansCore__questionsResult {
   value7: BigInt;
   value8: i32;
   value9: BigInt;
-  value10: BigInt;
 
   constructor(
     value0: string,
@@ -426,8 +425,7 @@ export class AmaFansCore__questionsResult {
     value6: BigInt,
     value7: BigInt,
     value8: i32,
-    value9: BigInt,
-    value10: BigInt
+    value9: BigInt
   ) {
     this.value0 = value0;
     this.value1 = value1;
@@ -439,7 +437,6 @@ export class AmaFansCore__questionsResult {
     this.value7 = value7;
     this.value8 = value8;
     this.value9 = value9;
-    this.value10 = value10;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
@@ -457,7 +454,6 @@ export class AmaFansCore__questionsResult {
       ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(this.value8))
     );
     map.set("value9", ethereum.Value.fromUnsignedBigInt(this.value9));
-    map.set("value10", ethereum.Value.fromUnsignedBigInt(this.value10));
     return map;
   }
 }
@@ -600,49 +596,6 @@ export class AmaFansCore extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
-  createFreeQuestion(
-    userSocialId_: BigInt,
-    socialNetworkId_: BigInt,
-    timelock_: BigInt,
-    questionLink_: string
-  ): Bytes {
-    let result = super.call(
-      "createFreeQuestion",
-      "createFreeQuestion(uint256,uint256,uint256,string):(bytes32)",
-      [
-        ethereum.Value.fromUnsignedBigInt(userSocialId_),
-        ethereum.Value.fromUnsignedBigInt(socialNetworkId_),
-        ethereum.Value.fromUnsignedBigInt(timelock_),
-        ethereum.Value.fromString(questionLink_)
-      ]
-    );
-
-    return result[0].toBytes();
-  }
-
-  try_createFreeQuestion(
-    userSocialId_: BigInt,
-    socialNetworkId_: BigInt,
-    timelock_: BigInt,
-    questionLink_: string
-  ): ethereum.CallResult<Bytes> {
-    let result = super.tryCall(
-      "createFreeQuestion",
-      "createFreeQuestion(uint256,uint256,uint256,string):(bytes32)",
-      [
-        ethereum.Value.fromUnsignedBigInt(userSocialId_),
-        ethereum.Value.fromUnsignedBigInt(socialNetworkId_),
-        ethereum.Value.fromUnsignedBigInt(timelock_),
-        ethereum.Value.fromString(questionLink_)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBytes());
-  }
-
   defaultQuestionTimeLimit(): BigInt {
     let result = super.call(
       "defaultQuestionTimeLimit",
@@ -689,29 +642,6 @@ export class AmaFansCore extends ethereum.SmartContract {
 
   try_feeNumerator(): ethereum.CallResult<BigInt> {
     let result = super.tryCall("feeNumerator", "feeNumerator():(uint256)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  freeQuestions(param0: Address): BigInt {
-    let result = super.call(
-      "freeQuestions",
-      "freeQuestions(address):(uint256)",
-      [ethereum.Value.fromAddress(param0)]
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_freeQuestions(param0: Address): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "freeQuestions",
-      "freeQuestions(address):(uint256)",
-      [ethereum.Value.fromAddress(param0)]
-    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -1079,33 +1009,10 @@ export class AmaFansCore extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
-  questionIdToSocialId(param0: Bytes): BigInt {
-    let result = super.call(
-      "questionIdToSocialId",
-      "questionIdToSocialId(bytes32):(uint256)",
-      [ethereum.Value.fromFixedBytes(param0)]
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_questionIdToSocialId(param0: Bytes): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "questionIdToSocialId",
-      "questionIdToSocialId(bytes32):(uint256)",
-      [ethereum.Value.fromFixedBytes(param0)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
   questions(param0: Bytes): AmaFansCore__questionsResult {
     let result = super.call(
       "questions",
-      "questions(bytes32):(string,string,uint256,uint256,address,address,uint256,uint256,uint8,uint256,uint256)",
+      "questions(bytes32):(string,string,uint256,uint256,address,address,uint256,uint256,uint8,uint256)",
       [ethereum.Value.fromFixedBytes(param0)]
     );
 
@@ -1119,8 +1026,7 @@ export class AmaFansCore extends ethereum.SmartContract {
       result[6].toBigInt(),
       result[7].toBigInt(),
       result[8].toI32(),
-      result[9].toBigInt(),
-      result[10].toBigInt()
+      result[9].toBigInt()
     );
   }
 
@@ -1129,7 +1035,7 @@ export class AmaFansCore extends ethereum.SmartContract {
   ): ethereum.CallResult<AmaFansCore__questionsResult> {
     let result = super.tryCall(
       "questions",
-      "questions(bytes32):(string,string,uint256,uint256,address,address,uint256,uint256,uint8,uint256,uint256)",
+      "questions(bytes32):(string,string,uint256,uint256,address,address,uint256,uint256,uint8,uint256)",
       [ethereum.Value.fromFixedBytes(param0)]
     );
     if (result.reverted) {
@@ -1147,79 +1053,32 @@ export class AmaFansCore extends ethereum.SmartContract {
         value[6].toBigInt(),
         value[7].toBigInt(),
         value[8].toI32(),
-        value[9].toBigInt(),
-        value[10].toBigInt()
+        value[9].toBigInt()
       )
     );
   }
 
-  socialNetworkIds(param0: string): BigInt {
+  recipientUpFront(): BigInt {
     let result = super.call(
-      "socialNetworkIds",
-      "socialNetworkIds(string):(uint256)",
-      [ethereum.Value.fromString(param0)]
+      "recipientUpFront",
+      "recipientUpFront():(uint256)",
+      []
     );
 
     return result[0].toBigInt();
   }
 
-  try_socialNetworkIds(param0: string): ethereum.CallResult<BigInt> {
+  try_recipientUpFront(): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
-      "socialNetworkIds",
-      "socialNetworkIds(string):(uint256)",
-      [ethereum.Value.fromString(param0)]
+      "recipientUpFront",
+      "recipientUpFront():(uint256)",
+      []
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  socialNetworkVerification(param0: BigInt): Address {
-    let result = super.call(
-      "socialNetworkVerification",
-      "socialNetworkVerification(uint256):(address)",
-      [ethereum.Value.fromUnsignedBigInt(param0)]
-    );
-
-    return result[0].toAddress();
-  }
-
-  try_socialNetworkVerification(param0: BigInt): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "socialNetworkVerification",
-      "socialNetworkVerification(uint256):(address)",
-      [ethereum.Value.fromUnsignedBigInt(param0)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  socialNetworks(param0: BigInt): string {
-    let result = super.call(
-      "socialNetworks",
-      "socialNetworks(uint256):(string)",
-      [ethereum.Value.fromUnsignedBigInt(param0)]
-    );
-
-    return result[0].toString();
-  }
-
-  try_socialNetworks(param0: BigInt): ethereum.CallResult<string> {
-    let result = super.tryCall(
-      "socialNetworks",
-      "socialNetworks(uint256):(string)",
-      [ethereum.Value.fromUnsignedBigInt(param0)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toString());
   }
 
   supportsInterface(interfaceId: Bytes): boolean {
@@ -1432,16 +1291,12 @@ export class CreateAnswerCall__Inputs {
     return this._call.inputValues[0].value.toBytes();
   }
 
-  get socialNetworkId_(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-
   get answerLink_(): string {
-    return this._call.inputValues[2].value.toString();
+    return this._call.inputValues[1].value.toString();
   }
 
   get tokenURI_(): string {
-    return this._call.inputValues[3].value.toString();
+    return this._call.inputValues[2].value.toString();
   }
 }
 
@@ -1450,52 +1305,6 @@ export class CreateAnswerCall__Outputs {
 
   constructor(call: CreateAnswerCall) {
     this._call = call;
-  }
-}
-
-export class CreateFreeQuestionCall extends ethereum.Call {
-  get inputs(): CreateFreeQuestionCall__Inputs {
-    return new CreateFreeQuestionCall__Inputs(this);
-  }
-
-  get outputs(): CreateFreeQuestionCall__Outputs {
-    return new CreateFreeQuestionCall__Outputs(this);
-  }
-}
-
-export class CreateFreeQuestionCall__Inputs {
-  _call: CreateFreeQuestionCall;
-
-  constructor(call: CreateFreeQuestionCall) {
-    this._call = call;
-  }
-
-  get userSocialId_(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-
-  get socialNetworkId_(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-
-  get timelock_(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
-  }
-
-  get questionLink_(): string {
-    return this._call.inputValues[3].value.toString();
-  }
-}
-
-export class CreateFreeQuestionCall__Outputs {
-  _call: CreateFreeQuestionCall;
-
-  constructor(call: CreateFreeQuestionCall) {
-    this._call = call;
-  }
-
-  get value0(): Bytes {
-    return this._call.outputValues[0].value.toBytes();
   }
 }
 
@@ -1516,20 +1325,16 @@ export class CreateQuestionCall__Inputs {
     this._call = call;
   }
 
-  get userSocialId_(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-
-  get socialNetworkId_(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
+  get recipient_(): Address {
+    return this._call.inputValues[0].value.toAddress();
   }
 
   get timelock_(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
+    return this._call.inputValues[1].value.toBigInt();
   }
 
   get questionLink_(): string {
-    return this._call.inputValues[3].value.toString();
+    return this._call.inputValues[2].value.toString();
   }
 }
 
@@ -1783,36 +1588,32 @@ export class SetMinimumBidCall__Outputs {
   }
 }
 
-export class SetSocialVerificationAddressCall extends ethereum.Call {
-  get inputs(): SetSocialVerificationAddressCall__Inputs {
-    return new SetSocialVerificationAddressCall__Inputs(this);
+export class SetRecipientUpFrontCall extends ethereum.Call {
+  get inputs(): SetRecipientUpFrontCall__Inputs {
+    return new SetRecipientUpFrontCall__Inputs(this);
   }
 
-  get outputs(): SetSocialVerificationAddressCall__Outputs {
-    return new SetSocialVerificationAddressCall__Outputs(this);
+  get outputs(): SetRecipientUpFrontCall__Outputs {
+    return new SetRecipientUpFrontCall__Outputs(this);
   }
 }
 
-export class SetSocialVerificationAddressCall__Inputs {
-  _call: SetSocialVerificationAddressCall;
+export class SetRecipientUpFrontCall__Inputs {
+  _call: SetRecipientUpFrontCall;
 
-  constructor(call: SetSocialVerificationAddressCall) {
+  constructor(call: SetRecipientUpFrontCall) {
     this._call = call;
   }
 
-  get socialNetwork(): string {
-    return this._call.inputValues[0].value.toString();
-  }
-
-  get verificationAddr(): Address {
-    return this._call.inputValues[1].value.toAddress();
+  get _recipientUpFront(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
   }
 }
 
-export class SetSocialVerificationAddressCall__Outputs {
-  _call: SetSocialVerificationAddressCall;
+export class SetRecipientUpFrontCall__Outputs {
+  _call: SetRecipientUpFrontCall;
 
-  constructor(call: SetSocialVerificationAddressCall) {
+  constructor(call: SetRecipientUpFrontCall) {
     this._call = call;
   }
 }
