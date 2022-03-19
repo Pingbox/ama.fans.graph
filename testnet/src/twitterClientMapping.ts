@@ -4,78 +4,50 @@ import {
   RequestErrored,
   RequestFulfilled
 } from "../generated/AmaChainlinkTwitterClient/AmaChainlinkTwitterClient"
-import { ExampleEntity } from "../generated/schema"
+
+
+
+import { AmaUserEntity, DomainRegisteredEntity, RequestErroredEntity, RequestFulfilledEntity} from "../generated/schema"
 
 export function handleDomainRegistered(event: DomainRegistered): void {
   // Entities can be loaded from the store using a string ID; this ID
   // needs to be unique across all entities of the same type
-  let entity = ExampleEntity.load(event.transaction.from.toHex())
 
-  // Entities only exist after they have been saved to the store;
-  // `null` checks allow to create entities on demand
-  if (!entity) {
-    entity = new ExampleEntity(event.transaction.from.toHex())
 
-    // Entity fields can be set using simple assignments
-    entity.count = BigInt.fromI32(0)
+  let registry = new DomainRegisteredEntity(event.params.useraddress.toHexString())
+
+  registry.useraddress = event.params.useraddress.toHexString() 
+  registry.nodeHash = event.params.nodehash
+  registry.twitterId = event.params.twitterId
+  registry.twitterUsername = event.params.twitterUsername
+  registry.label = event.params.label
+  registry.createdAt = event.block.timestamp
+  registry.save()
+
+
+  let user = AmaUserEntity.load(event.params.useraddress.toHexString())
+  if (user) {
+    user.twitterId  = event.params.twitterId
+    user.twitterUsername  = event.params.twitterUsername
+    user.save()
   }
+}
 
-  // BigInt and BigDecimal math are supported
-  entity.count = entity.count + BigInt.fromI32(1)
 
-  // Entity fields can be set based on event parameters
-  entity.sender = event.params.sender
-  entity.value = event.params.value
+export function handleRequestErrored(event: RequestErrored): void {
+    let id = event.transaction.hash.toHex() + "-" + event.logIndex.toString()
+    let requestError = new RequestErroredEntity(id)
+    requestError.useraddress = event.params.useraddress.toHexString()
+    requestError.data = event.params.data
+    
+    requestError.save()
+}
 
-  // Entities can be written to the store with `.save()`
-  entity.save()
+export function  handleRequestFulfilled(event: RequestFulfilled): void {
+  let id = event.transaction.hash.toHex() + "-" + event.logIndex.toString()
+  let requestFulfilled = new RequestFulfilledEntity(id)
+  requestFulfilled.useraddress = event.params.useraddress.toHexString()
+  requestFulfilled.data = event.params.data  
+  requestFulfilled.save()
 
-  // Note: If a handler doesn't require existing field values, it is faster
-  // _not_ to load the entity from the store. Instead, create it fresh with
-  // `new Entity(...)`, set the fields that should be updated and save the
-  // entity back to the store. Fields that were not set or unset remain
-  // unchanged, allowing for partial updates to be applied.
-
-  // It is also possible to access smart contracts from mappings. For
-  // example, the contract that has emitted the event can be connected to
-  // with:
-  //
-  // let contract = Contract.bind(event.address)
-  //
-  // The following functions can then be called on this contract to access
-  // state variables and other data:
-  //
-  // - contract.DEFAULT_ADMIN_ROLE(...)
-  // - contract.GOVERNANCE_ROLE(...)
-  // - contract.ZERO_BYTES32(...)
-  // - contract.balance(...)
-  // - contract.blockList(...)
-  // - contract.createFreeQuestion(...)
-  // - contract.defaultQuestionTimeLimit(...)
-  // - contract.feeCollector(...)
-  // - contract.feeNumerator(...)
-  // - contract.freeQuestions(...)
-  // - contract.getQuestionTipIds(...)
-  // - contract.getRoleAdmin(...)
-  // - contract.getRoleMember(...)
-  // - contract.getRoleMemberCount(...)
-  // - contract.getUserQuestionIds(...)
-  // - contract.getUserQuestionIdsLength(...)
-  // - contract.getUserTipIds(...)
-  // - contract.hasRole(...)
-  // - contract.isTrustedForwarder(...)
-  // - contract.maxExtendLimit(...)
-  // - contract.minTimeLock(...)
-  // - contract.minimumBid(...)
-  // - contract.nftContract(...)
-  // - contract.paused(...)
-  // - contract.questionIdToSocialId(...)
-  // - contract.questions(...)
-  // - contract.socialNetworkIds(...)
-  // - contract.socialNetworkVerification(...)
-  // - contract.socialNetworks(...)
-  // - contract.supportsInterface(...)
-  // - contract.tips(...)
-  // - contract.userBalance(...)
-  // - contract.userMinimumBid(...)
 }

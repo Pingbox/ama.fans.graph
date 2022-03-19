@@ -129,7 +129,7 @@ export class RequestErrored__Params {
     this._event = event;
   }
 
-  get _address(): Address {
+  get useraddress(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
@@ -151,7 +151,7 @@ export class RequestFulfilled__Params {
     this._event = event;
   }
 
-  get _address(): Address {
+  get useraddress(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 

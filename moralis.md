@@ -52,7 +52,7 @@
       {
          "indexed":true,
          "internalType":"address",
-         "name":"address",
+         "name":"_address",
          "type":"address"
       },
       {
@@ -92,99 +92,7 @@
 
 
 
-
-
-- #### OfferingPlaced(bytes32,address,uint256,address,uint256,string)
-```
-{
-   "anonymous":false,
-   "inputs":[
-      {
-         "indexed":true,
-         "internalType":"bytes32",
-         "name":"offeringId",
-         "type":"bytes32"
-      },
-      {
-         "indexed":true,
-         "internalType":"address",
-         "name":"seller",
-         "type":"address"
-      },
-      {
-         "indexed":true,
-         "internalType":"uint256",
-         "name":"tokenId",
-         "type":"uint256"
-      },
-      {
-         "indexed":false,
-         "internalType":"address",
-         "name":"nftContract",
-         "type":"address"
-      },
-      {
-         "indexed":false,
-         "internalType":"uint256",
-         "name":"price",
-         "type":"uint256"
-      },
-      {
-         "indexed":false,
-         "internalType":"string",
-         "name":"uri",
-         "type":"string"
-      }
-   ],
-   "name":"OfferingPlaced",
-   "type":"event"
-}
-```
-
-
-- #### OfferingClosed(bytes32,address,address,uint256,uint256)
-```
-{
-   "anonymous":false,
-   "inputs":[
-      {
-         "indexed":true,
-         "internalType":"bytes32",
-         "name":"offeringId",
-         "type":"bytes32"
-      },
-      {
-         "indexed":true,
-         "internalType":"address",
-         "name":"buyer",
-         "type":"address"
-      },
-      {
-         "indexed":true,
-         "internalType":"address",
-         "name":"nftCreator",
-         "type":"address"
-      },
-      {
-         "indexed":false,
-         "internalType":"uint256",
-         "name":"price",
-         "type":"uint256"
-      },
-      {
-         "indexed":false,
-         "internalType":"uint256",
-         "name":"royaltyAmount",
-         "type":"uint256"
-      }
-   ],
-   "name":"OfferingClosed",
-   "type":"event"
-}
-```
-
-
-- #### OfferingCancelled(bytes32,address)
+- #### QuestionCreated(address,bytes32,address,uint256,uint256,string)
 
 ```
 {
@@ -192,36 +100,9 @@
    "inputs":[
       {
          "indexed":true,
-         "internalType":"bytes32",
-         "name":"offeringId",
-         "type":"bytes32"
-      },
-      {
-         "indexed":true,
          "internalType":"address",
-         "name":"seller",
+         "name":"recipient",
          "type":"address"
-      }
-   ],
-   "name":"OfferingCancelled",
-   "type":"event"
-}
-```
-
-
-
-
-- #### QuestionCreated(uint256,bytes32,address,uint256,uint256,string,uint256)
-
-```
-{
-   "anonymous":false,
-   "inputs":[
-      {
-         "indexed":true,
-         "internalType":"uint256",
-         "name":"socialId",
-         "type":"uint256"
       },
       {
          "indexed":true,
@@ -244,7 +125,7 @@
       {
          "indexed":false,
          "internalType":"uint256",
-         "name":"timelimit",
+         "name":"expiryTime",
          "type":"uint256"
       },
       {
@@ -252,12 +133,6 @@
          "internalType":"string",
          "name":"link",
          "type":"string"
-      },
-      {
-         "indexed":false,
-         "internalType":"uint256",
-         "name":"socialNetworkId",
-         "type":"uint256"
       }
    ],
    "name":"QuestionCreated",
@@ -266,7 +141,7 @@
 ```
 
 
-- #### QuestionAnswered(bytes32,address,address,uint256,uint256)
+- #### QuestionAnswered(bytes32,address,address,string,uint256,uint256)
 
 ```
 {
@@ -289,6 +164,12 @@
          "internalType":"address",
          "name":"creator",
          "type":"address"
+      },
+      {
+         "indexed":false,
+         "internalType":"string",
+         "name":"answerLink",
+         "type":"string"
       },
       {
          "indexed":false,
@@ -330,7 +211,7 @@
       {
          "indexed":false,
          "internalType":"uint256",
-         "name":"valueClaimed",
+         "name":"value",
          "type":"uint256"
       }
    ],

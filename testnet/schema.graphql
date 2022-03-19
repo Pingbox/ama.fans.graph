@@ -63,15 +63,15 @@ type DomainRegisteredEntity @entity {
 
 type RequestErroredEntity @entity {
   id: ID!
-  address: String! 
-  bytes: Bytes! # bytes
+  useraddress: String! 
+  data: Bytes! # bytes
 
 }
 
 type RequestFulfilledEntity @entity {
   id: ID!
-  address: String! 
-  bytes: Bytes! # bytes
+  useraddress: String! 
+  data: Bytes! # bytes
 }
 
 

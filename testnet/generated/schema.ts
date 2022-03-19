@@ -543,8 +543,8 @@ export class RequestErroredEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("address", Value.fromString(""));
-    this.set("bytes", Value.fromBytes(Bytes.empty()));
+    this.set("useraddress", Value.fromString(""));
+    this.set("data", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -574,22 +574,22 @@ export class RequestErroredEntity extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get address(): string {
-    let value = this.get("address");
+  get useraddress(): string {
+    let value = this.get("useraddress");
     return value!.toString();
   }
 
-  set address(value: string) {
-    this.set("address", Value.fromString(value));
+  set useraddress(value: string) {
+    this.set("useraddress", Value.fromString(value));
   }
 
-  get bytes(): Bytes {
-    let value = this.get("bytes");
+  get data(): Bytes {
+    let value = this.get("data");
     return value!.toBytes();
   }
 
-  set bytes(value: Bytes) {
-    this.set("bytes", Value.fromBytes(value));
+  set data(value: Bytes) {
+    this.set("data", Value.fromBytes(value));
   }
 }
 
@@ -598,8 +598,8 @@ export class RequestFulfilledEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("address", Value.fromString(""));
-    this.set("bytes", Value.fromBytes(Bytes.empty()));
+    this.set("useraddress", Value.fromString(""));
+    this.set("data", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -632,22 +632,22 @@ export class RequestFulfilledEntity extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get address(): string {
-    let value = this.get("address");
+  get useraddress(): string {
+    let value = this.get("useraddress");
     return value!.toString();
   }
 
-  set address(value: string) {
-    this.set("address", Value.fromString(value));
+  set useraddress(value: string) {
+    this.set("useraddress", Value.fromString(value));
   }
 
-  get bytes(): Bytes {
-    let value = this.get("bytes");
+  get data(): Bytes {
+    let value = this.get("data");
     return value!.toBytes();
   }
 
-  set bytes(value: Bytes) {
-    this.set("bytes", Value.fromBytes(value));
+  set data(value: Bytes) {
+    this.set("data", Value.fromBytes(value));
   }
 }
 

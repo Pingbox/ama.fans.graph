@@ -106,7 +106,43 @@ export function handleBlocked(event: Blocked): void {}
 
 export function handlePaused(event: Paused): void {}
 
-export function handleQuestionAnswered(event: QuestionAnswered): void {}
+export function handleQuestionAnswered(event: QuestionAnswered): void {
+
+  let question = new QuestionAnsweredEntity(event.params.questionId.toHexString())
+  question.questionId = event.params.questionId
+
+  question.owner = event.params.owner.toHexString() 
+  question.creator = event.params.creator.toHexString()
+  question.tokenId = event.params.tokenId
+  question.answerLink = event.params.answerLink
+  question.value = event.params.value
+  question.createdAt = event.block.timestamp
+
+
+  //Updating QuestionCreatedEntity
+  let questionCreated = QuestionCreatedEntity.load(event.params.questionId.toHexString())
+  if (questionCreated){
+
+    questionCreated.answered = true
+    questionCreated.save()
+  }
+
+  //Update creator on question Answered
+  let owner = AmaUserEntity.load(event.params.owner.toHexString())
+  if (owner){
+    owner.answersReceived = owner.answersReceived.plus(BigInt.fromI32(1))
+    owner.save()
+
+  }
+
+  //Update answerer on question Answered
+  let creator = AmaUserEntity.load(event.params.creator.toHexString())
+  if (creator){
+      creator.answersCreated = creator.answersCreated.plus(BigInt.fromI32(1))
+      creator.valueReceivedOnAnswers = creator.valueReceivedOnAnswers.plus(event.params.value)
+      creator.save()
+    }
+}
 
 export function handleQuestionCreated(event: QuestionCreated): void {
 
@@ -123,7 +159,6 @@ export function handleQuestionCreated(event: QuestionCreated): void {
 
   if (!sender) {
     sender = new AmaUserEntity(senderId)
-    sender.valueSpentOnQuestions = BigInt.fromI32(0)
     sender.address = event.params.createdBy.toHexString()
     sender.createdAt = event.block.timestamp
 
@@ -141,7 +176,8 @@ export function handleQuestionCreated(event: QuestionCreated): void {
   
   
     sender.valueSpentOnTips = BigInt.fromI32(0)
-  
+    sender.valueSpentOnQuestions = BigInt.fromI32(0)
+
 
     sender.valueReceivedOnQuestions = BigInt.fromI32(0)
     sender.valueReceivedOnAnswers = BigInt.fromI32(0)
@@ -244,7 +280,31 @@ export function handleQuestionCreated(event: QuestionCreated): void {
   newQuestion.save()
 }
 
-export function handleQuestionValueClaimed(event: QuestionValueClaimed): void {}
+export function handleQuestionValueClaimed(event: QuestionValueClaimed): void {
+
+  let question = new QuestionValueClaimedEntity(event.params.questionId.toHexString())
+  question.questionId = event.params.questionId
+  question.createdBy = event.params.createdBy.toHexString() 
+  question.value = event.params.value
+  question.createdAt = event.block.timestamp
+  question.save()
+
+  //Changing claimed  in QuestionCreatedEntity
+  let questionCreated = QuestionCreatedEntity.load(event.params.questionId.toHexString())
+  if (questionCreated){
+    questionCreated.claimed = true
+    questionCreated.save()
+  }
+
+  let user = AmaUserEntity.load(event.params.createdBy.toHexString())
+  if (user){
+    user.questionsClaimedBack = user.questionsClaimedBack.plus(BigInt.fromI32(1))
+    user.questionsValueClaimedBack = user.questionsValueClaimedBack.plus(event.params.value)
+    user.save()
+  }
+
+
+}
 
 export function handleRoleAdminChanged(event: RoleAdminChanged): void {}
 
@@ -324,7 +384,7 @@ export function handleTipCreated(event: TipCreated): void {
   if (question) {
     question.tips  =  question.tips.plus(BigInt.fromI32(1))
     question.tipsTotalValue = question.tipsTotalValue.plus(event.params.value)
-
+    question.save()
 
     let user = AmaUserEntity.load(question.createdBy)
     if(user){
@@ -344,24 +404,36 @@ export function handleTipCreated(event: TipCreated): void {
 
 
 
-export function handleTipValueClaimed(event: TipValueClaimed): void {}
+export function handleTipValueClaimed(event: TipValueClaimed): void {
+  let tip  = new TipValueClaimedEntity(event.params.tipId.toHex())
+  tip.questionId = event.params.questionId
+  tip.tipId = event.params.tipId
+  tip.createdBy = event.params.createdBy.toHexString()
+  tip.value = event.params.value
+  tip.createdAt = event.block.timestamp
+  tip.save()
+
+
+  //Marking tip as claimed in TipCreatedEntity
+  let tipCreated  = TipCreatedEntity.load(event.params.tipId.toHex())
+  if (tipCreated) {
+    tipCreated.claimed = true
+    tipCreated.save()
+  }
+
+
+  //Changing userEntity as claimed in TipCreatedEntity
+  let user = AmaUserEntity.load(event.params.createdBy.toHexString())
+  if (user){
+    user.tipsClaimedBack = user.tipsClaimedBack.plus(BigInt.fromI32(1))
+    user.tipsValueClaimedBack = user.tipsValueClaimedBack.plus(event.params.value)
+    user.save()
+  }
+
+}
 
 export function handleUnpaused(event: Unpaused): void {}
 
 export function handleWithdraw(event: Withdraw): void {}
 
 
-function amaUserSocialIdPresent(socialId: BigInt): {
-  let amaUser = AmaUsereEntity.load(event.transaction.from.toHex())
-
-  // Entities only exist after they have been saved to the store;
-  // `null` checks allow to create entities on demand
-  if (!entity) {
-    entity = new ExampleEntity(event.transaction.from.toHex())
-
-    // Entity fields can be set using simple assignments
-    entity.count = BigInt.fromI32(0)
-  }
-
-
-}
