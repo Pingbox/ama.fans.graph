@@ -16,93 +16,117 @@ import {
   Withdraw
 } from "../generated/AmaFansCore/AmaFansCore"
 
-import {
-  DomainRegistered,
-  RequestErrored,
-  RequestFulfilled
-} from "../generated/AmaChainlinkTwitterClient/AmaChainlinkTwitterClient"
 
 
-import { ExampleEntity, QuestionAnsweredEntity, QuestionCreatedEntity, QuestionValueClaimedEntity,
-  TipCreatedEntity, TipValueClaimedEntity, AmaUserEntity, DomainRegisteredEntity, RequestErroredEntity } from "../generated/schema"
+import { AmountReceivedEntity, QuestionAnsweredEntity, QuestionCreatedEntity, QuestionValueClaimedEntity,
+  TipCreatedEntity, TipValueClaimedEntity, AmaUserEntity, BlockedEntity } from "../generated/schema"
 
 export function handleAmountReceived(event: AmountReceived): void {
   // Entities can be loaded from the store using a string ID; this ID
   // needs to be unique across all entities of the same type
-  let entity = ExampleEntity.load(event.transaction.from.toHex())
-
-  // Entities only exist after they have been saved to the store;
-  // `null` checks allow to create entities on demand
-  if (!entity) {
-    entity = new ExampleEntity(event.transaction.from.toHex())
-
-    // Entity fields can be set using simple assignments
-    entity.count = BigInt.fromI32(0)
-  }
-
-  // BigInt and BigDecimal math are supported
-  // entity.count = entity.count + BigInt.fromI32(1)
-  entity.count = entity.count.plus(BigInt.fromI32(1))
-
-
-  // Entity fields can be set based on event parameters
-  entity.sender = event.params.sender
+  let id = event.transaction.hash.toHex() + "-" + event.logIndex.toString()
+  let entity = new AmountReceivedEntity(id)
+  entity.sender = event.params.sender.toHexString()
   entity.value = event.params.value
+  entity.createdAt = event.block.timestamp
 
-  // Entities can be written to the store with `.save()`
-  entity.save()
+  entity.save()  
 
-  // Note: If a handler doesn't require existing field values, it is faster
-  // _not_ to load the entity from the store. Instead, create it fresh with
-  // `new Entity(...)`, set the fields that should be updated and save the
-  // entity back to the store. Fields that were not set or unset remain
-  // unchanged, allowing for partial updates to be applied.
-
-  // It is also possible to access smart contracts from mappings. For
-  // example, the contract that has emitted the event can be connected to
-  // with:
-  //
-  // let contract = Contract.bind(event.address)
-  //
-  // The following functions can then be called on this contract to access
-  // state variables and other data:
-  //
-  // - contract.DEFAULT_ADMIN_ROLE(...)
-  // - contract.GOVERNANCE_ROLE(...)
-  // - contract.ZERO_BYTES32(...)
-  // - contract.balance(...)
-  // - contract.blockList(...)
-  // - contract.createFreeQuestion(...)
-  // - contract.defaultQuestionTimeLimit(...)
-  // - contract.feeCollector(...)
-  // - contract.feeNumerator(...)
-  // - contract.freeQuestions(...)
-  // - contract.getQuestionTipIds(...)
-  // - contract.getRoleAdmin(...)
-  // - contract.getRoleMember(...)
-  // - contract.getRoleMemberCount(...)
-  // - contract.getUserQuestionIds(...)
-  // - contract.getUserQuestionIdsLength(...)
-  // - contract.getUserTipIds(...)
-  // - contract.hasRole(...)
-  // - contract.isTrustedForwarder(...)
-  // - contract.maxExtendLimit(...)
-  // - contract.minTimeLock(...)
-  // - contract.minimumBid(...)
-  // - contract.nftContract(...)
-  // - contract.paused(...)
-  // - contract.questionIdToSocialId(...)
-  // - contract.questions(...)
-  // - contract.socialNetworkIds(...)
-  // - contract.socialNetworkVerification(...)
-  // - contract.socialNetworks(...)
-  // - contract.supportsInterface(...)
-  // - contract.tips(...)
-  // - contract.userBalance(...)
-  // - contract.userMinimumBid(...)
 }
 
-export function handleBlocked(event: Blocked): void {}
+export function handleBlocked(event: Blocked): void {
+  let id = event.transaction.hash.toHex() + "-" + event.logIndex.toString()
+  let blocked = new BlockedEntity(id)
+  blocked.sender = event.params.blocker.toHexString()
+  blocked.receiver = event.params.blocked.toHexString()
+  
+  let sender = AmaUserEntity.load(event.params.blocker.toHexString())
+  if(!sender){
+    sender = new AmaUserEntity(event.params.blocker.toHexString())
+    sender.address = event.params.blocker.toHexString()
+    sender.createdAt = event.block.timestamp
+
+
+    sender.questionsCreated = BigInt.fromI32(0)
+    sender.tipsCreated = BigInt.fromI32(0)
+    sender.blockuserCreated = BigInt.fromI32(0)
+    sender.answersCreated = BigInt.fromI32(0)
+  
+  
+    sender.questionsReceived = BigInt.fromI32(0)
+    sender.answersReceived = BigInt.fromI32(0)
+    sender.blockUserReceived = BigInt.fromI32(0)
+  
+  
+  
+    sender.valueSpentOnTips = BigInt.fromI32(0)
+    sender.valueSpentOnQuestions = BigInt.fromI32(0)
+
+
+    sender.valueReceivedOnQuestions = BigInt.fromI32(0)
+    sender.valueReceivedOnAnswers = BigInt.fromI32(0)
+    sender.valueReceivedOnTips = BigInt.fromI32(0)
+
+
+    sender.questionsClaimedBack = BigInt.fromI32(0)
+    sender.tipsClaimedBack = BigInt.fromI32(0)
+  
+    sender.questionsValueClaimedBack = BigInt.fromI32(0)
+    sender.tipsValueClaimedBack = BigInt.fromI32(0)
+  
+    sender.twitterId = BigInt.fromI32(0)
+    sender.twitterUsername = ""
+
+    sender.madeBlock = BigInt.fromI32(0)
+    sender.receivedBlock = BigInt.fromI32(0)
+  }
+  sender.madeBlock = sender.madeBlock.plus(BigInt.fromI32(1))
+  sender.save()
+
+  let receiver = AmaUserEntity.load(event.params.blocked.toHexString())
+  if(!receiver){
+    receiver = new AmaUserEntity(event.params.blocker.toHexString())
+    receiver.address = event.params.blocker.toHexString()
+    receiver.createdAt = event.block.timestamp
+
+
+    receiver.questionsCreated = BigInt.fromI32(0)
+    receiver.tipsCreated = BigInt.fromI32(0)
+    receiver.blockuserCreated = BigInt.fromI32(0)
+    receiver.answersCreated = BigInt.fromI32(0)
+  
+  
+    receiver.questionsReceived = BigInt.fromI32(0)
+    receiver.answersReceived = BigInt.fromI32(0)
+    receiver.blockUserReceived = BigInt.fromI32(0)
+  
+  
+  
+    receiver.valueSpentOnTips = BigInt.fromI32(0)
+    receiver.valueSpentOnQuestions = BigInt.fromI32(0)
+
+
+    receiver.valueReceivedOnQuestions = BigInt.fromI32(0)
+    receiver.valueReceivedOnAnswers = BigInt.fromI32(0)
+    receiver.valueReceivedOnTips = BigInt.fromI32(0)
+
+
+    receiver.questionsClaimedBack = BigInt.fromI32(0)
+    receiver.tipsClaimedBack = BigInt.fromI32(0)
+  
+    receiver.questionsValueClaimedBack = BigInt.fromI32(0)
+    receiver.tipsValueClaimedBack = BigInt.fromI32(0)
+  
+    receiver.twitterId = BigInt.fromI32(0)
+    receiver.twitterUsername = ""
+
+    receiver.madeBlock = BigInt.fromI32(0)
+    receiver.receivedBlock = BigInt.fromI32(0)
+  }
+  receiver.madeBlock = receiver.receivedBlock.plus(BigInt.fromI32(1))
+  receiver.save()
+
+}
 
 export function handlePaused(event: Paused): void {}
 
@@ -193,6 +217,9 @@ export function handleQuestionCreated(event: QuestionCreated): void {
     sender.twitterId = BigInt.fromI32(0)
     sender.twitterUsername = ""
 
+
+    sender.madeBlock = BigInt.fromI32(0)
+    sender.receivedBlock = BigInt.fromI32(0)
   }
 
   if (!sender.questionsCreated){
@@ -246,6 +273,8 @@ export function handleQuestionCreated(event: QuestionCreated): void {
     recipient.twitterId = BigInt.fromI32(0)
     recipient.twitterUsername = ""
 
+    recipient.madeBlock = BigInt.fromI32(0)
+    recipient.receivedBlock = BigInt.fromI32(0)
   }
 
   if (!recipient.questionsReceived){
@@ -306,11 +335,6 @@ export function handleQuestionValueClaimed(event: QuestionValueClaimed): void {
 
 }
 
-export function handleRoleAdminChanged(event: RoleAdminChanged): void {}
-
-export function handleRoleGranted(event: RoleGranted): void {}
-
-export function handleRoleRevoked(event: RoleRevoked): void {}
 
 export function handleTipCreated(event: TipCreated): void {
 
@@ -353,6 +377,9 @@ export function handleTipCreated(event: TipCreated): void {
   
     sender.twitterId = BigInt.fromI32(0)
     sender.twitterUsername = ""
+    
+    sender.madeBlock = BigInt.fromI32(0)
+    sender.receivedBlock = BigInt.fromI32(0)
 
   }
 
@@ -399,11 +426,6 @@ export function handleTipCreated(event: TipCreated): void {
 
 
 
-
-
-
-
-
 export function handleTipValueClaimed(event: TipValueClaimed): void {
   let tip  = new TipValueClaimedEntity(event.params.tipId.toHex())
   tip.questionId = event.params.questionId
@@ -436,4 +458,8 @@ export function handleUnpaused(event: Unpaused): void {}
 
 export function handleWithdraw(event: Withdraw): void {}
 
+export function handleRoleAdminChanged(event: RoleAdminChanged): void {}
 
+export function handleRoleGranted(event: RoleGranted): void {}
+
+export function handleRoleRevoked(event: RoleRevoked): void {}

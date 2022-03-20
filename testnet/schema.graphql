@@ -40,7 +40,8 @@ type AmaUserEntity @entity {
   tipsValueClaimedBack: BigInt
 
 
-
+  madeBlock : BigInt
+  receivedBlock : BigInt
 
   address: String!
   twitterId: BigInt
@@ -144,3 +145,9 @@ type AmountReceivedEntity @entity {
 }
 
 
+type BlockedEntity @entity {
+  id: ID!
+  sender: String! 
+  receiver: String!
+
+}

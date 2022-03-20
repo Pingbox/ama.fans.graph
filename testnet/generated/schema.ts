@@ -380,6 +380,40 @@ export class AmaUserEntity extends Entity {
     }
   }
 
+  get madeBlock(): BigInt | null {
+    let value = this.get("madeBlock");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set madeBlock(value: BigInt | null) {
+    if (!value) {
+      this.unset("madeBlock");
+    } else {
+      this.set("madeBlock", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get receivedBlock(): BigInt | null {
+    let value = this.get("receivedBlock");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set receivedBlock(value: BigInt | null) {
+    if (!value) {
+      this.unset("receivedBlock");
+    } else {
+      this.set("receivedBlock", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
   get address(): string {
     let value = this.get("address");
     return value!.toString();
@@ -1227,5 +1261,58 @@ export class AmountReceivedEntity extends Entity {
 
   set createdAt(value: BigInt) {
     this.set("createdAt", Value.fromBigInt(value));
+  }
+}
+
+export class BlockedEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("sender", Value.fromString(""));
+    this.set("receiver", Value.fromString(""));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save BlockedEntity entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type BlockedEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("BlockedEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): BlockedEntity | null {
+    return changetype<BlockedEntity | null>(store.get("BlockedEntity", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get sender(): string {
+    let value = this.get("sender");
+    return value!.toString();
+  }
+
+  set sender(value: string) {
+    this.set("sender", Value.fromString(value));
+  }
+
+  get receiver(): string {
+    let value = this.get("receiver");
+    return value!.toString();
+  }
+
+  set receiver(value: string) {
+    this.set("receiver", Value.fromString(value));
   }
 }
