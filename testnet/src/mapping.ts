@@ -1,4 +1,6 @@
 import { BigInt } from "@graphprotocol/graph-ts"
+import { log } from '@graphprotocol/graph-ts'
+
 import {
   AmaFansCore,
   AmountReceived,
@@ -34,96 +36,84 @@ export function handleAmountReceived(event: AmountReceived): void {
 
 }
 
+
+function insertUser(userAddress: string, timestamp: BigInt): AmaUserEntity{
+  log.debug('New user created {}', [userAddress])
+    let user = new AmaUserEntity(userAddress)
+    user.address = userAddress
+    user.createdAt = timestamp
+
+
+    user.questionsCreated = BigInt.fromI32(0)
+    user.tipsCreated = BigInt.fromI32(0)
+    user.blockuserCreated = BigInt.fromI32(0)
+    user.answersCreated = BigInt.fromI32(0)
+  
+  
+    user.questionsReceived = BigInt.fromI32(0)
+    user.answersReceived = BigInt.fromI32(0)
+    user.blockUserReceived = BigInt.fromI32(0)
+  
+  
+  
+    user.valueSpentOnTips = BigInt.fromI32(0)
+    user.valueSpentOnQuestions = BigInt.fromI32(0)
+
+
+    user.valueReceivedOnQuestions = BigInt.fromI32(0)
+    user.valueReceivedOnAnswers = BigInt.fromI32(0)
+    user.valueReceivedOnTips = BigInt.fromI32(0)
+
+
+    user.questionsClaimedBack = BigInt.fromI32(0)
+    user.tipsClaimedBack = BigInt.fromI32(0)
+  
+    user.questionsValueClaimedBack = BigInt.fromI32(0)
+    user.tipsValueClaimedBack = BigInt.fromI32(0)
+  
+    user.twitterId = BigInt.fromI32(0)
+    user.twitterUsername = ""
+
+    user.madeBlock = BigInt.fromI32(0)
+    user.receivedBlock = BigInt.fromI32(0)
+    return user
+  }
+
+
+
 export function handleBlocked(event: Blocked): void {
   let id = event.transaction.hash.toHex() + "-" + event.logIndex.toString()
   let blocked = new BlockedEntity(id)
   blocked.sender = event.params.blocker.toHexString()
   blocked.receiver = event.params.blocked.toHexString()
-  
+  blocked.createdAt = event.block.timestamp
+  blocked.save()
   let sender = AmaUserEntity.load(event.params.blocker.toHexString())
-  if(!sender){
-    sender = new AmaUserEntity(event.params.blocker.toHexString())
-    sender.address = event.params.blocker.toHexString()
-    sender.createdAt = event.block.timestamp
-
-
-    sender.questionsCreated = BigInt.fromI32(0)
-    sender.tipsCreated = BigInt.fromI32(0)
-    sender.blockuserCreated = BigInt.fromI32(0)
-    sender.answersCreated = BigInt.fromI32(0)
-  
-  
-    sender.questionsReceived = BigInt.fromI32(0)
-    sender.answersReceived = BigInt.fromI32(0)
-    sender.blockUserReceived = BigInt.fromI32(0)
-  
-  
-  
-    sender.valueSpentOnTips = BigInt.fromI32(0)
-    sender.valueSpentOnQuestions = BigInt.fromI32(0)
-
-
-    sender.valueReceivedOnQuestions = BigInt.fromI32(0)
-    sender.valueReceivedOnAnswers = BigInt.fromI32(0)
-    sender.valueReceivedOnTips = BigInt.fromI32(0)
-
-
-    sender.questionsClaimedBack = BigInt.fromI32(0)
-    sender.tipsClaimedBack = BigInt.fromI32(0)
-  
-    sender.questionsValueClaimedBack = BigInt.fromI32(0)
-    sender.tipsValueClaimedBack = BigInt.fromI32(0)
-  
-    sender.twitterId = BigInt.fromI32(0)
-    sender.twitterUsername = ""
-
-    sender.madeBlock = BigInt.fromI32(0)
-    sender.receivedBlock = BigInt.fromI32(0)
+  if(sender == null){
+    sender = insertUser(event.params.blocker.toHexString(), event.block.timestamp)
   }
-  sender.madeBlock = sender.madeBlock.plus(BigInt.fromI32(1))
-  sender.save()
+
+    if (sender.madeBlock !== null){
+      sender.madeBlock = sender.madeBlock.plus(BigInt.fromI32(1))
+            
+      }else{
+        sender.madeBlock = BigInt.fromI32(1)
+      }
+    sender.save()
 
   let receiver = AmaUserEntity.load(event.params.blocked.toHexString())
   if(!receiver){
-    receiver = new AmaUserEntity(event.params.blocker.toHexString())
-    receiver.address = event.params.blocker.toHexString()
-    receiver.createdAt = event.block.timestamp
+    receiver = insertUser(event.params.blocked.toHexString(), event.block.timestamp)
 
-
-    receiver.questionsCreated = BigInt.fromI32(0)
-    receiver.tipsCreated = BigInt.fromI32(0)
-    receiver.blockuserCreated = BigInt.fromI32(0)
-    receiver.answersCreated = BigInt.fromI32(0)
+  } 
+  if (receiver.receivedBlock){
+    receiver.receivedBlock = receiver.receivedBlock.plus(BigInt.fromI32(1))
+          
+    }else{
+      receiver.receivedBlock = BigInt.fromI32(1)
+    }
   
   
-    receiver.questionsReceived = BigInt.fromI32(0)
-    receiver.answersReceived = BigInt.fromI32(0)
-    receiver.blockUserReceived = BigInt.fromI32(0)
-  
-  
-  
-    receiver.valueSpentOnTips = BigInt.fromI32(0)
-    receiver.valueSpentOnQuestions = BigInt.fromI32(0)
-
-
-    receiver.valueReceivedOnQuestions = BigInt.fromI32(0)
-    receiver.valueReceivedOnAnswers = BigInt.fromI32(0)
-    receiver.valueReceivedOnTips = BigInt.fromI32(0)
-
-
-    receiver.questionsClaimedBack = BigInt.fromI32(0)
-    receiver.tipsClaimedBack = BigInt.fromI32(0)
-  
-    receiver.questionsValueClaimedBack = BigInt.fromI32(0)
-    receiver.tipsValueClaimedBack = BigInt.fromI32(0)
-  
-    receiver.twitterId = BigInt.fromI32(0)
-    receiver.twitterUsername = ""
-
-    receiver.madeBlock = BigInt.fromI32(0)
-    receiver.receivedBlock = BigInt.fromI32(0)
-  }
-  receiver.madeBlock = receiver.receivedBlock.plus(BigInt.fromI32(1))
   receiver.save()
 
 }
@@ -131,6 +121,11 @@ export function handleBlocked(event: Blocked): void {
 export function handlePaused(event: Paused): void {}
 
 export function handleQuestionAnswered(event: QuestionAnswered): void {
+  log.debug('QuestionAnswered: Block number: {}, block hash: {}, transaction hash: {}', [
+    event.block.number.toString(), // "47596000"
+    event.block.hash.toHexString(), // "0x..."
+    event.transaction.hash.toHexString(), // "0x..."
+  ])
 
   let question = new QuestionAnsweredEntity(event.params.questionId.toHexString())
   question.questionId = event.params.questionId
@@ -154,6 +149,9 @@ export function handleQuestionAnswered(event: QuestionAnswered): void {
   //Update creator on question Answered
   let owner = AmaUserEntity.load(event.params.owner.toHexString())
   if (owner){
+    if (!owner.answersReceived) {
+      owner.answersReceived = BigInt.fromI32(0)  
+    }
     owner.answersReceived = owner.answersReceived.plus(BigInt.fromI32(1))
     owner.save()
 
@@ -162,6 +160,14 @@ export function handleQuestionAnswered(event: QuestionAnswered): void {
   //Update answerer on question Answered
   let creator = AmaUserEntity.load(event.params.creator.toHexString())
   if (creator){
+      if (!creator.answersCreated) {
+        creator.answersCreated = BigInt.fromI32(0)  
+      }
+
+      if (!creator.valueReceivedOnAnswers) {
+        creator.valueReceivedOnAnswers = BigInt.fromI32(0)  
+      }
+
       creator.answersCreated = creator.answersCreated.plus(BigInt.fromI32(1))
       creator.valueReceivedOnAnswers = creator.valueReceivedOnAnswers.plus(event.params.value)
       creator.save()
@@ -169,7 +175,11 @@ export function handleQuestionAnswered(event: QuestionAnswered): void {
 }
 
 export function handleQuestionCreated(event: QuestionCreated): void {
-
+  log.debug('QuestionCreated: Block number: {}, block hash: {}, transaction hash: {}', [
+    event.block.number.toString(), // "47596000"
+    event.block.hash.toHexString(), // "0x..."
+    event.transaction.hash.toHexString(), // "0x..."
+  ])
 
   let newQuestion = new QuestionCreatedEntity(event.params.questionId.toHexString())
 
@@ -182,44 +192,8 @@ export function handleQuestionCreated(event: QuestionCreated): void {
 
 
   if (!sender) {
-    sender = new AmaUserEntity(senderId)
-    sender.address = event.params.createdBy.toHexString()
-    sender.createdAt = event.block.timestamp
-
-
-    sender.questionsCreated = BigInt.fromI32(0)
-    sender.tipsCreated = BigInt.fromI32(0)
-    sender.blockuserCreated = BigInt.fromI32(0)
-    sender.answersCreated = BigInt.fromI32(0)
-  
-  
-    sender.questionsReceived = BigInt.fromI32(0)
-    sender.answersReceived = BigInt.fromI32(0)
-    sender.blockUserReceived = BigInt.fromI32(0)
-  
-  
-  
-    sender.valueSpentOnTips = BigInt.fromI32(0)
-    sender.valueSpentOnQuestions = BigInt.fromI32(0)
-
-
-    sender.valueReceivedOnQuestions = BigInt.fromI32(0)
-    sender.valueReceivedOnAnswers = BigInt.fromI32(0)
-    sender.valueReceivedOnTips = BigInt.fromI32(0)
-
-
-    sender.questionsClaimedBack = BigInt.fromI32(0)
-    sender.tipsClaimedBack = BigInt.fromI32(0)
-  
-    sender.questionsValueClaimedBack = BigInt.fromI32(0)
-    sender.tipsValueClaimedBack = BigInt.fromI32(0)
-  
-    sender.twitterId = BigInt.fromI32(0)
-    sender.twitterUsername = ""
-
-
-    sender.madeBlock = BigInt.fromI32(0)
-    sender.receivedBlock = BigInt.fromI32(0)
+    log.info('Sender couldnt be found {}', [senderId])
+    sender = insertUser(senderId, event.block.timestamp)
   }
 
   if (!sender.questionsCreated){
@@ -239,42 +213,9 @@ export function handleQuestionCreated(event: QuestionCreated): void {
 
 
   if (!recipient) {
-    recipient = new AmaUserEntity(recipientId)
-    recipient.address = event.params.recipient.toHexString()
-    recipient.createdAt = event.block.timestamp
-
-
-    recipient.questionsCreated = BigInt.fromI32(0)
-    recipient.tipsCreated = BigInt.fromI32(0)
-    recipient.blockuserCreated = BigInt.fromI32(0)
-    recipient.answersCreated = BigInt.fromI32(0)
-  
-  
-    recipient.questionsReceived = BigInt.fromI32(0)
-    recipient.answersReceived = BigInt.fromI32(0)
-    recipient.blockUserReceived = BigInt.fromI32(0)
-  
-  
-  
-    recipient.valueSpentOnQuestions = BigInt.fromI32(0)
-    recipient.valueSpentOnTips = BigInt.fromI32(0)
-
-    recipient.valueReceivedOnQuestions = BigInt.fromI32(0)
-    recipient.valueReceivedOnAnswers = BigInt.fromI32(0)
-    recipient.valueReceivedOnTips = BigInt.fromI32(0)
-
-  
-    recipient.questionsClaimedBack = BigInt.fromI32(0)
-    recipient.tipsClaimedBack = BigInt.fromI32(0)
-  
-    recipient.questionsValueClaimedBack = BigInt.fromI32(0)
-    recipient.tipsValueClaimedBack = BigInt.fromI32(0)
-  
-    recipient.twitterId = BigInt.fromI32(0)
-    recipient.twitterUsername = ""
-
-    recipient.madeBlock = BigInt.fromI32(0)
-    recipient.receivedBlock = BigInt.fromI32(0)
+    log.info('Recipient couldnt be found {}', [recipientId])
+    recipient = insertUser(recipientId, event.block.timestamp)
+    
   }
 
   if (!recipient.questionsReceived){
@@ -310,6 +251,11 @@ export function handleQuestionCreated(event: QuestionCreated): void {
 }
 
 export function handleQuestionValueClaimed(event: QuestionValueClaimed): void {
+  log.debug('QuestionValueClaimed: Block number: {}, block hash: {}, transaction hash: {}', [
+    event.block.number.toString(), // "47596000"
+    event.block.hash.toHexString(), // "0x..."
+    event.transaction.hash.toHexString(), // "0x..."
+  ])
 
   let question = new QuestionValueClaimedEntity(event.params.questionId.toHexString())
   question.questionId = event.params.questionId
@@ -327,6 +273,14 @@ export function handleQuestionValueClaimed(event: QuestionValueClaimed): void {
 
   let user = AmaUserEntity.load(event.params.createdBy.toHexString())
   if (user){
+    if (!user.questionsClaimedBack) {
+      user.questionsClaimedBack = BigInt.fromI32(0)  
+    }
+    if (!user.questionsValueClaimedBack) {
+      user.questionsValueClaimedBack = BigInt.fromI32(0)  
+    }
+
+
     user.questionsClaimedBack = user.questionsClaimedBack.plus(BigInt.fromI32(1))
     user.questionsValueClaimedBack = user.questionsValueClaimedBack.plus(event.params.value)
     user.save()
@@ -337,49 +291,18 @@ export function handleQuestionValueClaimed(event: QuestionValueClaimed): void {
 
 
 export function handleTipCreated(event: TipCreated): void {
-
+  log.debug('TipCreated: Block number: {}, block hash: {}, transaction hash: {}', [
+    event.block.number.toString(), // "47596000"
+    event.block.hash.toHexString(), // "0x..."
+    event.transaction.hash.toHexString(), // "0x..."
+  ])
   let senderId = event.params.createdBy.toHexString()
 
   let sender = AmaUserEntity.load(senderId)
 
   if (!sender) {
-    sender = new AmaUserEntity(senderId)
-    sender.address = event.params.createdBy.toHexString()
-    sender.createdAt = event.block.timestamp
+    sender = insertUser(senderId, event.block.timestamp)
 
-
-    sender.questionsCreated = BigInt.fromI32(0)
-    sender.tipsCreated = BigInt.fromI32(0)
-    sender.blockuserCreated = BigInt.fromI32(0)
-    sender.answersCreated = BigInt.fromI32(0)
-  
-  
-    sender.questionsReceived = BigInt.fromI32(0)
-    sender.answersReceived = BigInt.fromI32(0)
-    sender.blockUserReceived = BigInt.fromI32(0)
-  
-  
-  
-    sender.valueSpentOnTips = BigInt.fromI32(0)
-    sender.valueSpentOnQuestions = BigInt.fromI32(0)
-
-
-    sender.valueReceivedOnQuestions =BigInt.fromI32(0)
-    sender.valueReceivedOnAnswers =BigInt.fromI32(0)
-    sender.valueReceivedOnTips = BigInt.fromI32(0)
-
-
-    sender.questionsClaimedBack = BigInt.fromI32(0)
-    sender.tipsClaimedBack = BigInt.fromI32(0)
-  
-    sender.questionsValueClaimedBack = BigInt.fromI32(0)
-    sender.tipsValueClaimedBack = BigInt.fromI32(0)
-  
-    sender.twitterId = BigInt.fromI32(0)
-    sender.twitterUsername = ""
-    
-    sender.madeBlock = BigInt.fromI32(0)
-    sender.receivedBlock = BigInt.fromI32(0)
 
   }
 
@@ -415,7 +338,12 @@ export function handleTipCreated(event: TipCreated): void {
 
     let user = AmaUserEntity.load(question.createdBy)
     if(user){
-      user.valueReceivedOnTips = user.valueReceivedOnTips?.plus(event.params.value)
+      if (!user.valueReceivedOnTips) {
+        user.valueReceivedOnTips = BigInt.fromI32(0)  
+      }
+  
+
+      user.valueReceivedOnTips = user.valueReceivedOnTips.plus(event.params.value)
       user.save()
 
     }
@@ -427,6 +355,11 @@ export function handleTipCreated(event: TipCreated): void {
 
 
 export function handleTipValueClaimed(event: TipValueClaimed): void {
+  log.debug('TipValueClaimed: Block number: {}, block hash: {}, transaction hash: {}', [
+    event.block.number.toString(), // "47596000"
+    event.block.hash.toHexString(), // "0x..."
+    event.transaction.hash.toHexString(), // "0x..."
+  ])
   let tip  = new TipValueClaimedEntity(event.params.tipId.toHex())
   tip.questionId = event.params.questionId
   tip.tipId = event.params.tipId
@@ -447,6 +380,14 @@ export function handleTipValueClaimed(event: TipValueClaimed): void {
   //Changing userEntity as claimed in TipCreatedEntity
   let user = AmaUserEntity.load(event.params.createdBy.toHexString())
   if (user){
+    if (!user.tipsClaimedBack) {
+      user.tipsClaimedBack = BigInt.fromI32(0)  
+    }
+
+    if (!user.tipsValueClaimedBack) {
+      user.tipsValueClaimedBack = BigInt.fromI32(0)  
+    }
+
     user.tipsClaimedBack = user.tipsClaimedBack.plus(BigInt.fromI32(1))
     user.tipsValueClaimedBack = user.tipsValueClaimedBack.plus(event.params.value)
     user.save()

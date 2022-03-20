@@ -149,5 +149,6 @@ type BlockedEntity @entity {
   id: ID!
   sender: String! 
   receiver: String!
+  createdAt: BigInt!
 
 }

@@ -1271,6 +1271,7 @@ export class BlockedEntity extends Entity {
 
     this.set("sender", Value.fromString(""));
     this.set("receiver", Value.fromString(""));
+    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -1314,5 +1315,14 @@ export class BlockedEntity extends Entity {
 
   set receiver(value: string) {
     this.set("receiver", Value.fromString(value));
+  }
+
+  get createdAt(): BigInt {
+    let value = this.get("createdAt");
+    return value!.toBigInt();
+  }
+
+  set createdAt(value: BigInt) {
+    this.set("createdAt", Value.fromBigInt(value));
   }
 }

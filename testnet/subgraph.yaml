@@ -8,6 +8,7 @@ dataSources:
     source:
       address: "0x5b49Cb8F255276615ae2fFDBB7841CBABf5C84b2"
       abi: AmaChainLinkTwitterClient
+      startBlock: 7539069
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -36,8 +37,10 @@ dataSources:
     name: AmaFansCore
     network: fuji
     source:
-      address: "0x5b49Cb8F255276615ae2fFDBB7841CBABf5C84b2"
+      address: "0x3BA1C6e7140Ad3106BF541D6822ef66964C8ced0"
       abi: AmaFansCore   
+      startBlock: 7539069
+
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
