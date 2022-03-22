@@ -99,18 +99,25 @@ def ama_users():
     result = run_query(query)
     return result
 
-def questions_created(createdBy=None, recipient=None, answered=None, claimed=None, skip=0, limit=10):
+def questions_created(createdBy=None, recipient=None, answered=False, claimed=False, skip=0, limit=10):
     # The Graph query - Query aave for a list of the last 10 flash loans by time stamp
-    query = f"""
-         {{
-             questionCreatedEntities(createdBy: "{createdBy}", 
-                                    recipient: "{recipient}",
-                                    answered: "{answered}",
-                                    claimed: "{claimed}",
-                                    offset: {skip},
-                                    first: {limit}, 
+    where = ""
+    if createdBy:
+        where += "createdBy" + " : " + '"' + createdBy + '"' + " , "
+    if recipient:
+        where += "recipient" + " : " + '"' + recipient +  '"' + " , "
+    if answered:
+        where += "answered" + " : " + "true" + " , "
+    if claimed:
+        where += "claimed" + " : " + "true" + " , "
+    
+    query = """
+         {
+             questionCreatedEntities(where: {%s},
+                                    skip: %s,
+                                    first: %s, 
                                     orderBy: createdAt, 
-                                    orderDirection: desc){{
+                                    orderDirection: desc){
                  recipient
                  questionId
                  createdBy
@@ -122,10 +129,10 @@ def questions_created(createdBy=None, recipient=None, answered=None, claimed=Non
                  createdAt
                  tips
                  tipsTotalValue
-             }}
-         }}
-    """
-
+             }
+         }
+    """%(where, skip, limit)
+    print (query)
     result = run_query(query)
     return result
 
@@ -135,10 +142,19 @@ def questions_created(createdBy=None, recipient=None, answered=None, claimed=Non
 
 
 
-def questions_answered():
+def questions_answered(owner=None, creator=None, skip=0, limit=10):
+    where = ""
+    if owner:
+        where += "owner" + " : " + '"' + owner + '"' + " , "
+    if creator:
+        where += "creator" + " : " + '"' + creator +  '"' + " , "
     query = """
         {
-            questionAnsweredEntities(first: 10, orderBy: createdAt, orderDirection: desc){
+            questionAnsweredEntities(where: {%s},
+                                    skip: %s,
+                                    first: %s, 
+                                    orderBy: createdAt, 
+                                    orderDirection: desc){
                 questionId
                 owner
                 creator
@@ -148,18 +164,23 @@ def questions_answered():
                 createdAt            
             }
         }
-        """
+    """%(where, skip, limit)
     result = run_query(query)
-    print('Print Result - {}'.format(result))
-    print('#############')
-    # pretty print the results to make it easier to read
-    pprint(result)
-    
+    return result   
 
-def questions_claimed():
+def questions_claimed(createdBy=None, skip=0, limit=10):
+    where = ""
+    if createdBy:
+        where += "createdBy" + " : " + '"' + createdBy + '"' + " , "
+
+
     query = """
         {
-            questionValueClaimedEntities(first: 10, orderBy: createdAt, orderDirection: desc){
+            questionValueClaimedEntities(where: {%s},
+                                    skip: %s,
+                                    first: %s, 
+                                    orderBy: createdAt, 
+                                    orderDirection: desc){
                 id
                 questionId
                 createdBy
@@ -167,18 +188,27 @@ def questions_claimed():
                 createdAt            
             }
         }
-        """
+    """%(where, skip, limit)
     result = run_query(query)
-    print('Print Result - {}'.format(result))
-    print('#############')
-    # pretty print the results to make it easier to read
-    pprint(result)
-    
+    return result    
 
-def tips_created():
+def tips_created(questionId=None, createdBy=None, claimed=False, skip=0, limit=10):
+    where = ""
+    if questionId:
+        where += "questionId" + " : " + '"' + questionId + '"' + " , "
+    if createdBy:
+        where += "createdBy" + " : " + '"' + createdBy +  '"' + " , "
+    if claimed:
+        where += "claimed" + " : " + "true" + " , "
+
+
     query = """
         {
-            tipCreatedEntities(first: 10, orderBy: createdAt, orderDirection: desc){
+            tipCreatedEntities(where: {%s},
+                                    skip: %s,
+                                    first: %s, 
+                                    orderBy: createdAt, 
+                                    orderDirection: desc){
                 id
                 questionId
                 tipId
@@ -188,17 +218,25 @@ def tips_created():
                 createdAt            
             }
         }
-        """
+    """%(where, skip, limit)
     result = run_query(query)
-    print('Print Result - {}'.format(result))
-    print('#############')
-    # pretty print the results to make it easier to read
-    pprint(result)
+    return result
 
-def tips_claimed():
+def tips_claimed(questionId=None, createdBy=None, skip=0, limit=10):
+    where = ""
+    if createdBy:
+        where += "createdBy" + " : " + '"' + createdBy + '"' + " , "
+    if questionId:
+        where += "questionId" + " : " + '"' + questionId + '"' + " , "
+
+
     query = """
         {
-            tipValueClaimedEntities(first: 10, orderBy: createdAt, orderDirection: desc){
+            tipValueClaimedEntities(where: {%s},
+                                    skip: %s,
+                                    first: %s, 
+                                    orderBy: createdAt, 
+                                    orderDirection: desc){
                 id
                 questionId
                 tipId
@@ -207,12 +245,9 @@ def tips_claimed():
                 createdAt            
             }
         }
-        """
+    """%(where, skip, limit)
     result = run_query(query)
-    print('Print Result - {}'.format(result))
-    print('#############')
-    # pretty print the results to make it easier to read
-    pprint(result)
+    return result
 
 def amount_received():
     query = """
@@ -226,24 +261,28 @@ def amount_received():
         }
         """
     result = run_query(query)
-    print('Print Result - {}'.format(result))
-    print('#############')
-    # pretty print the results to make it easier to read
-    pprint(result)
+    return result
 
 
-def blocked():
+def blocked(sender=None, receiver=None, skip=0, limit=10):
+    where= ""
+    if sender:
+        where += "sender" + " : " + '"' + sender + '"' + " , "
+    if receiver:
+        where += "receiver" + " : " + '"' + receiver + '"' + " , "
+
     query = """
         {
-            blockedEntities(first: 10, orderBy: createdAt, orderDirection: desc){
+            blockedEntities(where: {%s},
+                                    skip: %s,
+                                    first: %s, 
+                                    orderBy: createdAt, 
+                                    orderDirection: desc){
                 id
                 sender
                 receiver
-                createdAt            }
+                createdAt }
         }
-        """
+    """%(where, skip, limit)
     result = run_query(query)
-    print('Print Result - {}'.format(result))
-    print('#############')
-    # pretty print the results to make it easier to read
-    pprint(result)
+    return result
