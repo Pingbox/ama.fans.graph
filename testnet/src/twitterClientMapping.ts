@@ -3,7 +3,7 @@ import {
   DomainRegistered,
   RequestErrored,
   RequestFulfilled
-} from "../generated/AmaChainlinkTwitterClient/AmaChainlinkTwitterClient"
+} from "../generated/AmaChainlinkTwitterClient/AmaChainLinkTwitterClient"
 
 
 

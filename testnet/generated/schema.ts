@@ -79,6 +79,24 @@ export class AmaUserEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("questionsCreated", Value.fromBigInt(BigInt.zero()));
+    this.set("tipsCreated", Value.fromBigInt(BigInt.zero()));
+    this.set("blockuserCreated", Value.fromBigInt(BigInt.zero()));
+    this.set("answersCreated", Value.fromBigInt(BigInt.zero()));
+    this.set("questionsReceived", Value.fromBigInt(BigInt.zero()));
+    this.set("answersReceived", Value.fromBigInt(BigInt.zero()));
+    this.set("blockUserReceived", Value.fromBigInt(BigInt.zero()));
+    this.set("valueSpentOnQuestions", Value.fromBigInt(BigInt.zero()));
+    this.set("valueSpentOnTips", Value.fromBigInt(BigInt.zero()));
+    this.set("valueReceivedOnQuestions", Value.fromBigInt(BigInt.zero()));
+    this.set("valueReceivedOnAnswers", Value.fromBigInt(BigInt.zero()));
+    this.set("valueReceivedOnTips", Value.fromBigInt(BigInt.zero()));
+    this.set("questionsClaimedBack", Value.fromBigInt(BigInt.zero()));
+    this.set("tipsClaimedBack", Value.fromBigInt(BigInt.zero()));
+    this.set("questionsValueClaimedBack", Value.fromBigInt(BigInt.zero()));
+    this.set("tipsValueClaimedBack", Value.fromBigInt(BigInt.zero()));
+    this.set("madeBlock", Value.fromBigInt(BigInt.zero()));
+    this.set("receivedBlock", Value.fromBigInt(BigInt.zero()));
     this.set("address", Value.fromString(""));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
   }
@@ -108,310 +126,166 @@ export class AmaUserEntity extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get questionsCreated(): BigInt | null {
+  get questionsCreated(): BigInt {
     let value = this.get("questionsCreated");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set questionsCreated(value: BigInt | null) {
-    if (!value) {
-      this.unset("questionsCreated");
-    } else {
-      this.set("questionsCreated", Value.fromBigInt(<BigInt>value));
-    }
+  set questionsCreated(value: BigInt) {
+    this.set("questionsCreated", Value.fromBigInt(value));
   }
 
-  get tipsCreated(): BigInt | null {
+  get tipsCreated(): BigInt {
     let value = this.get("tipsCreated");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set tipsCreated(value: BigInt | null) {
-    if (!value) {
-      this.unset("tipsCreated");
-    } else {
-      this.set("tipsCreated", Value.fromBigInt(<BigInt>value));
-    }
+  set tipsCreated(value: BigInt) {
+    this.set("tipsCreated", Value.fromBigInt(value));
   }
 
-  get blockuserCreated(): BigInt | null {
+  get blockuserCreated(): BigInt {
     let value = this.get("blockuserCreated");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set blockuserCreated(value: BigInt | null) {
-    if (!value) {
-      this.unset("blockuserCreated");
-    } else {
-      this.set("blockuserCreated", Value.fromBigInt(<BigInt>value));
-    }
+  set blockuserCreated(value: BigInt) {
+    this.set("blockuserCreated", Value.fromBigInt(value));
   }
 
-  get answersCreated(): BigInt | null {
+  get answersCreated(): BigInt {
     let value = this.get("answersCreated");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set answersCreated(value: BigInt | null) {
-    if (!value) {
-      this.unset("answersCreated");
-    } else {
-      this.set("answersCreated", Value.fromBigInt(<BigInt>value));
-    }
+  set answersCreated(value: BigInt) {
+    this.set("answersCreated", Value.fromBigInt(value));
   }
 
-  get questionsReceived(): BigInt | null {
+  get questionsReceived(): BigInt {
     let value = this.get("questionsReceived");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set questionsReceived(value: BigInt | null) {
-    if (!value) {
-      this.unset("questionsReceived");
-    } else {
-      this.set("questionsReceived", Value.fromBigInt(<BigInt>value));
-    }
+  set questionsReceived(value: BigInt) {
+    this.set("questionsReceived", Value.fromBigInt(value));
   }
 
-  get answersReceived(): BigInt | null {
+  get answersReceived(): BigInt {
     let value = this.get("answersReceived");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set answersReceived(value: BigInt | null) {
-    if (!value) {
-      this.unset("answersReceived");
-    } else {
-      this.set("answersReceived", Value.fromBigInt(<BigInt>value));
-    }
+  set answersReceived(value: BigInt) {
+    this.set("answersReceived", Value.fromBigInt(value));
   }
 
-  get blockUserReceived(): BigInt | null {
+  get blockUserReceived(): BigInt {
     let value = this.get("blockUserReceived");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set blockUserReceived(value: BigInt | null) {
-    if (!value) {
-      this.unset("blockUserReceived");
-    } else {
-      this.set("blockUserReceived", Value.fromBigInt(<BigInt>value));
-    }
+  set blockUserReceived(value: BigInt) {
+    this.set("blockUserReceived", Value.fromBigInt(value));
   }
 
-  get valueSpentOnQuestions(): BigInt | null {
+  get valueSpentOnQuestions(): BigInt {
     let value = this.get("valueSpentOnQuestions");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set valueSpentOnQuestions(value: BigInt | null) {
-    if (!value) {
-      this.unset("valueSpentOnQuestions");
-    } else {
-      this.set("valueSpentOnQuestions", Value.fromBigInt(<BigInt>value));
-    }
+  set valueSpentOnQuestions(value: BigInt) {
+    this.set("valueSpentOnQuestions", Value.fromBigInt(value));
   }
 
-  get valueSpentOnTips(): BigInt | null {
+  get valueSpentOnTips(): BigInt {
     let value = this.get("valueSpentOnTips");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set valueSpentOnTips(value: BigInt | null) {
-    if (!value) {
-      this.unset("valueSpentOnTips");
-    } else {
-      this.set("valueSpentOnTips", Value.fromBigInt(<BigInt>value));
-    }
+  set valueSpentOnTips(value: BigInt) {
+    this.set("valueSpentOnTips", Value.fromBigInt(value));
   }
 
-  get valueReceivedOnQuestions(): BigInt | null {
+  get valueReceivedOnQuestions(): BigInt {
     let value = this.get("valueReceivedOnQuestions");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set valueReceivedOnQuestions(value: BigInt | null) {
-    if (!value) {
-      this.unset("valueReceivedOnQuestions");
-    } else {
-      this.set("valueReceivedOnQuestions", Value.fromBigInt(<BigInt>value));
-    }
+  set valueReceivedOnQuestions(value: BigInt) {
+    this.set("valueReceivedOnQuestions", Value.fromBigInt(value));
   }
 
-  get valueReceivedOnAnswers(): BigInt | null {
+  get valueReceivedOnAnswers(): BigInt {
     let value = this.get("valueReceivedOnAnswers");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set valueReceivedOnAnswers(value: BigInt | null) {
-    if (!value) {
-      this.unset("valueReceivedOnAnswers");
-    } else {
-      this.set("valueReceivedOnAnswers", Value.fromBigInt(<BigInt>value));
-    }
+  set valueReceivedOnAnswers(value: BigInt) {
+    this.set("valueReceivedOnAnswers", Value.fromBigInt(value));
   }
 
-  get valueReceivedOnTips(): BigInt | null {
+  get valueReceivedOnTips(): BigInt {
     let value = this.get("valueReceivedOnTips");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set valueReceivedOnTips(value: BigInt | null) {
-    if (!value) {
-      this.unset("valueReceivedOnTips");
-    } else {
-      this.set("valueReceivedOnTips", Value.fromBigInt(<BigInt>value));
-    }
+  set valueReceivedOnTips(value: BigInt) {
+    this.set("valueReceivedOnTips", Value.fromBigInt(value));
   }
 
-  get questionsClaimedBack(): BigInt | null {
+  get questionsClaimedBack(): BigInt {
     let value = this.get("questionsClaimedBack");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set questionsClaimedBack(value: BigInt | null) {
-    if (!value) {
-      this.unset("questionsClaimedBack");
-    } else {
-      this.set("questionsClaimedBack", Value.fromBigInt(<BigInt>value));
-    }
+  set questionsClaimedBack(value: BigInt) {
+    this.set("questionsClaimedBack", Value.fromBigInt(value));
   }
 
-  get tipsClaimedBack(): BigInt | null {
+  get tipsClaimedBack(): BigInt {
     let value = this.get("tipsClaimedBack");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set tipsClaimedBack(value: BigInt | null) {
-    if (!value) {
-      this.unset("tipsClaimedBack");
-    } else {
-      this.set("tipsClaimedBack", Value.fromBigInt(<BigInt>value));
-    }
+  set tipsClaimedBack(value: BigInt) {
+    this.set("tipsClaimedBack", Value.fromBigInt(value));
   }
 
-  get questionsValueClaimedBack(): BigInt | null {
+  get questionsValueClaimedBack(): BigInt {
     let value = this.get("questionsValueClaimedBack");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set questionsValueClaimedBack(value: BigInt | null) {
-    if (!value) {
-      this.unset("questionsValueClaimedBack");
-    } else {
-      this.set("questionsValueClaimedBack", Value.fromBigInt(<BigInt>value));
-    }
+  set questionsValueClaimedBack(value: BigInt) {
+    this.set("questionsValueClaimedBack", Value.fromBigInt(value));
   }
 
-  get tipsValueClaimedBack(): BigInt | null {
+  get tipsValueClaimedBack(): BigInt {
     let value = this.get("tipsValueClaimedBack");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set tipsValueClaimedBack(value: BigInt | null) {
-    if (!value) {
-      this.unset("tipsValueClaimedBack");
-    } else {
-      this.set("tipsValueClaimedBack", Value.fromBigInt(<BigInt>value));
-    }
+  set tipsValueClaimedBack(value: BigInt) {
+    this.set("tipsValueClaimedBack", Value.fromBigInt(value));
   }
 
-  get madeBlock(): BigInt | null {
+  get madeBlock(): BigInt {
     let value = this.get("madeBlock");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set madeBlock(value: BigInt | null) {
-    if (!value) {
-      this.unset("madeBlock");
-    } else {
-      this.set("madeBlock", Value.fromBigInt(<BigInt>value));
-    }
+  set madeBlock(value: BigInt) {
+    this.set("madeBlock", Value.fromBigInt(value));
   }
 
-  get receivedBlock(): BigInt | null {
+  get receivedBlock(): BigInt {
     let value = this.get("receivedBlock");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set receivedBlock(value: BigInt | null) {
-    if (!value) {
-      this.unset("receivedBlock");
-    } else {
-      this.set("receivedBlock", Value.fromBigInt(<BigInt>value));
-    }
+  set receivedBlock(value: BigInt) {
+    this.set("receivedBlock", Value.fromBigInt(value));
   }
 
   get address(): string {

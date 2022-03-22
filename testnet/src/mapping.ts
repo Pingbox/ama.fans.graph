@@ -94,7 +94,8 @@ export function handleBlocked(event: Blocked): void {
   }
 
     if (sender.madeBlock !== null){
-      sender.madeBlock = sender.madeBlock.plus(BigInt.fromI32(1))
+      let madeBlock = sender.madeBlock.abs().plus(BigInt.fromI32(1))
+      sender.madeBlock = madeBlock
             
       }else{
         sender.madeBlock = BigInt.fromI32(1)
