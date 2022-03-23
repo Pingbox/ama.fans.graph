@@ -21,6 +21,7 @@ BlockedEntity
 # function to use requests.post to make an API call to the subgraph url
 def run_query(query):
 
+
     # endpoint where you are making the request
     request = requests.post('https://api.thegraph.com/subgraphs/name/graphicaldot/moonbasealpha'
                             '',
