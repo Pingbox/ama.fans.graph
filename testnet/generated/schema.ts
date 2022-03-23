@@ -567,6 +567,7 @@ export class QuestionCreatedEntity extends Entity {
     this.set("recipient", Value.fromString(""));
     this.set("questionId", Value.fromBytes(Bytes.empty()));
     this.set("createdBy", Value.fromString(""));
+    this.set("answerLink", Value.fromString(""));
     this.set("value", Value.fromBigInt(BigInt.zero()));
     this.set("expiryTime", Value.fromBigInt(BigInt.zero()));
     this.set("link", Value.fromString(""));
@@ -630,6 +631,15 @@ export class QuestionCreatedEntity extends Entity {
 
   set createdBy(value: string) {
     this.set("createdBy", Value.fromString(value));
+  }
+
+  get answerLink(): string {
+    let value = this.get("answerLink");
+    return value!.toString();
+  }
+
+  set answerLink(value: string) {
+    this.set("answerLink", Value.fromString(value));
   }
 
   get value(): BigInt {

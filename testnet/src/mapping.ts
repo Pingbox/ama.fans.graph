@@ -137,13 +137,14 @@ export function handleQuestionAnswered(event: QuestionAnswered): void {
   question.answerLink = event.params.answerLink
   question.value = event.params.value
   question.createdAt = event.block.timestamp
-
+  question.save()
 
   //Updating QuestionCreatedEntity
   let questionCreated = QuestionCreatedEntity.load(event.params.questionId.toHexString())
   if (questionCreated){
 
     questionCreated.answered = true
+    questionCreated.answerLink = event.params.answerLink
     questionCreated.save()
   }
 

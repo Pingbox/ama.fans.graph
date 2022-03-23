@@ -83,7 +83,8 @@ type QuestionCreatedEntity @entity {
   id: ID!
   recipient: String!
   questionId: Bytes! 
-  createdBy: String! 
+  createdBy: String!
+  answerLink: String!
   value: BigInt!
   expiryTime: BigInt! 
   link: String! 
