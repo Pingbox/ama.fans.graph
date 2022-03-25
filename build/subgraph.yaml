@@ -1,0 +1,62 @@
+specVersion: 0.0.2
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum
+    name: AmaFansCore
+    network: mbase
+    source:
+      address: "0x151eA1F4aFc337371D59b746cd8A6282bBBcdb45"
+      abi: AmaFansCore
+      startBlock: 1879448
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - AmountReceived
+        - Blocked
+        - Paused
+        - QuestionAnswered
+        - QuestionCreated
+        - QuestionValueClaimed
+        - RoleAdminChanged
+        - RoleGranted
+        - RoleRevoked
+        - TipCreated
+        - TipValueClaimed
+        - Unpaused
+        - Withdraw
+      abis:
+        - name: AmaFansCore
+          file: AmaFansCore/abis/AmaFansCore.json
+      eventHandlers:
+        - event: AmountReceived(indexed address,uint256)
+          handler: handleAmountReceived
+        - event: Blocked(indexed address,indexed address)
+          handler: handleBlocked
+        - event: Paused(address)
+          handler: handlePaused
+        - event: QuestionAnswered(indexed bytes32,indexed address,indexed
+            address,string,uint256,uint256)
+          handler: handleQuestionAnswered
+        - event: QuestionCreated(indexed address,indexed bytes32,indexed
+            address,uint256,uint256,string)
+          handler: handleQuestionCreated
+        - event: QuestionValueClaimed(indexed bytes32,indexed address,uint256)
+          handler: handleQuestionValueClaimed
+        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
+          handler: handleRoleAdminChanged
+        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleGranted
+        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleRevoked
+        - event: TipCreated(indexed bytes32,indexed bytes32,indexed address,uint256)
+          handler: handleTipCreated
+        - event: TipValueClaimed(indexed bytes32,indexed bytes32,indexed address,uint256)
+          handler: handleTipValueClaimed
+        - event: Unpaused(address)
+          handler: handleUnpaused
+        - event: Withdraw(indexed address,uint256)
+          handler: handleWithdraw
+      file: AmaFansCore/AmaFansCore.wasm

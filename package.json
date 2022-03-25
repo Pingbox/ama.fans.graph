@@ -5,12 +5,17 @@
     "codegen": "graph codegen",
     "build": "graph build",
     "deploy": "graph deploy --node https://api.thegraph.com/deploy/ amafans/fujinet",
+    "prepare:mainnet": "mustache config/mainnet.json subgraph.template.yaml > subgraph.yaml",
+    "prepare:testnet": "mustache config/testnet.json subgraph.template.yaml > subgraph.yaml",
+    "deploy:testnet": "graph deploy --product hosted-service graphicaldot/AmaFansTestnet",
+    "deploy:mainnet": "graph deploy --product hosted-service graphicaldot/<SUBGRAPH NAME>",
     "create-local": "graph create --node http://localhost:8020/ amafans/fujinet",
     "remove-local": "graph remove --node http://localhost:8020/ amafans/fujinet",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 amafans/fujinet"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.28.0",
-    "@graphprotocol/graph-ts": "0.26.0"
+    "@graphprotocol/graph-ts": "0.26.0",
+    "mustache": "^4.2.0"
   }
 }

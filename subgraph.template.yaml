@@ -3,43 +3,12 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: AmaChainLinkTwitterClient
-    network: mbase
-    source:
-      address: "0x5b49Cb8F255276615ae2fFDBB7841CBABf5C84b2"
-      abi: AmaChainLinkTwitterClient
-      startBlock: 1879448
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - DomainRegistered
-        - RequestErrored
-        - RequestFulfilled
-        - UnconfirmedAmaUser
-        - AmaUser
-      abis:
-        - name: AmaChainLinkTwitterClient
-          file: ./abis/AmaChainLinkTwitterClient.json
-      eventHandlers:
-        - event: DomainRegistered(indexed address,indexed bytes32,indexed uint256,string,string)
-          handler: handleDomainRegistered
-        - event: RequestErrored(indexed address,bytes)
-          handler: handleRequestErrored
-        - event: RequestFulfilled(indexed address,bytes)
-          handler: handleRequestFulfilled
-      file: ./src/twitterClientMapping.ts
-
-
-
-  - kind: ethereum
     name: AmaFansCore
     network: mbase
     source:
-      address: "0xAd8725f9D22DC6861EBd40001424Ace02ae8c160"
+      address: '{{address}}'
       abi: AmaFansCore   
-      startBlock: 1879448
+      startBlock: {{startBlock}}
 
     mapping:
       kind: ethereum/events

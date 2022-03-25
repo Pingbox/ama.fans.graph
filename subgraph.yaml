@@ -1,42 +1,15 @@
 specVersion: 0.0.2
 schema:
-  file: schema.graphql
+  file: ./schema.graphql
 dataSources:
-  - kind: ethereum
-    name: AmaChainLinkTwitterClient
-    network: mbase
-    source:
-      address: "0x5b49Cb8F255276615ae2fFDBB7841CBABf5C84b2"
-      abi: AmaChainLinkTwitterClient
-      startBlock: 1879448
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - DomainRegistered
-        - RequestErrored
-        - RequestFulfilled
-        - UnconfirmedAmaUser
-        - AmaUser
-      abis:
-        - name: AmaChainLinkTwitterClient
-          file: AmaChainLinkTwitterClient/abis/AmaChainLinkTwitterClient.json
-      eventHandlers:
-        - event: DomainRegistered(indexed address,indexed bytes32,indexed uint256,string,string)
-          handler: handleDomainRegistered
-        - event: RequestErrored(indexed address,bytes)
-          handler: handleRequestErrored
-        - event: RequestFulfilled(indexed address,bytes)
-          handler: handleRequestFulfilled
-      file: AmaChainLinkTwitterClient/AmaChainLinkTwitterClient.wasm
   - kind: ethereum
     name: AmaFansCore
     network: mbase
     source:
-      address: "0xAd8725f9D22DC6861EBd40001424Ace02ae8c160"
-      abi: AmaFansCore
+      address: '0x151eA1F4aFc337371D59b746cd8A6282bBBcdb45'
+      abi: AmaFansCore   
       startBlock: 1879448
+
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -57,7 +30,7 @@ dataSources:
         - Withdraw
       abis:
         - name: AmaFansCore
-          file: AmaFansCore/abis/AmaFansCore.json
+          file: ./abis/AmaFansCore.json
       eventHandlers:
         - event: AmountReceived(indexed address,uint256)
           handler: handleAmountReceived
@@ -65,11 +38,9 @@ dataSources:
           handler: handleBlocked
         - event: Paused(address)
           handler: handlePaused
-        - event: QuestionAnswered(indexed bytes32,indexed address,indexed
-            address,string,uint256,uint256)
+        - event: QuestionAnswered(indexed bytes32,indexed address,indexed address,string,uint256,uint256)
           handler: handleQuestionAnswered
-        - event: QuestionCreated(indexed address,indexed bytes32,indexed
-            address,uint256,uint256,string)
+        - event: QuestionCreated(indexed address,indexed bytes32,indexed address,uint256,uint256,string)
           handler: handleQuestionCreated
         - event: QuestionValueClaimed(indexed bytes32,indexed address,uint256)
           handler: handleQuestionValueClaimed
@@ -87,4 +58,4 @@ dataSources:
           handler: handleUnpaused
         - event: Withdraw(indexed address,uint256)
           handler: handleWithdraw
-      file: AmaFansCore/AmaFansCore.wasm
+      file: ./src/mapping.ts
