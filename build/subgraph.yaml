@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: AmaFansCore
-    network: mbase
+    network: celo-alfajores
     source:
-      address: "0x151eA1F4aFc337371D59b746cd8A6282bBBcdb45"
+      address: "0xb5a8b1bf84Cf11544d55a336Efab48f16Eff425D"
       abi: AmaFansCore
-      startBlock: 1879448
+      startBlock: 10759371
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -59,4 +59,16 @@ dataSources:
           handler: handleUnpaused
         - event: Withdraw(indexed address,uint256)
           handler: handleWithdraw
+        - event: Blocked(indexed address,indexed address)
+          handler: handleBlocked
+        - event: UnBlock(indexed address,indexed address)
+          handler: handleUnBlock
+        - event: Whitelisted(indexed address,indexed address)
+          handler: handleWhitelisted
+        - event: UnWhitelisted(indexed address,indexed address)
+          handler: handleUnWhitelisted
+        - event: Follow(indexed address,indexed address)
+          handler: handleFollow
+        - event: UnFollow(indexed address,indexed address)
+          handler: handleUnFollow
       file: AmaFansCore/AmaFansCore.wasm

@@ -10,13 +10,17 @@ type AmaUserEntity @entity {
   id: ID!
   questionsCreated: BigInt!
   tipsCreated: BigInt!
-  blockuserCreated: BigInt!
   answersCreated: BigInt!
+  blockUserCreated: BigInt!
+  following: BigInt!
+  whitelistUserCreated: BigInt!
 
 
   questionsReceived: BigInt!
   answersReceived: BigInt!
   blockUserReceived: BigInt!
+  followers: BigInt!
+  whitelistUserReceived: BigInt!
 
 
 
@@ -46,7 +50,9 @@ type AmaUserEntity @entity {
   address: String!
   twitterId: BigInt
   createdAt: BigInt!
+  earningsWithdrawn: BigInt! 
   twitterUsername: String
+
 }
 
 
@@ -151,5 +157,47 @@ type BlockedEntity @entity {
   sender: String! 
   receiver: String!
   createdAt: BigInt!
+}
 
+type UnBlockedEntity @entity {
+  id: ID!
+  sender: String! 
+  receiver: String!
+  createdAt: BigInt!
+}
+
+
+
+type WhitelistedEntity @entity {
+  id: ID!
+  sender: String! 
+  receiver: String!
+  createdAt: BigInt!
+}
+type UnWhitelistedEntity @entity {
+  id: ID!
+  sender: String! 
+  receiver: String!
+  createdAt: BigInt!
+}
+
+
+type FollowEntity @entity {
+  id: ID!
+  follower: String! 
+  followed: String!
+  createdAt: BigInt!
+}
+type UnFollowEntity @entity {
+  id: ID!
+  unFollower: String! 
+  unFollowed: String!
+  createdAt: BigInt!
+}
+
+type WithdrawEntity @entity {
+  id: ID!
+  user: String!
+  value: BigInt!
+  createdAt: BigInt!
 }

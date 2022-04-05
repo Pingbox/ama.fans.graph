@@ -81,11 +81,15 @@ export class AmaUserEntity extends Entity {
 
     this.set("questionsCreated", Value.fromBigInt(BigInt.zero()));
     this.set("tipsCreated", Value.fromBigInt(BigInt.zero()));
-    this.set("blockuserCreated", Value.fromBigInt(BigInt.zero()));
     this.set("answersCreated", Value.fromBigInt(BigInt.zero()));
+    this.set("blockUserCreated", Value.fromBigInt(BigInt.zero()));
+    this.set("following", Value.fromBigInt(BigInt.zero()));
+    this.set("whitelistUserCreated", Value.fromBigInt(BigInt.zero()));
     this.set("questionsReceived", Value.fromBigInt(BigInt.zero()));
     this.set("answersReceived", Value.fromBigInt(BigInt.zero()));
     this.set("blockUserReceived", Value.fromBigInt(BigInt.zero()));
+    this.set("followers", Value.fromBigInt(BigInt.zero()));
+    this.set("whitelistUserReceived", Value.fromBigInt(BigInt.zero()));
     this.set("valueSpentOnQuestions", Value.fromBigInt(BigInt.zero()));
     this.set("valueSpentOnTips", Value.fromBigInt(BigInt.zero()));
     this.set("valueReceivedOnQuestions", Value.fromBigInt(BigInt.zero()));
@@ -99,6 +103,7 @@ export class AmaUserEntity extends Entity {
     this.set("receivedBlock", Value.fromBigInt(BigInt.zero()));
     this.set("address", Value.fromString(""));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
+    this.set("earningsWithdrawn", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -144,15 +149,6 @@ export class AmaUserEntity extends Entity {
     this.set("tipsCreated", Value.fromBigInt(value));
   }
 
-  get blockuserCreated(): BigInt {
-    let value = this.get("blockuserCreated");
-    return value!.toBigInt();
-  }
-
-  set blockuserCreated(value: BigInt) {
-    this.set("blockuserCreated", Value.fromBigInt(value));
-  }
-
   get answersCreated(): BigInt {
     let value = this.get("answersCreated");
     return value!.toBigInt();
@@ -160,6 +156,33 @@ export class AmaUserEntity extends Entity {
 
   set answersCreated(value: BigInt) {
     this.set("answersCreated", Value.fromBigInt(value));
+  }
+
+  get blockUserCreated(): BigInt {
+    let value = this.get("blockUserCreated");
+    return value!.toBigInt();
+  }
+
+  set blockUserCreated(value: BigInt) {
+    this.set("blockUserCreated", Value.fromBigInt(value));
+  }
+
+  get following(): BigInt {
+    let value = this.get("following");
+    return value!.toBigInt();
+  }
+
+  set following(value: BigInt) {
+    this.set("following", Value.fromBigInt(value));
+  }
+
+  get whitelistUserCreated(): BigInt {
+    let value = this.get("whitelistUserCreated");
+    return value!.toBigInt();
+  }
+
+  set whitelistUserCreated(value: BigInt) {
+    this.set("whitelistUserCreated", Value.fromBigInt(value));
   }
 
   get questionsReceived(): BigInt {
@@ -187,6 +210,24 @@ export class AmaUserEntity extends Entity {
 
   set blockUserReceived(value: BigInt) {
     this.set("blockUserReceived", Value.fromBigInt(value));
+  }
+
+  get followers(): BigInt {
+    let value = this.get("followers");
+    return value!.toBigInt();
+  }
+
+  set followers(value: BigInt) {
+    this.set("followers", Value.fromBigInt(value));
+  }
+
+  get whitelistUserReceived(): BigInt {
+    let value = this.get("whitelistUserReceived");
+    return value!.toBigInt();
+  }
+
+  set whitelistUserReceived(value: BigInt) {
+    this.set("whitelistUserReceived", Value.fromBigInt(value));
   }
 
   get valueSpentOnQuestions(): BigInt {
@@ -321,6 +362,15 @@ export class AmaUserEntity extends Entity {
 
   set createdAt(value: BigInt) {
     this.set("createdAt", Value.fromBigInt(value));
+  }
+
+  get earningsWithdrawn(): BigInt {
+    let value = this.get("earningsWithdrawn");
+    return value!.toBigInt();
+  }
+
+  set earningsWithdrawn(value: BigInt) {
+    this.set("earningsWithdrawn", Value.fromBigInt(value));
   }
 
   get twitterUsername(): string | null {
@@ -1199,6 +1249,388 @@ export class BlockedEntity extends Entity {
 
   set receiver(value: string) {
     this.set("receiver", Value.fromString(value));
+  }
+
+  get createdAt(): BigInt {
+    let value = this.get("createdAt");
+    return value!.toBigInt();
+  }
+
+  set createdAt(value: BigInt) {
+    this.set("createdAt", Value.fromBigInt(value));
+  }
+}
+
+export class UnBlockedEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("sender", Value.fromString(""));
+    this.set("receiver", Value.fromString(""));
+    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save UnBlockedEntity entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type UnBlockedEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("UnBlockedEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): UnBlockedEntity | null {
+    return changetype<UnBlockedEntity | null>(store.get("UnBlockedEntity", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get sender(): string {
+    let value = this.get("sender");
+    return value!.toString();
+  }
+
+  set sender(value: string) {
+    this.set("sender", Value.fromString(value));
+  }
+
+  get receiver(): string {
+    let value = this.get("receiver");
+    return value!.toString();
+  }
+
+  set receiver(value: string) {
+    this.set("receiver", Value.fromString(value));
+  }
+
+  get createdAt(): BigInt {
+    let value = this.get("createdAt");
+    return value!.toBigInt();
+  }
+
+  set createdAt(value: BigInt) {
+    this.set("createdAt", Value.fromBigInt(value));
+  }
+}
+
+export class WhitelistedEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("sender", Value.fromString(""));
+    this.set("receiver", Value.fromString(""));
+    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save WhitelistedEntity entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type WhitelistedEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("WhitelistedEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): WhitelistedEntity | null {
+    return changetype<WhitelistedEntity | null>(
+      store.get("WhitelistedEntity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get sender(): string {
+    let value = this.get("sender");
+    return value!.toString();
+  }
+
+  set sender(value: string) {
+    this.set("sender", Value.fromString(value));
+  }
+
+  get receiver(): string {
+    let value = this.get("receiver");
+    return value!.toString();
+  }
+
+  set receiver(value: string) {
+    this.set("receiver", Value.fromString(value));
+  }
+
+  get createdAt(): BigInt {
+    let value = this.get("createdAt");
+    return value!.toBigInt();
+  }
+
+  set createdAt(value: BigInt) {
+    this.set("createdAt", Value.fromBigInt(value));
+  }
+}
+
+export class UnWhitelistedEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("sender", Value.fromString(""));
+    this.set("receiver", Value.fromString(""));
+    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save UnWhitelistedEntity entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type UnWhitelistedEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("UnWhitelistedEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): UnWhitelistedEntity | null {
+    return changetype<UnWhitelistedEntity | null>(
+      store.get("UnWhitelistedEntity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get sender(): string {
+    let value = this.get("sender");
+    return value!.toString();
+  }
+
+  set sender(value: string) {
+    this.set("sender", Value.fromString(value));
+  }
+
+  get receiver(): string {
+    let value = this.get("receiver");
+    return value!.toString();
+  }
+
+  set receiver(value: string) {
+    this.set("receiver", Value.fromString(value));
+  }
+
+  get createdAt(): BigInt {
+    let value = this.get("createdAt");
+    return value!.toBigInt();
+  }
+
+  set createdAt(value: BigInt) {
+    this.set("createdAt", Value.fromBigInt(value));
+  }
+}
+
+export class FollowEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("follower", Value.fromString(""));
+    this.set("followed", Value.fromString(""));
+    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save FollowEntity entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type FollowEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("FollowEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): FollowEntity | null {
+    return changetype<FollowEntity | null>(store.get("FollowEntity", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get follower(): string {
+    let value = this.get("follower");
+    return value!.toString();
+  }
+
+  set follower(value: string) {
+    this.set("follower", Value.fromString(value));
+  }
+
+  get followed(): string {
+    let value = this.get("followed");
+    return value!.toString();
+  }
+
+  set followed(value: string) {
+    this.set("followed", Value.fromString(value));
+  }
+
+  get createdAt(): BigInt {
+    let value = this.get("createdAt");
+    return value!.toBigInt();
+  }
+
+  set createdAt(value: BigInt) {
+    this.set("createdAt", Value.fromBigInt(value));
+  }
+}
+
+export class UnFollowEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("unFollower", Value.fromString(""));
+    this.set("unFollowed", Value.fromString(""));
+    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save UnFollowEntity entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type UnFollowEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("UnFollowEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): UnFollowEntity | null {
+    return changetype<UnFollowEntity | null>(store.get("UnFollowEntity", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get unFollower(): string {
+    let value = this.get("unFollower");
+    return value!.toString();
+  }
+
+  set unFollower(value: string) {
+    this.set("unFollower", Value.fromString(value));
+  }
+
+  get unFollowed(): string {
+    let value = this.get("unFollowed");
+    return value!.toString();
+  }
+
+  set unFollowed(value: string) {
+    this.set("unFollowed", Value.fromString(value));
+  }
+
+  get createdAt(): BigInt {
+    let value = this.get("createdAt");
+    return value!.toBigInt();
+  }
+
+  set createdAt(value: BigInt) {
+    this.set("createdAt", Value.fromBigInt(value));
+  }
+}
+
+export class WithdrawEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("user", Value.fromString(""));
+    this.set("value", Value.fromBigInt(BigInt.zero()));
+    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save WithdrawEntity entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type WithdrawEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("WithdrawEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): WithdrawEntity | null {
+    return changetype<WithdrawEntity | null>(store.get("WithdrawEntity", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get user(): string {
+    let value = this.get("user");
+    return value!.toString();
+  }
+
+  set user(value: string) {
+    this.set("user", Value.fromString(value));
+  }
+
+  get value(): BigInt {
+    let value = this.get("value");
+    return value!.toBigInt();
+  }
+
+  set value(value: BigInt) {
+    this.set("value", Value.fromBigInt(value));
   }
 
   get createdAt(): BigInt {

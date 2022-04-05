@@ -54,6 +54,28 @@ export class Blocked__Params {
   }
 }
 
+export class Follow extends ethereum.Event {
+  get params(): Follow__Params {
+    return new Follow__Params(this);
+  }
+}
+
+export class Follow__Params {
+  _event: Follow;
+
+  constructor(event: Follow) {
+    this._event = event;
+  }
+
+  get followed(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get follower(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
 export class Paused extends ethereum.Event {
   get params(): Paused__Params {
     return new Paused__Params(this);
@@ -312,6 +334,72 @@ export class TipValueClaimed__Params {
   }
 }
 
+export class UnBlock extends ethereum.Event {
+  get params(): UnBlock__Params {
+    return new UnBlock__Params(this);
+  }
+}
+
+export class UnBlock__Params {
+  _event: UnBlock;
+
+  constructor(event: UnBlock) {
+    this._event = event;
+  }
+
+  get unblocker(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get unblocked(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
+export class UnFollow extends ethereum.Event {
+  get params(): UnFollow__Params {
+    return new UnFollow__Params(this);
+  }
+}
+
+export class UnFollow__Params {
+  _event: UnFollow;
+
+  constructor(event: UnFollow) {
+    this._event = event;
+  }
+
+  get unfollowed(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get unfollower(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
+export class UnWhitelisted extends ethereum.Event {
+  get params(): UnWhitelisted__Params {
+    return new UnWhitelisted__Params(this);
+  }
+}
+
+export class UnWhitelisted__Params {
+  _event: UnWhitelisted;
+
+  constructor(event: UnWhitelisted) {
+    this._event = event;
+  }
+
+  get unwhitelister(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get unwhitelisted(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
 export class Unpaused extends ethereum.Event {
   get params(): Unpaused__Params {
     return new Unpaused__Params(this);
@@ -330,6 +418,28 @@ export class Unpaused__Params {
   }
 }
 
+export class Whitelisted extends ethereum.Event {
+  get params(): Whitelisted__Params {
+    return new Whitelisted__Params(this);
+  }
+}
+
+export class Whitelisted__Params {
+  _event: Whitelisted;
+
+  constructor(event: Whitelisted) {
+    this._event = event;
+  }
+
+  get whitelister(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get whitelisted(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
 export class Withdraw extends ethereum.Event {
   get params(): Withdraw__Params {
     return new Withdraw__Params(this);
@@ -343,7 +453,7 @@ export class Withdraw__Params {
     this._event = event;
   }
 
-  get receiver(): Address {
+  get user(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
@@ -588,6 +698,38 @@ export class AmaFansCore extends ethereum.SmartContract {
       "blockList",
       "blockList(address,address):(bool)",
       [ethereum.Value.fromAddress(param0), ethereum.Value.fromAddress(param1)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  checkWhitelist(_sender: Address, _recipient: Address): boolean {
+    let result = super.call(
+      "checkWhitelist",
+      "checkWhitelist(address,address):(bool)",
+      [
+        ethereum.Value.fromAddress(_sender),
+        ethereum.Value.fromAddress(_recipient)
+      ]
+    );
+
+    return result[0].toBoolean();
+  }
+
+  try_checkWhitelist(
+    _sender: Address,
+    _recipient: Address
+  ): ethereum.CallResult<boolean> {
+    let result = super.tryCall(
+      "checkWhitelist",
+      "checkWhitelist(address,address):(bool)",
+      [
+        ethereum.Value.fromAddress(_sender),
+        ethereum.Value.fromAddress(_recipient)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -1104,6 +1246,29 @@ export class AmaFansCore extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
+  thresholdFactorForSplit(): BigInt {
+    let result = super.call(
+      "thresholdFactorForSplit",
+      "thresholdFactorForSplit():(uint256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_thresholdFactorForSplit(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "thresholdFactorForSplit",
+      "thresholdFactorForSplit():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   tips(param0: Bytes): AmaFansCore__tipsResult {
     let result = super.call(
       "tips",
@@ -1156,21 +1321,30 @@ export class AmaFansCore extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  userMinimumBid(recipient: Address): BigInt {
+  userMinimumBid(_sender: Address, _recipient: Address): BigInt {
     let result = super.call(
       "userMinimumBid",
-      "userMinimumBid(address):(uint256)",
-      [ethereum.Value.fromAddress(recipient)]
+      "userMinimumBid(address,address):(uint256)",
+      [
+        ethereum.Value.fromAddress(_sender),
+        ethereum.Value.fromAddress(_recipient)
+      ]
     );
 
     return result[0].toBigInt();
   }
 
-  try_userMinimumBid(recipient: Address): ethereum.CallResult<BigInt> {
+  try_userMinimumBid(
+    _sender: Address,
+    _recipient: Address
+  ): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
       "userMinimumBid",
-      "userMinimumBid(address):(uint256)",
-      [ethereum.Value.fromAddress(recipient)]
+      "userMinimumBid(address,address):(uint256)",
+      [
+        ethereum.Value.fromAddress(_sender),
+        ethereum.Value.fromAddress(_recipient)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -1376,6 +1550,36 @@ export class CreateTipCall__Outputs {
   _call: CreateTipCall;
 
   constructor(call: CreateTipCall) {
+    this._call = call;
+  }
+}
+
+export class FollowUserCall extends ethereum.Call {
+  get inputs(): FollowUserCall__Inputs {
+    return new FollowUserCall__Inputs(this);
+  }
+
+  get outputs(): FollowUserCall__Outputs {
+    return new FollowUserCall__Outputs(this);
+  }
+}
+
+export class FollowUserCall__Inputs {
+  _call: FollowUserCall;
+
+  constructor(call: FollowUserCall) {
+    this._call = call;
+  }
+
+  get _address(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class FollowUserCall__Outputs {
+  _call: FollowUserCall;
+
+  constructor(call: FollowUserCall) {
     this._call = call;
   }
 }
@@ -1618,6 +1822,36 @@ export class SetRecipientUpFrontCall__Outputs {
   }
 }
 
+export class SetThresholdFactorForSplitCall extends ethereum.Call {
+  get inputs(): SetThresholdFactorForSplitCall__Inputs {
+    return new SetThresholdFactorForSplitCall__Inputs(this);
+  }
+
+  get outputs(): SetThresholdFactorForSplitCall__Outputs {
+    return new SetThresholdFactorForSplitCall__Outputs(this);
+  }
+}
+
+export class SetThresholdFactorForSplitCall__Inputs {
+  _call: SetThresholdFactorForSplitCall;
+
+  constructor(call: SetThresholdFactorForSplitCall) {
+    this._call = call;
+  }
+
+  get _thresholdFactorForSplit(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class SetThresholdFactorForSplitCall__Outputs {
+  _call: SetThresholdFactorForSplitCall;
+
+  constructor(call: SetThresholdFactorForSplitCall) {
+    this._call = call;
+  }
+}
+
 export class SetTrustedForwarderCall extends ethereum.Call {
   get inputs(): SetTrustedForwarderCall__Inputs {
     return new SetTrustedForwarderCall__Inputs(this);
@@ -1708,6 +1942,96 @@ export class SetdefaultQuestionTimeLimitCall__Outputs {
   }
 }
 
+export class UnBlockUserCall extends ethereum.Call {
+  get inputs(): UnBlockUserCall__Inputs {
+    return new UnBlockUserCall__Inputs(this);
+  }
+
+  get outputs(): UnBlockUserCall__Outputs {
+    return new UnBlockUserCall__Outputs(this);
+  }
+}
+
+export class UnBlockUserCall__Inputs {
+  _call: UnBlockUserCall;
+
+  constructor(call: UnBlockUserCall) {
+    this._call = call;
+  }
+
+  get _address(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class UnBlockUserCall__Outputs {
+  _call: UnBlockUserCall;
+
+  constructor(call: UnBlockUserCall) {
+    this._call = call;
+  }
+}
+
+export class UnWhitelistUserCall extends ethereum.Call {
+  get inputs(): UnWhitelistUserCall__Inputs {
+    return new UnWhitelistUserCall__Inputs(this);
+  }
+
+  get outputs(): UnWhitelistUserCall__Outputs {
+    return new UnWhitelistUserCall__Outputs(this);
+  }
+}
+
+export class UnWhitelistUserCall__Inputs {
+  _call: UnWhitelistUserCall;
+
+  constructor(call: UnWhitelistUserCall) {
+    this._call = call;
+  }
+
+  get _address(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class UnWhitelistUserCall__Outputs {
+  _call: UnWhitelistUserCall;
+
+  constructor(call: UnWhitelistUserCall) {
+    this._call = call;
+  }
+}
+
+export class UnfollowUserCall extends ethereum.Call {
+  get inputs(): UnfollowUserCall__Inputs {
+    return new UnfollowUserCall__Inputs(this);
+  }
+
+  get outputs(): UnfollowUserCall__Outputs {
+    return new UnfollowUserCall__Outputs(this);
+  }
+}
+
+export class UnfollowUserCall__Inputs {
+  _call: UnfollowUserCall;
+
+  constructor(call: UnfollowUserCall) {
+    this._call = call;
+  }
+
+  get _address(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class UnfollowUserCall__Outputs {
+  _call: UnfollowUserCall;
+
+  constructor(call: UnfollowUserCall) {
+    this._call = call;
+  }
+}
+
 export class UnpauseCall extends ethereum.Call {
   get inputs(): UnpauseCall__Inputs {
     return new UnpauseCall__Inputs(this);
@@ -1730,6 +2054,36 @@ export class UnpauseCall__Outputs {
   _call: UnpauseCall;
 
   constructor(call: UnpauseCall) {
+    this._call = call;
+  }
+}
+
+export class WhitelistUserCall extends ethereum.Call {
+  get inputs(): WhitelistUserCall__Inputs {
+    return new WhitelistUserCall__Inputs(this);
+  }
+
+  get outputs(): WhitelistUserCall__Outputs {
+    return new WhitelistUserCall__Outputs(this);
+  }
+}
+
+export class WhitelistUserCall__Inputs {
+  _call: WhitelistUserCall;
+
+  constructor(call: WhitelistUserCall) {
+    this._call = call;
+  }
+
+  get _address(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class WhitelistUserCall__Outputs {
+  _call: WhitelistUserCall;
+
+  constructor(call: WhitelistUserCall) {
     this._call = call;
   }
 }

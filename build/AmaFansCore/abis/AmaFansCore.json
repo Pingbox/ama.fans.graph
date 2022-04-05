@@ -41,6 +41,25 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "followed",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "follower",
+        "type": "address"
+      }
+    ],
+    "name": "Follow",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": false,
         "internalType": "address",
         "name": "account",
@@ -302,6 +321,63 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "unblocker",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "unblocked",
+        "type": "address"
+      }
+    ],
+    "name": "UnBlock",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "unfollowed",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "unfollower",
+        "type": "address"
+      }
+    ],
+    "name": "UnFollow",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "unwhitelister",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "unwhitelisted",
+        "type": "address"
+      }
+    ],
+    "name": "UnWhitelisted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": false,
         "internalType": "address",
         "name": "account",
@@ -317,7 +393,26 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "receiver",
+        "name": "whitelister",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "whitelisted",
+        "type": "address"
+      }
+    ],
+    "name": "Whitelisted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "user",
         "type": "address"
       },
       {
@@ -417,6 +512,30 @@
     "name": "blockUser",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_sender",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_recipient",
+        "type": "address"
+      }
+    ],
+    "name": "checkWhitelist",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -547,6 +666,19 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "followUser",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1045,6 +1177,19 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "_thresholdFactorForSplit",
+        "type": "uint256"
+      }
+    ],
+    "name": "setThresholdFactorForSplit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "_forwarder",
         "type": "address"
@@ -1101,6 +1246,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "thresholdFactorForSplit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "bytes32",
@@ -1140,6 +1298,45 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "unBlockUser",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "unWhitelistUser",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "unfollowUser",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "unpause",
     "outputs": [],
@@ -1163,7 +1360,12 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "recipient",
+        "name": "_sender",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_recipient",
         "type": "address"
       }
     ],
@@ -1176,6 +1378,19 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "whitelistUser",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

@@ -4,7 +4,7 @@ schema:
 dataSources:
   - kind: ethereum
     name: AmaFansCore
-    network: mbase
+    network: '{{network}}'
     source:
       address: '{{address}}'
       abi: AmaFansCore   
@@ -58,4 +58,22 @@ dataSources:
           handler: handleUnpaused
         - event: Withdraw(indexed address,uint256)
           handler: handleWithdraw
+        
+
+        - event: Blocked(indexed address,indexed address)
+          handler: handleBlocked
+        - event: UnBlock(indexed address,indexed address)
+          handler: handleUnBlock
+
+        - event: Whitelisted(indexed address,indexed address)
+          handler: handleWhitelisted
+        - event: UnWhitelisted(indexed address,indexed address)
+          handler: handleUnWhitelisted
+
+        - event: Follow(indexed address,indexed address)
+          handler: handleFollow
+        - event: UnFollow(indexed address,indexed address)
+          handler: handleUnFollow
+
+
       file: ./src/mapping.ts
