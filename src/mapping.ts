@@ -8,6 +8,7 @@ import {
   UnBlock,
   Whitelisted, 
   UnWhitelisted,
+  JunkResponse,
   Follow,
   UnFollow,
   Paused,
@@ -27,7 +28,8 @@ import {
 
 import { AmountReceivedEntity, QuestionAnsweredEntity, QuestionCreatedEntity, QuestionValueClaimedEntity,
   TipCreatedEntity, TipValueClaimedEntity, AmaUserEntity, BlockedEntity, UnBlockedEntity,
-  FollowEntity, UnFollowEntity, WhitelistedEntity, UnWhitelistedEntity, WithdrawEntity } from "../generated/schema"
+  FollowEntity, UnFollowEntity, WhitelistedEntity, UnWhitelistedEntity, WithdrawEntity,
+    JunkResponseEntity} from "../generated/schema"
 
 export function handleAmountReceived(event: AmountReceived): void {
   // Entities can be loaded from the store using a string ID; this ID
@@ -56,14 +58,14 @@ function insertUser(userAddress: string, timestamp: BigInt): AmaUserEntity{
     user.followers = BigInt.fromI32(0)
     user.whitelistUserCreated =  BigInt.fromI32(0)
     user.answersCreated = BigInt.fromI32(0)
-  
+    user.junkResponseCreated = BigInt.fromI32(0)
   
     user.questionsReceived = BigInt.fromI32(0)
     user.answersReceived = BigInt.fromI32(0)
     user.blockUserReceived = BigInt.fromI32(0)
     user.following = BigInt.fromI32(0)
     user.whitelistUserReceived = BigInt.fromI32(0)
-  
+    user.junkResponseReceived = BigInt.fromI32(0)
   
     user.valueSpentOnTips = BigInt.fromI32(0)
     user.valueSpentOnQuestions = BigInt.fromI32(0)
@@ -83,11 +85,55 @@ function insertUser(userAddress: string, timestamp: BigInt): AmaUserEntity{
     user.twitterId = BigInt.fromI32(0)
     user.twitterUsername = ""
 
-    user.madeBlock = BigInt.fromI32(0)
-    user.receivedBlock = BigInt.fromI32(0)
     user.earningsWithdrawn = BigInt.fromI32(0)
     return user
   }
+
+
+
+  export function handleJunkResponse(event: JunkResponse): void {
+    let _junkReponse = new JunkResponseEntity(event.params.questionId.toHexString())
+    _junkReponse.questionId = event.params.questionId
+    _junkReponse.owner = event.params.owner.toHexString() 
+    _junkReponse.answerer = event.params.answerer.toHexString() 
+    _junkReponse.createdAt = event.block.timestamp
+    _junkReponse.save()
+
+
+    let owner = AmaUserEntity.load(event.params.owner.toHexString())
+    if(owner == null){
+      owner = insertUser(event.params.owner.toHexString(), event.block.timestamp)
+    }
+  
+    if (owner.junkResponseCreated !== null){
+      owner.junkResponseCreated = owner.junkResponseCreated.abs().plus(BigInt.fromI32(1))
+        }else{
+      owner.junkResponseCreated = BigInt.fromI32(1)
+      }
+    owner.save()
+  
+    let answerer = AmaUserEntity.load(event.params.answerer.toHexString())
+    if(answerer == null){
+      answerer = insertUser(event.params.answerer.toHexString(), event.block.timestamp)
+    }
+  
+    if (answerer.junkResponseReceived !== null){
+      answerer.junkResponseReceived = answerer.junkResponseReceived.abs().plus(BigInt.fromI32(1))        
+      }else{
+        answerer.junkResponseReceived = BigInt.fromI32(1)
+      }
+    answerer.save()
+
+
+    let questionCreated = QuestionCreatedEntity.load(event.params.questionId.toHexString())
+    if (questionCreated){
+  
+      questionCreated.junkResponse = true
+      questionCreated.save()
+    }
+  
+  }
+
 
 
 
@@ -104,7 +150,7 @@ export function handleBlocked(event: Blocked): void {
   }
 
     if (sender.blockUserCreated !== null){
-      sender.blockUserCreated = sender.madeBlock.abs().plus(BigInt.fromI32(1))
+      sender.blockUserCreated = sender.blockUserCreated.abs().plus(BigInt.fromI32(1))
             
       }else{
         sender.blockUserCreated = BigInt.fromI32(1)
@@ -407,6 +453,8 @@ export function handleQuestionCreated(event: QuestionCreated): void {
   newQuestion.link = event.params.link
   newQuestion.answered = false
   newQuestion.claimed = false
+  newQuestion.junkResponse = false
+
   newQuestion.createdAt = event.block.timestamp
   newQuestion.tips = BigInt.fromI32(0)
   newQuestion.tipsTotalValue = BigInt.fromI32(0)

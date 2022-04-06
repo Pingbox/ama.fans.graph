@@ -85,9 +85,11 @@ export class AmaUserEntity extends Entity {
     this.set("blockUserCreated", Value.fromBigInt(BigInt.zero()));
     this.set("following", Value.fromBigInt(BigInt.zero()));
     this.set("whitelistUserCreated", Value.fromBigInt(BigInt.zero()));
+    this.set("junkResponseCreated", Value.fromBigInt(BigInt.zero()));
     this.set("questionsReceived", Value.fromBigInt(BigInt.zero()));
     this.set("answersReceived", Value.fromBigInt(BigInt.zero()));
     this.set("blockUserReceived", Value.fromBigInt(BigInt.zero()));
+    this.set("junkResponseReceived", Value.fromBigInt(BigInt.zero()));
     this.set("followers", Value.fromBigInt(BigInt.zero()));
     this.set("whitelistUserReceived", Value.fromBigInt(BigInt.zero()));
     this.set("valueSpentOnQuestions", Value.fromBigInt(BigInt.zero()));
@@ -99,8 +101,6 @@ export class AmaUserEntity extends Entity {
     this.set("tipsClaimedBack", Value.fromBigInt(BigInt.zero()));
     this.set("questionsValueClaimedBack", Value.fromBigInt(BigInt.zero()));
     this.set("tipsValueClaimedBack", Value.fromBigInt(BigInt.zero()));
-    this.set("madeBlock", Value.fromBigInt(BigInt.zero()));
-    this.set("receivedBlock", Value.fromBigInt(BigInt.zero()));
     this.set("address", Value.fromString(""));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
     this.set("earningsWithdrawn", Value.fromBigInt(BigInt.zero()));
@@ -185,6 +185,15 @@ export class AmaUserEntity extends Entity {
     this.set("whitelistUserCreated", Value.fromBigInt(value));
   }
 
+  get junkResponseCreated(): BigInt {
+    let value = this.get("junkResponseCreated");
+    return value!.toBigInt();
+  }
+
+  set junkResponseCreated(value: BigInt) {
+    this.set("junkResponseCreated", Value.fromBigInt(value));
+  }
+
   get questionsReceived(): BigInt {
     let value = this.get("questionsReceived");
     return value!.toBigInt();
@@ -210,6 +219,15 @@ export class AmaUserEntity extends Entity {
 
   set blockUserReceived(value: BigInt) {
     this.set("blockUserReceived", Value.fromBigInt(value));
+  }
+
+  get junkResponseReceived(): BigInt {
+    let value = this.get("junkResponseReceived");
+    return value!.toBigInt();
+  }
+
+  set junkResponseReceived(value: BigInt) {
+    this.set("junkResponseReceived", Value.fromBigInt(value));
   }
 
   get followers(): BigInt {
@@ -309,24 +327,6 @@ export class AmaUserEntity extends Entity {
 
   set tipsValueClaimedBack(value: BigInt) {
     this.set("tipsValueClaimedBack", Value.fromBigInt(value));
-  }
-
-  get madeBlock(): BigInt {
-    let value = this.get("madeBlock");
-    return value!.toBigInt();
-  }
-
-  set madeBlock(value: BigInt) {
-    this.set("madeBlock", Value.fromBigInt(value));
-  }
-
-  get receivedBlock(): BigInt {
-    let value = this.get("receivedBlock");
-    return value!.toBigInt();
-  }
-
-  set receivedBlock(value: BigInt) {
-    this.set("receivedBlock", Value.fromBigInt(value));
   }
 
   get address(): string {
@@ -735,6 +735,15 @@ export class QuestionCreatedEntity extends Entity {
 
   set claimed(value: boolean) {
     this.set("claimed", Value.fromBoolean(value));
+  }
+
+  get junkResponse(): boolean {
+    let value = this.get("junkResponse");
+    return value!.toBoolean();
+  }
+
+  set junkResponse(value: boolean) {
+    this.set("junkResponse", Value.fromBoolean(value));
   }
 
   get createdAt(): BigInt {
@@ -1631,6 +1640,81 @@ export class WithdrawEntity extends Entity {
 
   set value(value: BigInt) {
     this.set("value", Value.fromBigInt(value));
+  }
+
+  get createdAt(): BigInt {
+    let value = this.get("createdAt");
+    return value!.toBigInt();
+  }
+
+  set createdAt(value: BigInt) {
+    this.set("createdAt", Value.fromBigInt(value));
+  }
+}
+
+export class JunkResponseEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("questionId", Value.fromBytes(Bytes.empty()));
+    this.set("owner", Value.fromString(""));
+    this.set("answerer", Value.fromString(""));
+    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save JunkResponseEntity entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type JunkResponseEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("JunkResponseEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): JunkResponseEntity | null {
+    return changetype<JunkResponseEntity | null>(
+      store.get("JunkResponseEntity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get questionId(): Bytes {
+    let value = this.get("questionId");
+    return value!.toBytes();
+  }
+
+  set questionId(value: Bytes) {
+    this.set("questionId", Value.fromBytes(value));
+  }
+
+  get owner(): string {
+    let value = this.get("owner");
+    return value!.toString();
+  }
+
+  set owner(value: string) {
+    this.set("owner", Value.fromString(value));
+  }
+
+  get answerer(): string {
+    let value = this.get("answerer");
+    return value!.toString();
+  }
+
+  set answerer(value: string) {
+    this.set("answerer", Value.fromString(value));
   }
 
   get createdAt(): BigInt {

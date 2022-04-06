@@ -76,6 +76,32 @@ export class Follow__Params {
   }
 }
 
+export class JunkResponse extends ethereum.Event {
+  get params(): JunkResponse__Params {
+    return new JunkResponse__Params(this);
+  }
+}
+
+export class JunkResponse__Params {
+  _event: JunkResponse;
+
+  constructor(event: JunkResponse) {
+    this._event = event;
+  }
+
+  get questionId(): Bytes {
+    return this._event.parameters[0].value.toBytes();
+  }
+
+  get owner(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get answerer(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+}
+
 export class Paused extends ethereum.Event {
   get params(): Paused__Params {
     return new Paused__Params(this);
@@ -524,6 +550,7 @@ export class AmaFansCore__questionsResult {
   value7: BigInt;
   value8: i32;
   value9: BigInt;
+  value10: boolean;
 
   constructor(
     value0: string,
@@ -535,7 +562,8 @@ export class AmaFansCore__questionsResult {
     value6: BigInt,
     value7: BigInt,
     value8: i32,
-    value9: BigInt
+    value9: BigInt,
+    value10: boolean
   ) {
     this.value0 = value0;
     this.value1 = value1;
@@ -547,6 +575,7 @@ export class AmaFansCore__questionsResult {
     this.value7 = value7;
     this.value8 = value8;
     this.value9 = value9;
+    this.value10 = value10;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
@@ -564,6 +593,7 @@ export class AmaFansCore__questionsResult {
       ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(this.value8))
     );
     map.set("value9", ethereum.Value.fromUnsignedBigInt(this.value9));
+    map.set("value10", ethereum.Value.fromBoolean(this.value10));
     return map;
   }
 }
@@ -698,6 +728,38 @@ export class AmaFansCore extends ethereum.SmartContract {
       "blockList",
       "blockList(address,address):(bool)",
       [ethereum.Value.fromAddress(param0), ethereum.Value.fromAddress(param1)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  checkBlocked(_sender: Address, _recipient: Address): boolean {
+    let result = super.call(
+      "checkBlocked",
+      "checkBlocked(address,address):(bool)",
+      [
+        ethereum.Value.fromAddress(_sender),
+        ethereum.Value.fromAddress(_recipient)
+      ]
+    );
+
+    return result[0].toBoolean();
+  }
+
+  try_checkBlocked(
+    _sender: Address,
+    _recipient: Address
+  ): ethereum.CallResult<boolean> {
+    let result = super.tryCall(
+      "checkBlocked",
+      "checkBlocked(address,address):(bool)",
+      [
+        ethereum.Value.fromAddress(_sender),
+        ethereum.Value.fromAddress(_recipient)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -1154,7 +1216,7 @@ export class AmaFansCore extends ethereum.SmartContract {
   questions(param0: Bytes): AmaFansCore__questionsResult {
     let result = super.call(
       "questions",
-      "questions(bytes32):(string,string,uint256,uint256,address,address,uint256,uint256,uint8,uint256)",
+      "questions(bytes32):(string,string,uint256,uint256,address,address,uint256,uint256,uint8,uint256,bool)",
       [ethereum.Value.fromFixedBytes(param0)]
     );
 
@@ -1168,7 +1230,8 @@ export class AmaFansCore extends ethereum.SmartContract {
       result[6].toBigInt(),
       result[7].toBigInt(),
       result[8].toI32(),
-      result[9].toBigInt()
+      result[9].toBigInt(),
+      result[10].toBoolean()
     );
   }
 
@@ -1177,7 +1240,7 @@ export class AmaFansCore extends ethereum.SmartContract {
   ): ethereum.CallResult<AmaFansCore__questionsResult> {
     let result = super.tryCall(
       "questions",
-      "questions(bytes32):(string,string,uint256,uint256,address,address,uint256,uint256,uint8,uint256)",
+      "questions(bytes32):(string,string,uint256,uint256,address,address,uint256,uint256,uint8,uint256,bool)",
       [ethereum.Value.fromFixedBytes(param0)]
     );
     if (result.reverted) {
@@ -1195,7 +1258,8 @@ export class AmaFansCore extends ethereum.SmartContract {
         value[6].toBigInt(),
         value[7].toBigInt(),
         value[8].toI32(),
-        value[9].toBigInt()
+        value[9].toBigInt(),
+        value[10].toBoolean()
       )
     );
   }
@@ -1664,6 +1728,36 @@ export class InitializeCall__Outputs {
   _call: InitializeCall;
 
   constructor(call: InitializeCall) {
+    this._call = call;
+  }
+}
+
+export class MarkJunkReponseCall extends ethereum.Call {
+  get inputs(): MarkJunkReponseCall__Inputs {
+    return new MarkJunkReponseCall__Inputs(this);
+  }
+
+  get outputs(): MarkJunkReponseCall__Outputs {
+    return new MarkJunkReponseCall__Outputs(this);
+  }
+}
+
+export class MarkJunkReponseCall__Inputs {
+  _call: MarkJunkReponseCall;
+
+  constructor(call: MarkJunkReponseCall) {
+    this._call = call;
+  }
+
+  get questionId_(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+}
+
+export class MarkJunkReponseCall__Outputs {
+  _call: MarkJunkReponseCall;
+
+  constructor(call: MarkJunkReponseCall) {
     this._call = call;
   }
 }

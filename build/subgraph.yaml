@@ -71,4 +71,6 @@ dataSources:
           handler: handleFollow
         - event: UnFollow(indexed address,indexed address)
           handler: handleUnFollow
+        - event: JunkResponse(indexed bytes32,indexed address,indexed address)
+          handler: handleJunkResponse
       file: AmaFansCore/AmaFansCore.wasm

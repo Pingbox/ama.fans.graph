@@ -14,11 +14,13 @@ type AmaUserEntity @entity {
   blockUserCreated: BigInt!
   following: BigInt!
   whitelistUserCreated: BigInt!
-
+  junkResponseCreated: BigInt!
 
   questionsReceived: BigInt!
   answersReceived: BigInt!
   blockUserReceived: BigInt!
+  junkResponseReceived: BigInt!
+
   followers: BigInt!
   whitelistUserReceived: BigInt!
 
@@ -42,10 +44,6 @@ type AmaUserEntity @entity {
 
   questionsValueClaimedBack: BigInt!
   tipsValueClaimedBack: BigInt!
-
-
-  madeBlock : BigInt!
-  receivedBlock : BigInt!
 
   address: String!
   twitterId: BigInt
@@ -92,10 +90,11 @@ type QuestionCreatedEntity @entity {
   createdBy: String!
   answerLink: String!
   value: BigInt!
-  expiryTime: BigInt! 
+  expiryTime: BigInt!
   link: String! 
   answered: Boolean
   claimed: Boolean
+  junkResponse: Boolean
   createdAt: BigInt!
   tips: BigInt!
   tipsTotalValue: BigInt!
@@ -199,5 +198,13 @@ type WithdrawEntity @entity {
   id: ID!
   user: String!
   value: BigInt!
+  createdAt: BigInt!
+}
+
+type JunkResponseEntity @entity {
+  id: ID!
+  questionId: Bytes!
+  owner: String!
+  answerer: String!
   createdAt: BigInt!
 }
