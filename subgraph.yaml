@@ -6,9 +6,9 @@ dataSources:
     name: AmaFansCore
     network: 'celo-alfajores'
     source:
-      address: '0xb5a8b1bf84Cf11544d55a336Efab48f16Eff425D'
+      address: '0xCaC8a8CD7f8fdF091cd8E945ccF7bE5B689CDb2B'
       abi: AmaFansCore   
-      startBlock: 10759371
+      startBlock: 10782586
 
     mapping:
       kind: ethereum/events
@@ -77,5 +77,5 @@ dataSources:
 
         - event: JunkResponse(indexed bytes32,indexed address,indexed address)
           handler: handleJunkResponse
-
+          
       file: ./src/mapping.ts

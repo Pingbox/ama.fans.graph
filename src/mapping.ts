@@ -1,6 +1,8 @@
 import { BigInt } from "@graphprotocol/graph-ts"
 import { log } from '@graphprotocol/graph-ts'
 
+const platofrmId =  "0x39bea80e7720932f5ef0db947964fa325382ba8fe519ff0586e972a55eca12c3"
+
 import {
   AmaFansCore,
   AmountReceived,
@@ -29,7 +31,7 @@ import {
 import { AmountReceivedEntity, QuestionAnsweredEntity, QuestionCreatedEntity, QuestionValueClaimedEntity,
   TipCreatedEntity, TipValueClaimedEntity, AmaUserEntity, BlockedEntity, UnBlockedEntity,
   FollowEntity, UnFollowEntity, WhitelistedEntity, UnWhitelistedEntity, WithdrawEntity,
-    JunkResponseEntity} from "../generated/schema"
+    JunkResponseEntity, PlatformIdentity} from "../generated/schema"
 
 export function handleAmountReceived(event: AmountReceived): void {
   // Entities can be loaded from the store using a string ID; this ID
@@ -46,6 +48,20 @@ export function handleAmountReceived(event: AmountReceived): void {
 
 
 function insertUser(userAddress: string, timestamp: BigInt): AmaUserEntity{
+  let platform= PlatformIdentity.load(platofrmId);
+  if (!platform) {
+    platform = new PlatformIdentity(platofrmId)
+  }
+  if (!platform.totalUsers) {
+    platform.totalUsers = BigInt.fromI32(0)  
+  }
+  platform.totalUsers = platform.totalUsers.plus(BigInt.fromI32(1))
+  platform.save()
+
+
+
+
+
   log.debug('New user created {}', [userAddress])
     let user = new AmaUserEntity(userAddress)
     user.address = userAddress
@@ -190,9 +206,7 @@ export function handleUnBlock(event: UnBlock): void {
   let receiver = AmaUserEntity.load(event.params.unblocked.toHexString())
 
   if (receiver){
-    let blockUserReceived  = receiver.blockUserReceived.minus(BigInt.fromI32(1))
-    receiver.blockUserReceived = blockUserReceived;
-
+    receiver.blockUserReceived  = receiver.blockUserReceived.minus(BigInt.fromI32(1))
     receiver.save()
     }
 }
@@ -326,9 +340,27 @@ export function handleUnFollow(event: UnFollow): void {
 
 
 
-export function handlePaused(event: Paused): void {}
 
 export function handleQuestionAnswered(event: QuestionAnswered): void {
+  let platform= PlatformIdentity.load(platofrmId);
+  if (!platform) {
+    platform = new PlatformIdentity(platofrmId)
+  }
+  if (!platform.totalQuestionsAnswered) {
+    platform.totalQuestionsAnswered = BigInt.fromI32(0)  
+  }
+  if (!platform.totalValueReceivedOnAnswers) {
+    platform.totalValueReceivedOnAnswers = BigInt.fromI32(0)  
+  }
+
+
+  platform.totalValueReceivedOnAnswers = platform.totalValueReceivedOnAnswers.plus(event.params.value)
+  platform.totalQuestionsAnswered = platform.totalQuestionsAnswered.plus(BigInt.fromI32(1))
+  platform.save()
+
+
+
+
   log.debug('QuestionAnswered: Block number: {}, block hash: {}, transaction hash: {}', [
     event.block.number.toString(), // "47596000"
     event.block.hash.toHexString(), // "0x..."
@@ -384,6 +416,24 @@ export function handleQuestionAnswered(event: QuestionAnswered): void {
 }
 
 export function handleQuestionCreated(event: QuestionCreated): void {
+  let platform= PlatformIdentity.load(platofrmId);
+  if (!platform) {
+    platform = new PlatformIdentity(platofrmId)
+  }
+  if (!platform.totalValueSpentOnQuestions) {
+    platform.totalValueSpentOnQuestions = BigInt.fromI32(0)  
+  }
+  if (!platform.totalQuestionsAsked) {
+    platform.totalQuestionsAsked = BigInt.fromI32(0)  
+  }
+
+
+  platform.totalValueSpentOnQuestions = platform.totalValueSpentOnQuestions.plus(event.params.value)
+  platform.totalQuestionsAsked = platform.totalQuestionsAsked.plus(BigInt.fromI32(1))
+  platform.save()
+
+
+
   log.debug('QuestionCreated: Block number: {}, block hash: {}, transaction hash: {}', [
     event.block.number.toString(), // "47596000"
     event.block.hash.toHexString(), // "0x..."
@@ -462,6 +512,26 @@ export function handleQuestionCreated(event: QuestionCreated): void {
 }
 
 export function handleQuestionValueClaimed(event: QuestionValueClaimed): void {
+  let platform= PlatformIdentity.load(platofrmId);
+  if (!platform) {
+    platform = new PlatformIdentity(platofrmId)
+  }
+  if (!platform.totalValueClaimedBackOnQuestions) {
+    platform.totalValueClaimedBackOnQuestions = BigInt.fromI32(0)  
+  }
+  if (!platform.totalQuestionsClaimedBack) {
+    platform.totalQuestionsClaimedBack = BigInt.fromI32(0)  
+  }
+
+
+  platform.totalValueClaimedBackOnQuestions = platform.totalValueClaimedBackOnQuestions.plus(event.params.value)
+  platform.totalQuestionsClaimedBack = platform.totalQuestionsClaimedBack.plus(BigInt.fromI32(1))
+  platform.save()
+
+
+
+
+
   log.debug('QuestionValueClaimed: Block number: {}, block hash: {}, transaction hash: {}', [
     event.block.number.toString(), // "47596000"
     event.block.hash.toHexString(), // "0x..."
@@ -502,6 +572,26 @@ export function handleQuestionValueClaimed(event: QuestionValueClaimed): void {
 
 
 export function handleTipCreated(event: TipCreated): void {
+  let platform= PlatformIdentity.load(platofrmId);
+  if (!platform) {
+    platform = new PlatformIdentity(platofrmId)
+  }
+  if (!platform.totalTipsMade) {
+    platform.totalTipsMade = BigInt.fromI32(0)  
+  }
+  if (!platform.totalValueSpentOnTips) {
+    platform.totalValueSpentOnTips = BigInt.fromI32(0)  
+  }
+
+
+  platform.totalValueSpentOnTips = platform.totalValueSpentOnTips.plus(event.params.value)
+  platform.totalTipsMade = platform.totalTipsMade.plus(BigInt.fromI32(1))
+  platform.save()
+
+
+
+
+
   log.debug('TipCreated: Block number: {}, block hash: {}, transaction hash: {}', [
     event.block.number.toString(), // "47596000"
     event.block.hash.toHexString(), // "0x..."
@@ -566,6 +656,26 @@ export function handleTipCreated(event: TipCreated): void {
 
 
 export function handleTipValueClaimed(event: TipValueClaimed): void {
+  let platform= PlatformIdentity.load(platofrmId);
+  if (!platform) {
+    platform = new PlatformIdentity(platofrmId)
+  }
+  if (!platform.totalTipsClaimedBack) {
+    platform.totalTipsClaimedBack = BigInt.fromI32(0)  
+  }
+  if (!platform.totalValueClaimedBackOnTips) {
+    platform.totalValueClaimedBackOnTips = BigInt.fromI32(0)  
+  }
+
+
+  platform.totalValueClaimedBackOnTips = platform.totalValueClaimedBackOnTips.plus(event.params.value)
+  platform.totalTipsClaimedBack = platform.totalTipsClaimedBack.plus(BigInt.fromI32(1))
+  platform.save()
+
+
+
+
+
   log.debug('TipValueClaimed: Block number: {}, block hash: {}, transaction hash: {}', [
     event.block.number.toString(), // "47596000"
     event.block.hash.toHexString(), // "0x..."
@@ -637,3 +747,6 @@ export function handleRoleAdminChanged(event: RoleAdminChanged): void {}
 export function handleRoleGranted(event: RoleGranted): void {}
 
 export function handleRoleRevoked(event: RoleRevoked): void {}
+
+
+export function handlePaused(event: Paused): void {}

@@ -1726,3 +1726,151 @@ export class JunkResponseEntity extends Entity {
     this.set("createdAt", Value.fromBigInt(value));
   }
 }
+
+export class PlatformIdentity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("totalValueSpentOnQuestions", Value.fromBigInt(BigInt.zero()));
+    this.set("totalValueSpentOnTips", Value.fromBigInt(BigInt.zero()));
+    this.set("totalValueClaimedBackOnTips", Value.fromBigInt(BigInt.zero()));
+    this.set(
+      "totalValueClaimedBackOnQuestions",
+      Value.fromBigInt(BigInt.zero())
+    );
+    this.set("totalValueReceivedOnAnswers", Value.fromBigInt(BigInt.zero()));
+    this.set("totalQuestionsAsked", Value.fromBigInt(BigInt.zero()));
+    this.set("totalQuestionsClaimedBack", Value.fromBigInt(BigInt.zero()));
+    this.set("totalTipsClaimedBack", Value.fromBigInt(BigInt.zero()));
+    this.set("totalQuestionsAnswered", Value.fromBigInt(BigInt.zero()));
+    this.set("totalTipsMade", Value.fromBigInt(BigInt.zero()));
+    this.set("totalUsers", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save PlatformIdentity entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type PlatformIdentity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("PlatformIdentity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): PlatformIdentity | null {
+    return changetype<PlatformIdentity | null>(
+      store.get("PlatformIdentity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get totalValueSpentOnQuestions(): BigInt {
+    let value = this.get("totalValueSpentOnQuestions");
+    return value!.toBigInt();
+  }
+
+  set totalValueSpentOnQuestions(value: BigInt) {
+    this.set("totalValueSpentOnQuestions", Value.fromBigInt(value));
+  }
+
+  get totalValueSpentOnTips(): BigInt {
+    let value = this.get("totalValueSpentOnTips");
+    return value!.toBigInt();
+  }
+
+  set totalValueSpentOnTips(value: BigInt) {
+    this.set("totalValueSpentOnTips", Value.fromBigInt(value));
+  }
+
+  get totalValueClaimedBackOnTips(): BigInt {
+    let value = this.get("totalValueClaimedBackOnTips");
+    return value!.toBigInt();
+  }
+
+  set totalValueClaimedBackOnTips(value: BigInt) {
+    this.set("totalValueClaimedBackOnTips", Value.fromBigInt(value));
+  }
+
+  get totalValueClaimedBackOnQuestions(): BigInt {
+    let value = this.get("totalValueClaimedBackOnQuestions");
+    return value!.toBigInt();
+  }
+
+  set totalValueClaimedBackOnQuestions(value: BigInt) {
+    this.set("totalValueClaimedBackOnQuestions", Value.fromBigInt(value));
+  }
+
+  get totalValueReceivedOnAnswers(): BigInt {
+    let value = this.get("totalValueReceivedOnAnswers");
+    return value!.toBigInt();
+  }
+
+  set totalValueReceivedOnAnswers(value: BigInt) {
+    this.set("totalValueReceivedOnAnswers", Value.fromBigInt(value));
+  }
+
+  get totalQuestionsAsked(): BigInt {
+    let value = this.get("totalQuestionsAsked");
+    return value!.toBigInt();
+  }
+
+  set totalQuestionsAsked(value: BigInt) {
+    this.set("totalQuestionsAsked", Value.fromBigInt(value));
+  }
+
+  get totalQuestionsClaimedBack(): BigInt {
+    let value = this.get("totalQuestionsClaimedBack");
+    return value!.toBigInt();
+  }
+
+  set totalQuestionsClaimedBack(value: BigInt) {
+    this.set("totalQuestionsClaimedBack", Value.fromBigInt(value));
+  }
+
+  get totalTipsClaimedBack(): BigInt {
+    let value = this.get("totalTipsClaimedBack");
+    return value!.toBigInt();
+  }
+
+  set totalTipsClaimedBack(value: BigInt) {
+    this.set("totalTipsClaimedBack", Value.fromBigInt(value));
+  }
+
+  get totalQuestionsAnswered(): BigInt {
+    let value = this.get("totalQuestionsAnswered");
+    return value!.toBigInt();
+  }
+
+  set totalQuestionsAnswered(value: BigInt) {
+    this.set("totalQuestionsAnswered", Value.fromBigInt(value));
+  }
+
+  get totalTipsMade(): BigInt {
+    let value = this.get("totalTipsMade");
+    return value!.toBigInt();
+  }
+
+  set totalTipsMade(value: BigInt) {
+    this.set("totalTipsMade", Value.fromBigInt(value));
+  }
+
+  get totalUsers(): BigInt {
+    let value = this.get("totalUsers");
+    return value!.toBigInt();
+  }
+
+  set totalUsers(value: BigInt) {
+    this.set("totalUsers", Value.fromBigInt(value));
+  }
+}

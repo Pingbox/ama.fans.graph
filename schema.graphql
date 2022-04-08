@@ -208,3 +208,21 @@ type JunkResponseEntity @entity {
   answerer: String!
   createdAt: BigInt!
 }
+
+type PlatformIdentity @entity {
+  id: ID!
+  totalValueSpentOnQuestions: BigInt!
+  totalValueSpentOnTips: BigInt!
+  totalValueClaimedBackOnTips: BigInt!
+  totalValueClaimedBackOnQuestions: BigInt!
+
+
+  totalValueReceivedOnAnswers: BigInt!
+  totalQuestionsAsked: BigInt!
+  totalQuestionsClaimedBack: BigInt!
+  totalTipsClaimedBack: BigInt!
+
+  totalQuestionsAnswered: BigInt!
+  totalTipsMade: BigInt!
+  totalUsers: BigInt!
+}
