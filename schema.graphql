@@ -8,6 +8,7 @@ type ExampleEntity @entity {
 
 type AmaUserEntity @entity {
   id: ID!
+  txHash: String!
   questionsCreated: BigInt!
   tipsCreated: BigInt!
   answersCreated: BigInt!
@@ -85,6 +86,7 @@ type RequestFulfilledEntity @entity {
 
 type QuestionCreatedEntity @entity {
   id: ID!
+  txHash: String!
   recipient: String!
   questionId: Bytes! 
   createdBy: String!
@@ -103,6 +105,7 @@ type QuestionCreatedEntity @entity {
 
 type QuestionAnsweredEntity @entity {
   id: ID!
+  txHash: String!
   questionId: Bytes! 
   owner: String! 
   creator: String! 
@@ -115,6 +118,7 @@ type QuestionAnsweredEntity @entity {
 
 type QuestionValueClaimedEntity @entity {
   id: ID!
+  txHash: String!
   questionId: Bytes! 
   createdBy: String! 
   value: BigInt! 
@@ -124,6 +128,7 @@ type QuestionValueClaimedEntity @entity {
 
 type TipCreatedEntity @entity {
   id: ID!
+  txHash: String!
   questionId: Bytes! 
   tipId: Bytes! 
   createdBy: String! 
@@ -135,6 +140,7 @@ type TipCreatedEntity @entity {
 
 type TipValueClaimedEntity @entity {
   id: ID!
+  txHash: String!
   questionId: Bytes! # bytes32
   tipId: Bytes! # bytes32
   createdBy: String! 
@@ -145,6 +151,7 @@ type TipValueClaimedEntity @entity {
 
 type AmountReceivedEntity @entity {
   id: ID!
+  txHash: String!
   sender: String! 
   value: BigInt! 
   createdAt: BigInt!
@@ -153,6 +160,7 @@ type AmountReceivedEntity @entity {
 
 type BlockedEntity @entity {
   id: ID!
+  txHash: String!
   sender: String! 
   receiver: String!
   createdAt: BigInt!
@@ -160,6 +168,7 @@ type BlockedEntity @entity {
 
 type UnBlockedEntity @entity {
   id: ID!
+  txHash: String!
   sender: String! 
   receiver: String!
   createdAt: BigInt!
@@ -169,12 +178,14 @@ type UnBlockedEntity @entity {
 
 type WhitelistedEntity @entity {
   id: ID!
+  txHash: String!
   sender: String! 
   receiver: String!
   createdAt: BigInt!
 }
 type UnWhitelistedEntity @entity {
   id: ID!
+  txHash: String!
   sender: String! 
   receiver: String!
   createdAt: BigInt!
@@ -183,12 +194,14 @@ type UnWhitelistedEntity @entity {
 
 type FollowEntity @entity {
   id: ID!
+  txHash: String!
   follower: String! 
   followed: String!
   createdAt: BigInt!
 }
 type UnFollowEntity @entity {
   id: ID!
+  txHash: String!
   unFollower: String! 
   unFollowed: String!
   createdAt: BigInt!
@@ -196,6 +209,7 @@ type UnFollowEntity @entity {
 
 type WithdrawEntity @entity {
   id: ID!
+  txHash: String!
   user: String!
   value: BigInt!
   createdAt: BigInt!
@@ -203,6 +217,7 @@ type WithdrawEntity @entity {
 
 type JunkResponseEntity @entity {
   id: ID!
+  txHash: String!
   questionId: Bytes!
   owner: String!
   answerer: String!
@@ -211,6 +226,7 @@ type JunkResponseEntity @entity {
 
 type PlatformIdentity @entity {
   id: ID!
+  txHash: String!
   totalValueSpentOnQuestions: BigInt!
   totalValueSpentOnTips: BigInt!
   totalValueClaimedBackOnTips: BigInt!

@@ -41,6 +41,7 @@ export function handleAmountReceived(event: AmountReceived): void {
   entity.sender = event.params.sender.toHexString()
   entity.value = event.params.value
   entity.createdAt = event.block.timestamp
+  entity.txHash =  event.transaction.hash.toHex()
 
   entity.save()  
 
@@ -113,6 +114,8 @@ function insertUser(userAddress: string, timestamp: BigInt): AmaUserEntity{
     _junkReponse.owner = event.params.owner.toHexString() 
     _junkReponse.answerer = event.params.answerer.toHexString() 
     _junkReponse.createdAt = event.block.timestamp
+    _junkReponse.txHash =  event.transaction.hash.toHex()
+
     _junkReponse.save()
 
 
@@ -159,6 +162,8 @@ export function handleBlocked(event: Blocked): void {
   blocked.sender = event.params.blocker.toHexString()
   blocked.receiver = event.params.blocked.toHexString()
   blocked.createdAt = event.block.timestamp
+  blocked.txHash =  event.transaction.hash.toHex()
+
   blocked.save()
   let sender = AmaUserEntity.load(event.params.blocker.toHexString())
   if(sender == null){
@@ -195,6 +200,8 @@ export function handleUnBlock(event: UnBlock): void {
   unblocked.sender = event.params.unblocker.toHexString()
   unblocked.receiver = event.params.unblocked.toHexString()
   unblocked.createdAt = event.block.timestamp
+  unblocked.txHash =  event.transaction.hash.toHex()
+
   unblocked.save()
   let sender = AmaUserEntity.load(event.params.unblocker.toHexString())
 
@@ -220,6 +227,8 @@ export function handleWhitelisted(event: Whitelisted): void {
   whitelisted.sender = event.params.whitelister.toHexString()
   whitelisted.receiver = event.params.whitelister.toHexString()
   whitelisted.createdAt = event.block.timestamp
+  whitelisted.txHash =  event.transaction.hash.toHex()
+
   whitelisted.save()
   let sender = AmaUserEntity.load(event.params.whitelister.toHexString())
   if(sender == null){
@@ -256,6 +265,8 @@ export function handleUnWhitelisted(event: UnWhitelisted): void {
   unWhitelisted.sender = event.params.unwhitelister.toHexString()
   unWhitelisted.receiver = event.params.unwhitelisted.toHexString()
   unWhitelisted.createdAt = event.block.timestamp
+  unWhitelisted.txHash =  event.transaction.hash.toHex()
+
   unWhitelisted.save()
   let sender = AmaUserEntity.load(event.params.unwhitelister.toHexString())
 
@@ -280,6 +291,8 @@ export function handleFollow(event: Follow): void {
   follow.followed = event.params.followed.toHexString()
   follow.follower = event.params.follower.toHexString()
   follow.createdAt = event.block.timestamp
+  follow.txHash =  event.transaction.hash.toHex()
+
   follow.save()
 
   // The person who is actually started following so his follwoing count shall be incremented
@@ -319,6 +332,8 @@ export function handleUnFollow(event: UnFollow): void {
   unFollow.unFollower = event.params.unfollower.toHexString()
   unFollow.unFollowed = event.params.unfollowed.toHexString()
   unFollow.createdAt = event.block.timestamp
+  unFollow.txHash =  event.transaction.hash.toHex()
+
   unFollow.save()
   let userWhoUnfollowed = AmaUserEntity.load(event.params.unfollowed.toHexString())
 
@@ -376,6 +391,8 @@ export function handleQuestionAnswered(event: QuestionAnswered): void {
   question.answerLink = event.params.answerLink
   question.value = event.params.value
   question.createdAt = event.block.timestamp
+  question.txHash =  event.transaction.hash.toHex()
+
   question.save()
 
   //Updating QuestionCreatedEntity
@@ -508,6 +525,8 @@ export function handleQuestionCreated(event: QuestionCreated): void {
   newQuestion.createdAt = event.block.timestamp
   newQuestion.tips = BigInt.fromI32(0)
   newQuestion.tipsTotalValue = BigInt.fromI32(0)
+  newQuestion.txHash =  event.transaction.hash.toHex()
+
   newQuestion.save()
 }
 
@@ -543,6 +562,8 @@ export function handleQuestionValueClaimed(event: QuestionValueClaimed): void {
   question.createdBy = event.params.createdBy.toHexString() 
   question.value = event.params.value
   question.createdAt = event.block.timestamp
+  question.txHash =  event.transaction.hash.toHex()
+
   question.save()
 
   //Changing claimed  in QuestionCreatedEntity
@@ -629,6 +650,8 @@ export function handleTipCreated(event: TipCreated): void {
   tip.value = event.params.value
   tip.claimed = false
   tip.createdAt = event.block.timestamp
+  tip.txHash =  event.transaction.hash.toHex()
+
   tip.save()
   
   let question = QuestionCreatedEntity.load(event.params.questionId.toHexString())
@@ -687,6 +710,8 @@ export function handleTipValueClaimed(event: TipValueClaimed): void {
   tip.createdBy = event.params.createdBy.toHexString()
   tip.value = event.params.value
   tip.createdAt = event.block.timestamp
+  tip.txHash =  event.transaction.hash.toHex()
+
   tip.save()
 
 
@@ -724,6 +749,8 @@ export function handleWithdraw(event: Withdraw): void {
   withdrawEvent.user = event.params.user.toHexString()
   withdrawEvent.value = event.params.value
   withdrawEvent.createdAt = event.block.timestamp
+  withdrawEvent.txHash =  event.transaction.hash.toHex()
+
   withdrawEvent.save()
   let user = AmaUserEntity.load(event.params.user.toHexString())
   if(user == null){

@@ -79,6 +79,7 @@ export class AmaUserEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("txHash", Value.fromString(""));
     this.set("questionsCreated", Value.fromBigInt(BigInt.zero()));
     this.set("tipsCreated", Value.fromBigInt(BigInt.zero()));
     this.set("answersCreated", Value.fromBigInt(BigInt.zero()));
@@ -129,6 +130,15 @@ export class AmaUserEntity extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
   }
 
   get questionsCreated(): BigInt {
@@ -614,6 +624,7 @@ export class QuestionCreatedEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("txHash", Value.fromString(""));
     this.set("recipient", Value.fromString(""));
     this.set("questionId", Value.fromBytes(Bytes.empty()));
     this.set("createdBy", Value.fromString(""));
@@ -654,6 +665,15 @@ export class QuestionCreatedEntity extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
   }
 
   get recipient(): string {
@@ -779,6 +799,7 @@ export class QuestionAnsweredEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("txHash", Value.fromString(""));
     this.set("questionId", Value.fromBytes(Bytes.empty()));
     this.set("owner", Value.fromString(""));
     this.set("creator", Value.fromString(""));
@@ -816,6 +837,15 @@ export class QuestionAnsweredEntity extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
   }
 
   get questionId(): Bytes {
@@ -887,6 +917,7 @@ export class QuestionValueClaimedEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("txHash", Value.fromString(""));
     this.set("questionId", Value.fromBytes(Bytes.empty()));
     this.set("createdBy", Value.fromString(""));
     this.set("value", Value.fromBigInt(BigInt.zero()));
@@ -921,6 +952,15 @@ export class QuestionValueClaimedEntity extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
   }
 
   get questionId(): Bytes {
@@ -965,6 +1005,7 @@ export class TipCreatedEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("txHash", Value.fromString(""));
     this.set("questionId", Value.fromBytes(Bytes.empty()));
     this.set("tipId", Value.fromBytes(Bytes.empty()));
     this.set("createdBy", Value.fromString(""));
@@ -997,6 +1038,15 @@ export class TipCreatedEntity extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
   }
 
   get questionId(): Bytes {
@@ -1059,6 +1109,7 @@ export class TipValueClaimedEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("txHash", Value.fromString(""));
     this.set("questionId", Value.fromBytes(Bytes.empty()));
     this.set("tipId", Value.fromBytes(Bytes.empty()));
     this.set("createdBy", Value.fromString(""));
@@ -1094,6 +1145,15 @@ export class TipValueClaimedEntity extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
   }
 
   get questionId(): Bytes {
@@ -1147,6 +1207,7 @@ export class AmountReceivedEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("txHash", Value.fromString(""));
     this.set("sender", Value.fromString(""));
     this.set("value", Value.fromBigInt(BigInt.zero()));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
@@ -1177,6 +1238,15 @@ export class AmountReceivedEntity extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
   }
 
   get sender(): string {
@@ -1212,6 +1282,7 @@ export class BlockedEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("txHash", Value.fromString(""));
     this.set("sender", Value.fromString(""));
     this.set("receiver", Value.fromString(""));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
@@ -1240,6 +1311,15 @@ export class BlockedEntity extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
   }
 
   get sender(): string {
@@ -1275,6 +1355,7 @@ export class UnBlockedEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("txHash", Value.fromString(""));
     this.set("sender", Value.fromString(""));
     this.set("receiver", Value.fromString(""));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
@@ -1303,6 +1384,15 @@ export class UnBlockedEntity extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
   }
 
   get sender(): string {
@@ -1338,6 +1428,7 @@ export class WhitelistedEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("txHash", Value.fromString(""));
     this.set("sender", Value.fromString(""));
     this.set("receiver", Value.fromString(""));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
@@ -1368,6 +1459,15 @@ export class WhitelistedEntity extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
   }
 
   get sender(): string {
@@ -1403,6 +1503,7 @@ export class UnWhitelistedEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("txHash", Value.fromString(""));
     this.set("sender", Value.fromString(""));
     this.set("receiver", Value.fromString(""));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
@@ -1433,6 +1534,15 @@ export class UnWhitelistedEntity extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
   }
 
   get sender(): string {
@@ -1468,6 +1578,7 @@ export class FollowEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("txHash", Value.fromString(""));
     this.set("follower", Value.fromString(""));
     this.set("followed", Value.fromString(""));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
@@ -1496,6 +1607,15 @@ export class FollowEntity extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
   }
 
   get follower(): string {
@@ -1531,6 +1651,7 @@ export class UnFollowEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("txHash", Value.fromString(""));
     this.set("unFollower", Value.fromString(""));
     this.set("unFollowed", Value.fromString(""));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
@@ -1559,6 +1680,15 @@ export class UnFollowEntity extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
   }
 
   get unFollower(): string {
@@ -1594,6 +1724,7 @@ export class WithdrawEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("txHash", Value.fromString(""));
     this.set("user", Value.fromString(""));
     this.set("value", Value.fromBigInt(BigInt.zero()));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
@@ -1622,6 +1753,15 @@ export class WithdrawEntity extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
   }
 
   get user(): string {
@@ -1657,6 +1797,7 @@ export class JunkResponseEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("txHash", Value.fromString(""));
     this.set("questionId", Value.fromBytes(Bytes.empty()));
     this.set("owner", Value.fromString(""));
     this.set("answerer", Value.fromString(""));
@@ -1688,6 +1829,15 @@ export class JunkResponseEntity extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
   }
 
   get questionId(): Bytes {
@@ -1732,6 +1882,7 @@ export class PlatformIdentity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("txHash", Value.fromString(""));
     this.set("totalValueSpentOnQuestions", Value.fromBigInt(BigInt.zero()));
     this.set("totalValueSpentOnTips", Value.fromBigInt(BigInt.zero()));
     this.set("totalValueClaimedBackOnTips", Value.fromBigInt(BigInt.zero()));
@@ -1773,6 +1924,15 @@ export class PlatformIdentity extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
   }
 
   get totalValueSpentOnQuestions(): BigInt {
