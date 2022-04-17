@@ -61,24 +61,73 @@
     "inputs": [
       {
         "indexed": true,
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      },
+      {
+        "indexed": true,
         "internalType": "bytes32",
-        "name": "questionId",
+        "name": "messageId",
         "type": "bytes32"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "owner",
+        "name": "createdBy",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "expiryTime",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "link",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "messageType",
+        "type": "uint256"
+      }
+    ],
+    "name": "MessageCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "messageId",
+        "type": "bytes32"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "answerer",
+        "name": "createdBy",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
       }
     ],
-    "name": "JunkResponse",
+    "name": "MessageValueClaimed",
     "type": "event"
   },
   {
@@ -100,7 +149,7 @@
       {
         "indexed": true,
         "internalType": "bytes32",
-        "name": "questionId",
+        "name": "messageId",
         "type": "bytes32"
       },
       {
@@ -134,50 +183,7 @@
         "type": "uint256"
       }
     ],
-    "name": "QuestionAnswered",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "recipient",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "questionId",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "createdBy",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "value",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "expiryTime",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "link",
-        "type": "string"
-      }
-    ],
-    "name": "QuestionCreated",
+    "name": "ResponseCreated",
     "type": "event"
   },
   {
@@ -186,23 +192,29 @@
       {
         "indexed": true,
         "internalType": "bytes32",
-        "name": "questionId",
+        "name": "messageId",
         "type": "bytes32"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "createdBy",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "answerer",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "value",
+        "name": "responseType",
         "type": "uint256"
       }
     ],
-    "name": "QuestionValueClaimed",
+    "name": "ResponseMarked",
     "type": "event"
   },
   {
@@ -286,7 +298,7 @@
       {
         "indexed": true,
         "internalType": "bytes32",
-        "name": "questionId",
+        "name": "messageId",
         "type": "bytes32"
       },
       {
@@ -317,7 +329,7 @@
       {
         "indexed": true,
         "internalType": "bytes32",
-        "name": "questionId",
+        "name": "messageId",
         "type": "bytes32"
       },
       {
@@ -340,6 +352,31 @@
       }
     ],
     "name": "TipValueClaimed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "Transfer",
     "type": "event"
   },
   {
@@ -478,49 +515,12 @@
   },
   {
     "inputs": [],
-    "name": "ZERO_BYTES32",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "balance",
     "outputs": [
       {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "blockList",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -591,11 +591,11 @@
     "inputs": [
       {
         "internalType": "bytes32",
-        "name": "questionId",
+        "name": "messageId_",
         "type": "bytes32"
       }
     ],
-    "name": "claimBackQuestionValue",
+    "name": "claimBackMessageValue",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -604,34 +604,11 @@
     "inputs": [
       {
         "internalType": "bytes32",
-        "name": "tipId",
+        "name": "tipId_",
         "type": "bytes32"
       }
     ],
     "name": "claimBackTipValue",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "questionId_",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "string",
-        "name": "answerLink_",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "tokenURI_",
-        "type": "string"
-      }
-    ],
-    "name": "createAnswer",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -649,12 +626,17 @@
         "type": "uint256"
       },
       {
+        "internalType": "uint256",
+        "name": "messageType_",
+        "type": "uint256"
+      },
+      {
         "internalType": "string",
-        "name": "questionLink_",
+        "name": "messageLink_",
         "type": "string"
       }
     ],
-    "name": "createQuestion",
+    "name": "createMessage",
     "outputs": [
       {
         "internalType": "bytes32",
@@ -669,26 +651,36 @@
     "inputs": [
       {
         "internalType": "bytes32",
-        "name": "questionId",
+        "name": "messageId_",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "string",
+        "name": "answerLink_",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "tokenURI_",
+        "type": "string"
+      }
+    ],
+    "name": "createResponse",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "messageId_",
         "type": "bytes32"
       }
     ],
     "name": "createTip",
     "outputs": [],
     "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "defaultQuestionTimeLimit",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -734,25 +726,25 @@
     "inputs": [
       {
         "internalType": "bytes32",
-        "name": "_questionId",
+        "name": "messageId_",
         "type": "bytes32"
       },
       {
         "internalType": "uint256",
-        "name": "skip",
+        "name": "skip_",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "limit",
+        "name": "limit_",
         "type": "uint256"
       }
     ],
-    "name": "getQuestionTipIds",
+    "name": "getMessageTipIds",
     "outputs": [
       {
         "internalType": "bytes32[]",
-        "name": "values",
+        "name": "",
         "type": "bytes32[]"
       },
       {
@@ -830,25 +822,25 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_address",
+        "name": "address_",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "skip",
+        "name": "skip_",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "limit",
+        "name": "limit_",
         "type": "uint256"
       }
     ],
-    "name": "getUserQuestionIds",
+    "name": "getUserPrivateMessageIds",
     "outputs": [
       {
         "internalType": "bytes32[]",
-        "name": "values",
+        "name": "",
         "type": "bytes32[]"
       },
       {
@@ -864,11 +856,11 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_address",
+        "name": "address_",
         "type": "address"
       }
     ],
-    "name": "getUserQuestionIdsLength",
+    "name": "getUserPrivateMessagesIdsLength",
     "outputs": [
       {
         "internalType": "uint256",
@@ -883,17 +875,70 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_address",
+        "name": "address_",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "skip",
+        "name": "skip_",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "limit",
+        "name": "limit_",
+        "type": "uint256"
+      }
+    ],
+    "name": "getUserPublicMessageIds",
+    "outputs": [
+      {
+        "internalType": "bytes32[]",
+        "name": "",
+        "type": "bytes32[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "address_",
+        "type": "address"
+      }
+    ],
+    "name": "getUserPublicMessagesIdsLength",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "address_",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "skip_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "limit_",
         "type": "uint256"
       }
     ],
@@ -901,7 +946,7 @@
     "outputs": [
       {
         "internalType": "bytes32[]",
-        "name": "values",
+        "name": "",
         "type": "bytes32[]"
       },
       {
@@ -1016,85 +1061,18 @@
     "inputs": [
       {
         "internalType": "bytes32",
-        "name": "questionId_",
+        "name": "messageId_",
         "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "responseType_",
+        "type": "uint256"
       }
     ],
-    "name": "markJunkReponse",
+    "name": "markReponse",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "maxExtendLimit",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "minTimeLock",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "minimumBid",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "nftContract",
-    "outputs": [
-      {
-        "internalType": "contract AmaFansNFT",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "pause",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "paused",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -1105,11 +1083,11 @@
         "type": "bytes32"
       }
     ],
-    "name": "questions",
+    "name": "messages",
     "outputs": [
       {
         "internalType": "string",
-        "name": "questionLink",
+        "name": "messageLink",
         "type": "string"
       },
       {
@@ -1158,9 +1136,105 @@
         "type": "uint256"
       },
       {
+        "internalType": "enum AmaFansLib.ResponseType",
+        "name": "responseType",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint256",
+        "name": "messageType",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "minTimeLock",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_messageType",
+        "type": "uint256"
+      }
+    ],
+    "name": "minimumBid",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "nftContract",
+    "outputs": [
+      {
+        "internalType": "contract AmaFansNFT",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "pause",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "paused",
+    "outputs": [
+      {
         "internalType": "bool",
-        "name": "junkResponse",
+        "name": "",
         "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "privateMinimumBid",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "publicMinimumBid",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -1221,9 +1295,27 @@
         "internalType": "uint256",
         "name": "_minimumBid",
         "type": "uint256"
+      },
+      {
+        "internalType": "enum AmaFansLib.MessageType",
+        "name": "_messageType",
+        "type": "uint8"
       }
     ],
     "name": "setMinimumBid",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "setNFTContract",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1273,22 +1365,14 @@
         "internalType": "uint256",
         "name": "minimumBidByUser",
         "type": "uint256"
+      },
+      {
+        "internalType": "enum AmaFansLib.MessageType",
+        "name": "_messageType",
+        "type": "uint8"
       }
     ],
     "name": "setUserMinimumBid",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_defaultQuestionTimeLimit",
-        "type": "uint256"
-      }
-    ],
-    "name": "setdefaultQuestionTimeLimit",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1352,7 +1436,7 @@
       },
       {
         "internalType": "bytes32",
-        "name": "questionId",
+        "name": "messageId",
         "type": "bytes32"
       },
       {
@@ -1362,6 +1446,24 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "recipient_",
+        "type": "address"
+      }
+    ],
+    "name": "transfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1434,6 +1536,11 @@
         "internalType": "address",
         "name": "_recipient",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_messageType",
+        "type": "uint256"
       }
     ],
     "name": "userMinimumBid",

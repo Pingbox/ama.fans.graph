@@ -80,31 +80,37 @@ export class AmaUserEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
-    this.set("questionsCreated", Value.fromBigInt(BigInt.zero()));
+    this.set("messagesCreated", Value.fromBigInt(BigInt.zero()));
     this.set("tipsCreated", Value.fromBigInt(BigInt.zero()));
-    this.set("answersCreated", Value.fromBigInt(BigInt.zero()));
+    this.set("responsesCreated", Value.fromBigInt(BigInt.zero()));
     this.set("blockUserCreated", Value.fromBigInt(BigInt.zero()));
     this.set("following", Value.fromBigInt(BigInt.zero()));
     this.set("whitelistUserCreated", Value.fromBigInt(BigInt.zero()));
-    this.set("junkResponseCreated", Value.fromBigInt(BigInt.zero()));
-    this.set("questionsReceived", Value.fromBigInt(BigInt.zero()));
-    this.set("answersReceived", Value.fromBigInt(BigInt.zero()));
+    this.set("goodResponseCreated", Value.fromBigInt(BigInt.zero()));
+    this.set("badResponseCreated", Value.fromBigInt(BigInt.zero()));
+    this.set("messagesReceived", Value.fromBigInt(BigInt.zero()));
+    this.set("responsesReceived", Value.fromBigInt(BigInt.zero()));
     this.set("blockUserReceived", Value.fromBigInt(BigInt.zero()));
-    this.set("junkResponseReceived", Value.fromBigInt(BigInt.zero()));
+    this.set("goodResponseReceived", Value.fromBigInt(BigInt.zero()));
+    this.set("badResponseReceived", Value.fromBigInt(BigInt.zero()));
     this.set("followers", Value.fromBigInt(BigInt.zero()));
     this.set("whitelistUserReceived", Value.fromBigInt(BigInt.zero()));
-    this.set("valueSpentOnQuestions", Value.fromBigInt(BigInt.zero()));
+    this.set("valueSpentOnMessages", Value.fromBigInt(BigInt.zero()));
     this.set("valueSpentOnTips", Value.fromBigInt(BigInt.zero()));
-    this.set("valueReceivedOnQuestions", Value.fromBigInt(BigInt.zero()));
-    this.set("valueReceivedOnAnswers", Value.fromBigInt(BigInt.zero()));
+    this.set("valueReceivedOnMessages", Value.fromBigInt(BigInt.zero()));
+    this.set("valueReceivedOnResponses", Value.fromBigInt(BigInt.zero()));
     this.set("valueReceivedOnTips", Value.fromBigInt(BigInt.zero()));
-    this.set("questionsClaimedBack", Value.fromBigInt(BigInt.zero()));
+    this.set("messagesClaimedBack", Value.fromBigInt(BigInt.zero()));
     this.set("tipsClaimedBack", Value.fromBigInt(BigInt.zero()));
-    this.set("questionsValueClaimedBack", Value.fromBigInt(BigInt.zero()));
+    this.set("messagesValueClaimedBack", Value.fromBigInt(BigInt.zero()));
     this.set("tipsValueClaimedBack", Value.fromBigInt(BigInt.zero()));
     this.set("address", Value.fromString(""));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
     this.set("earningsWithdrawn", Value.fromBigInt(BigInt.zero()));
+    this.set("profileTipsSent", Value.fromBigInt(BigInt.zero()));
+    this.set("profileTipsValueSent", Value.fromBigInt(BigInt.zero()));
+    this.set("profileTipsReceived", Value.fromBigInt(BigInt.zero()));
+    this.set("profileTipsValueReceived", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -141,13 +147,13 @@ export class AmaUserEntity extends Entity {
     this.set("txHash", Value.fromString(value));
   }
 
-  get questionsCreated(): BigInt {
-    let value = this.get("questionsCreated");
+  get messagesCreated(): BigInt {
+    let value = this.get("messagesCreated");
     return value!.toBigInt();
   }
 
-  set questionsCreated(value: BigInt) {
-    this.set("questionsCreated", Value.fromBigInt(value));
+  set messagesCreated(value: BigInt) {
+    this.set("messagesCreated", Value.fromBigInt(value));
   }
 
   get tipsCreated(): BigInt {
@@ -159,13 +165,13 @@ export class AmaUserEntity extends Entity {
     this.set("tipsCreated", Value.fromBigInt(value));
   }
 
-  get answersCreated(): BigInt {
-    let value = this.get("answersCreated");
+  get responsesCreated(): BigInt {
+    let value = this.get("responsesCreated");
     return value!.toBigInt();
   }
 
-  set answersCreated(value: BigInt) {
-    this.set("answersCreated", Value.fromBigInt(value));
+  set responsesCreated(value: BigInt) {
+    this.set("responsesCreated", Value.fromBigInt(value));
   }
 
   get blockUserCreated(): BigInt {
@@ -195,31 +201,40 @@ export class AmaUserEntity extends Entity {
     this.set("whitelistUserCreated", Value.fromBigInt(value));
   }
 
-  get junkResponseCreated(): BigInt {
-    let value = this.get("junkResponseCreated");
+  get goodResponseCreated(): BigInt {
+    let value = this.get("goodResponseCreated");
     return value!.toBigInt();
   }
 
-  set junkResponseCreated(value: BigInt) {
-    this.set("junkResponseCreated", Value.fromBigInt(value));
+  set goodResponseCreated(value: BigInt) {
+    this.set("goodResponseCreated", Value.fromBigInt(value));
   }
 
-  get questionsReceived(): BigInt {
-    let value = this.get("questionsReceived");
+  get badResponseCreated(): BigInt {
+    let value = this.get("badResponseCreated");
     return value!.toBigInt();
   }
 
-  set questionsReceived(value: BigInt) {
-    this.set("questionsReceived", Value.fromBigInt(value));
+  set badResponseCreated(value: BigInt) {
+    this.set("badResponseCreated", Value.fromBigInt(value));
   }
 
-  get answersReceived(): BigInt {
-    let value = this.get("answersReceived");
+  get messagesReceived(): BigInt {
+    let value = this.get("messagesReceived");
     return value!.toBigInt();
   }
 
-  set answersReceived(value: BigInt) {
-    this.set("answersReceived", Value.fromBigInt(value));
+  set messagesReceived(value: BigInt) {
+    this.set("messagesReceived", Value.fromBigInt(value));
+  }
+
+  get responsesReceived(): BigInt {
+    let value = this.get("responsesReceived");
+    return value!.toBigInt();
+  }
+
+  set responsesReceived(value: BigInt) {
+    this.set("responsesReceived", Value.fromBigInt(value));
   }
 
   get blockUserReceived(): BigInt {
@@ -231,13 +246,22 @@ export class AmaUserEntity extends Entity {
     this.set("blockUserReceived", Value.fromBigInt(value));
   }
 
-  get junkResponseReceived(): BigInt {
-    let value = this.get("junkResponseReceived");
+  get goodResponseReceived(): BigInt {
+    let value = this.get("goodResponseReceived");
     return value!.toBigInt();
   }
 
-  set junkResponseReceived(value: BigInt) {
-    this.set("junkResponseReceived", Value.fromBigInt(value));
+  set goodResponseReceived(value: BigInt) {
+    this.set("goodResponseReceived", Value.fromBigInt(value));
+  }
+
+  get badResponseReceived(): BigInt {
+    let value = this.get("badResponseReceived");
+    return value!.toBigInt();
+  }
+
+  set badResponseReceived(value: BigInt) {
+    this.set("badResponseReceived", Value.fromBigInt(value));
   }
 
   get followers(): BigInt {
@@ -258,13 +282,13 @@ export class AmaUserEntity extends Entity {
     this.set("whitelistUserReceived", Value.fromBigInt(value));
   }
 
-  get valueSpentOnQuestions(): BigInt {
-    let value = this.get("valueSpentOnQuestions");
+  get valueSpentOnMessages(): BigInt {
+    let value = this.get("valueSpentOnMessages");
     return value!.toBigInt();
   }
 
-  set valueSpentOnQuestions(value: BigInt) {
-    this.set("valueSpentOnQuestions", Value.fromBigInt(value));
+  set valueSpentOnMessages(value: BigInt) {
+    this.set("valueSpentOnMessages", Value.fromBigInt(value));
   }
 
   get valueSpentOnTips(): BigInt {
@@ -276,22 +300,22 @@ export class AmaUserEntity extends Entity {
     this.set("valueSpentOnTips", Value.fromBigInt(value));
   }
 
-  get valueReceivedOnQuestions(): BigInt {
-    let value = this.get("valueReceivedOnQuestions");
+  get valueReceivedOnMessages(): BigInt {
+    let value = this.get("valueReceivedOnMessages");
     return value!.toBigInt();
   }
 
-  set valueReceivedOnQuestions(value: BigInt) {
-    this.set("valueReceivedOnQuestions", Value.fromBigInt(value));
+  set valueReceivedOnMessages(value: BigInt) {
+    this.set("valueReceivedOnMessages", Value.fromBigInt(value));
   }
 
-  get valueReceivedOnAnswers(): BigInt {
-    let value = this.get("valueReceivedOnAnswers");
+  get valueReceivedOnResponses(): BigInt {
+    let value = this.get("valueReceivedOnResponses");
     return value!.toBigInt();
   }
 
-  set valueReceivedOnAnswers(value: BigInt) {
-    this.set("valueReceivedOnAnswers", Value.fromBigInt(value));
+  set valueReceivedOnResponses(value: BigInt) {
+    this.set("valueReceivedOnResponses", Value.fromBigInt(value));
   }
 
   get valueReceivedOnTips(): BigInt {
@@ -303,13 +327,13 @@ export class AmaUserEntity extends Entity {
     this.set("valueReceivedOnTips", Value.fromBigInt(value));
   }
 
-  get questionsClaimedBack(): BigInt {
-    let value = this.get("questionsClaimedBack");
+  get messagesClaimedBack(): BigInt {
+    let value = this.get("messagesClaimedBack");
     return value!.toBigInt();
   }
 
-  set questionsClaimedBack(value: BigInt) {
-    this.set("questionsClaimedBack", Value.fromBigInt(value));
+  set messagesClaimedBack(value: BigInt) {
+    this.set("messagesClaimedBack", Value.fromBigInt(value));
   }
 
   get tipsClaimedBack(): BigInt {
@@ -321,13 +345,13 @@ export class AmaUserEntity extends Entity {
     this.set("tipsClaimedBack", Value.fromBigInt(value));
   }
 
-  get questionsValueClaimedBack(): BigInt {
-    let value = this.get("questionsValueClaimedBack");
+  get messagesValueClaimedBack(): BigInt {
+    let value = this.get("messagesValueClaimedBack");
     return value!.toBigInt();
   }
 
-  set questionsValueClaimedBack(value: BigInt) {
-    this.set("questionsValueClaimedBack", Value.fromBigInt(value));
+  set messagesValueClaimedBack(value: BigInt) {
+    this.set("messagesValueClaimedBack", Value.fromBigInt(value));
   }
 
   get tipsValueClaimedBack(): BigInt {
@@ -398,6 +422,42 @@ export class AmaUserEntity extends Entity {
     } else {
       this.set("twitterUsername", Value.fromString(<string>value));
     }
+  }
+
+  get profileTipsSent(): BigInt {
+    let value = this.get("profileTipsSent");
+    return value!.toBigInt();
+  }
+
+  set profileTipsSent(value: BigInt) {
+    this.set("profileTipsSent", Value.fromBigInt(value));
+  }
+
+  get profileTipsValueSent(): BigInt {
+    let value = this.get("profileTipsValueSent");
+    return value!.toBigInt();
+  }
+
+  set profileTipsValueSent(value: BigInt) {
+    this.set("profileTipsValueSent", Value.fromBigInt(value));
+  }
+
+  get profileTipsReceived(): BigInt {
+    let value = this.get("profileTipsReceived");
+    return value!.toBigInt();
+  }
+
+  set profileTipsReceived(value: BigInt) {
+    this.set("profileTipsReceived", Value.fromBigInt(value));
+  }
+
+  get profileTipsValueReceived(): BigInt {
+    let value = this.get("profileTipsValueReceived");
+    return value!.toBigInt();
+  }
+
+  set profileTipsValueReceived(value: BigInt) {
+    this.set("profileTipsValueReceived", Value.fromBigInt(value));
   }
 }
 
@@ -619,42 +679,42 @@ export class RequestFulfilledEntity extends Entity {
   }
 }
 
-export class QuestionCreatedEntity extends Entity {
+export class MessageCreatedEntity extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
     this.set("recipient", Value.fromString(""));
-    this.set("questionId", Value.fromBytes(Bytes.empty()));
+    this.set("messageId", Value.fromBytes(Bytes.empty()));
     this.set("createdBy", Value.fromString(""));
     this.set("answerLink", Value.fromString(""));
     this.set("value", Value.fromBigInt(BigInt.zero()));
     this.set("expiryTime", Value.fromBigInt(BigInt.zero()));
     this.set("link", Value.fromString(""));
+    this.set("response", Value.fromBigInt(BigInt.zero()));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
     this.set("tips", Value.fromBigInt(BigInt.zero()));
     this.set("tipsTotalValue", Value.fromBigInt(BigInt.zero()));
+    this.set("messageType", Value.fromBigInt(BigInt.zero()));
+    this.set("responseType", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
     let id = this.get("id");
-    assert(
-      id != null,
-      "Cannot save QuestionCreatedEntity entity without an ID"
-    );
+    assert(id != null, "Cannot save MessageCreatedEntity entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type QuestionCreatedEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type MessageCreatedEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("QuestionCreatedEntity", id.toString(), this);
+      store.set("MessageCreatedEntity", id.toString(), this);
     }
   }
 
-  static load(id: string): QuestionCreatedEntity | null {
-    return changetype<QuestionCreatedEntity | null>(
-      store.get("QuestionCreatedEntity", id)
+  static load(id: string): MessageCreatedEntity | null {
+    return changetype<MessageCreatedEntity | null>(
+      store.get("MessageCreatedEntity", id)
     );
   }
 
@@ -685,13 +745,13 @@ export class QuestionCreatedEntity extends Entity {
     this.set("recipient", Value.fromString(value));
   }
 
-  get questionId(): Bytes {
-    let value = this.get("questionId");
+  get messageId(): Bytes {
+    let value = this.get("messageId");
     return value!.toBytes();
   }
 
-  set questionId(value: Bytes) {
-    this.set("questionId", Value.fromBytes(value));
+  set messageId(value: Bytes) {
+    this.set("messageId", Value.fromBytes(value));
   }
 
   get createdBy(): string {
@@ -757,13 +817,13 @@ export class QuestionCreatedEntity extends Entity {
     this.set("claimed", Value.fromBoolean(value));
   }
 
-  get junkResponse(): boolean {
-    let value = this.get("junkResponse");
-    return value!.toBoolean();
+  get response(): BigInt {
+    let value = this.get("response");
+    return value!.toBigInt();
   }
 
-  set junkResponse(value: boolean) {
-    this.set("junkResponse", Value.fromBoolean(value));
+  set response(value: BigInt) {
+    this.set("response", Value.fromBigInt(value));
   }
 
   get createdAt(): BigInt {
@@ -792,15 +852,33 @@ export class QuestionCreatedEntity extends Entity {
   set tipsTotalValue(value: BigInt) {
     this.set("tipsTotalValue", Value.fromBigInt(value));
   }
+
+  get messageType(): BigInt {
+    let value = this.get("messageType");
+    return value!.toBigInt();
+  }
+
+  set messageType(value: BigInt) {
+    this.set("messageType", Value.fromBigInt(value));
+  }
+
+  get responseType(): BigInt {
+    let value = this.get("responseType");
+    return value!.toBigInt();
+  }
+
+  set responseType(value: BigInt) {
+    this.set("responseType", Value.fromBigInt(value));
+  }
 }
 
-export class QuestionAnsweredEntity extends Entity {
+export class ResponseCreatedEntity extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
-    this.set("questionId", Value.fromBytes(Bytes.empty()));
+    this.set("messageId", Value.fromBytes(Bytes.empty()));
     this.set("owner", Value.fromString(""));
     this.set("creator", Value.fromString(""));
     this.set("tokenId", Value.fromBigInt(BigInt.zero()));
@@ -813,20 +891,20 @@ export class QuestionAnsweredEntity extends Entity {
     let id = this.get("id");
     assert(
       id != null,
-      "Cannot save QuestionAnsweredEntity entity without an ID"
+      "Cannot save ResponseCreatedEntity entity without an ID"
     );
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type QuestionAnsweredEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type ResponseCreatedEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("QuestionAnsweredEntity", id.toString(), this);
+      store.set("ResponseCreatedEntity", id.toString(), this);
     }
   }
 
-  static load(id: string): QuestionAnsweredEntity | null {
-    return changetype<QuestionAnsweredEntity | null>(
-      store.get("QuestionAnsweredEntity", id)
+  static load(id: string): ResponseCreatedEntity | null {
+    return changetype<ResponseCreatedEntity | null>(
+      store.get("ResponseCreatedEntity", id)
     );
   }
 
@@ -848,13 +926,13 @@ export class QuestionAnsweredEntity extends Entity {
     this.set("txHash", Value.fromString(value));
   }
 
-  get questionId(): Bytes {
-    let value = this.get("questionId");
+  get messageId(): Bytes {
+    let value = this.get("messageId");
     return value!.toBytes();
   }
 
-  set questionId(value: Bytes) {
-    this.set("questionId", Value.fromBytes(value));
+  set messageId(value: Bytes) {
+    this.set("messageId", Value.fromBytes(value));
   }
 
   get owner(): string {
@@ -912,13 +990,13 @@ export class QuestionAnsweredEntity extends Entity {
   }
 }
 
-export class QuestionValueClaimedEntity extends Entity {
+export class MessageValueClaimedEntity extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
-    this.set("questionId", Value.fromBytes(Bytes.empty()));
+    this.set("messageId", Value.fromBytes(Bytes.empty()));
     this.set("createdBy", Value.fromString(""));
     this.set("value", Value.fromBigInt(BigInt.zero()));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
@@ -928,20 +1006,20 @@ export class QuestionValueClaimedEntity extends Entity {
     let id = this.get("id");
     assert(
       id != null,
-      "Cannot save QuestionValueClaimedEntity entity without an ID"
+      "Cannot save MessageValueClaimedEntity entity without an ID"
     );
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type QuestionValueClaimedEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type MessageValueClaimedEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("QuestionValueClaimedEntity", id.toString(), this);
+      store.set("MessageValueClaimedEntity", id.toString(), this);
     }
   }
 
-  static load(id: string): QuestionValueClaimedEntity | null {
-    return changetype<QuestionValueClaimedEntity | null>(
-      store.get("QuestionValueClaimedEntity", id)
+  static load(id: string): MessageValueClaimedEntity | null {
+    return changetype<MessageValueClaimedEntity | null>(
+      store.get("MessageValueClaimedEntity", id)
     );
   }
 
@@ -963,13 +1041,13 @@ export class QuestionValueClaimedEntity extends Entity {
     this.set("txHash", Value.fromString(value));
   }
 
-  get questionId(): Bytes {
-    let value = this.get("questionId");
+  get messageId(): Bytes {
+    let value = this.get("messageId");
     return value!.toBytes();
   }
 
-  set questionId(value: Bytes) {
-    this.set("questionId", Value.fromBytes(value));
+  set messageId(value: Bytes) {
+    this.set("messageId", Value.fromBytes(value));
   }
 
   get createdBy(): string {
@@ -1006,7 +1084,7 @@ export class TipCreatedEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
-    this.set("questionId", Value.fromBytes(Bytes.empty()));
+    this.set("messageId", Value.fromBytes(Bytes.empty()));
     this.set("tipId", Value.fromBytes(Bytes.empty()));
     this.set("createdBy", Value.fromString(""));
     this.set("value", Value.fromBigInt(BigInt.zero()));
@@ -1049,13 +1127,13 @@ export class TipCreatedEntity extends Entity {
     this.set("txHash", Value.fromString(value));
   }
 
-  get questionId(): Bytes {
-    let value = this.get("questionId");
+  get messageId(): Bytes {
+    let value = this.get("messageId");
     return value!.toBytes();
   }
 
-  set questionId(value: Bytes) {
-    this.set("questionId", Value.fromBytes(value));
+  set messageId(value: Bytes) {
+    this.set("messageId", Value.fromBytes(value));
   }
 
   get tipId(): Bytes {
@@ -1110,7 +1188,7 @@ export class TipValueClaimedEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
-    this.set("questionId", Value.fromBytes(Bytes.empty()));
+    this.set("messageId", Value.fromBytes(Bytes.empty()));
     this.set("tipId", Value.fromBytes(Bytes.empty()));
     this.set("createdBy", Value.fromString(""));
     this.set("value", Value.fromBigInt(BigInt.zero()));
@@ -1156,13 +1234,13 @@ export class TipValueClaimedEntity extends Entity {
     this.set("txHash", Value.fromString(value));
   }
 
-  get questionId(): Bytes {
-    let value = this.get("questionId");
+  get messageId(): Bytes {
+    let value = this.get("messageId");
     return value!.toBytes();
   }
 
-  set questionId(value: Bytes) {
-    this.set("questionId", Value.fromBytes(value));
+  set messageId(value: Bytes) {
+    this.set("messageId", Value.fromBytes(value));
   }
 
   get tipId(): Bytes {
@@ -1256,6 +1334,89 @@ export class AmountReceivedEntity extends Entity {
 
   set sender(value: string) {
     this.set("sender", Value.fromString(value));
+  }
+
+  get value(): BigInt {
+    let value = this.get("value");
+    return value!.toBigInt();
+  }
+
+  set value(value: BigInt) {
+    this.set("value", Value.fromBigInt(value));
+  }
+
+  get createdAt(): BigInt {
+    let value = this.get("createdAt");
+    return value!.toBigInt();
+  }
+
+  set createdAt(value: BigInt) {
+    this.set("createdAt", Value.fromBigInt(value));
+  }
+}
+
+export class TransferEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("txHash", Value.fromString(""));
+    this.set("sender", Value.fromString(""));
+    this.set("recipient", Value.fromString(""));
+    this.set("value", Value.fromBigInt(BigInt.zero()));
+    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save TransferEntity entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type TransferEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("TransferEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): TransferEntity | null {
+    return changetype<TransferEntity | null>(store.get("TransferEntity", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
+  }
+
+  get sender(): string {
+    let value = this.get("sender");
+    return value!.toString();
+  }
+
+  set sender(value: string) {
+    this.set("sender", Value.fromString(value));
+  }
+
+  get recipient(): string {
+    let value = this.get("recipient");
+    return value!.toString();
+  }
+
+  set recipient(value: string) {
+    this.set("recipient", Value.fromString(value));
   }
 
   get value(): BigInt {
@@ -1792,33 +1953,34 @@ export class WithdrawEntity extends Entity {
   }
 }
 
-export class JunkResponseEntity extends Entity {
+export class ResponseMarkedEntity extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
-    this.set("questionId", Value.fromBytes(Bytes.empty()));
+    this.set("messageId", Value.fromBytes(Bytes.empty()));
     this.set("owner", Value.fromString(""));
     this.set("answerer", Value.fromString(""));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
+    this.set("responseType", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save JunkResponseEntity entity without an ID");
+    assert(id != null, "Cannot save ResponseMarkedEntity entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type JunkResponseEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type ResponseMarkedEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("JunkResponseEntity", id.toString(), this);
+      store.set("ResponseMarkedEntity", id.toString(), this);
     }
   }
 
-  static load(id: string): JunkResponseEntity | null {
-    return changetype<JunkResponseEntity | null>(
-      store.get("JunkResponseEntity", id)
+  static load(id: string): ResponseMarkedEntity | null {
+    return changetype<ResponseMarkedEntity | null>(
+      store.get("ResponseMarkedEntity", id)
     );
   }
 
@@ -1840,13 +2002,13 @@ export class JunkResponseEntity extends Entity {
     this.set("txHash", Value.fromString(value));
   }
 
-  get questionId(): Bytes {
-    let value = this.get("questionId");
+  get messageId(): Bytes {
+    let value = this.get("messageId");
     return value!.toBytes();
   }
 
-  set questionId(value: Bytes) {
-    this.set("questionId", Value.fromBytes(value));
+  set messageId(value: Bytes) {
+    this.set("messageId", Value.fromBytes(value));
   }
 
   get owner(): string {
@@ -1875,6 +2037,15 @@ export class JunkResponseEntity extends Entity {
   set createdAt(value: BigInt) {
     this.set("createdAt", Value.fromBigInt(value));
   }
+
+  get responseType(): BigInt {
+    let value = this.get("responseType");
+    return value!.toBigInt();
+  }
+
+  set responseType(value: BigInt) {
+    this.set("responseType", Value.fromBigInt(value));
+  }
 }
 
 export class PlatformIdentity extends Entity {
@@ -1883,18 +2054,18 @@ export class PlatformIdentity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
-    this.set("totalValueSpentOnQuestions", Value.fromBigInt(BigInt.zero()));
+    this.set("totalValueSpentOnMessages", Value.fromBigInt(BigInt.zero()));
     this.set("totalValueSpentOnTips", Value.fromBigInt(BigInt.zero()));
     this.set("totalValueClaimedBackOnTips", Value.fromBigInt(BigInt.zero()));
     this.set(
-      "totalValueClaimedBackOnQuestions",
+      "totalValueClaimedBackOnMessages",
       Value.fromBigInt(BigInt.zero())
     );
-    this.set("totalValueReceivedOnAnswers", Value.fromBigInt(BigInt.zero()));
-    this.set("totalQuestionsAsked", Value.fromBigInt(BigInt.zero()));
-    this.set("totalQuestionsClaimedBack", Value.fromBigInt(BigInt.zero()));
+    this.set("totalValueReceivedOnResponses", Value.fromBigInt(BigInt.zero()));
+    this.set("totalMessagesSent", Value.fromBigInt(BigInt.zero()));
+    this.set("totalMessagesClaimedBack", Value.fromBigInt(BigInt.zero()));
     this.set("totalTipsClaimedBack", Value.fromBigInt(BigInt.zero()));
-    this.set("totalQuestionsAnswered", Value.fromBigInt(BigInt.zero()));
+    this.set("totalResponseCreated", Value.fromBigInt(BigInt.zero()));
     this.set("totalTipsMade", Value.fromBigInt(BigInt.zero()));
     this.set("totalUsers", Value.fromBigInt(BigInt.zero()));
   }
@@ -1935,13 +2106,13 @@ export class PlatformIdentity extends Entity {
     this.set("txHash", Value.fromString(value));
   }
 
-  get totalValueSpentOnQuestions(): BigInt {
-    let value = this.get("totalValueSpentOnQuestions");
+  get totalValueSpentOnMessages(): BigInt {
+    let value = this.get("totalValueSpentOnMessages");
     return value!.toBigInt();
   }
 
-  set totalValueSpentOnQuestions(value: BigInt) {
-    this.set("totalValueSpentOnQuestions", Value.fromBigInt(value));
+  set totalValueSpentOnMessages(value: BigInt) {
+    this.set("totalValueSpentOnMessages", Value.fromBigInt(value));
   }
 
   get totalValueSpentOnTips(): BigInt {
@@ -1962,40 +2133,40 @@ export class PlatformIdentity extends Entity {
     this.set("totalValueClaimedBackOnTips", Value.fromBigInt(value));
   }
 
-  get totalValueClaimedBackOnQuestions(): BigInt {
-    let value = this.get("totalValueClaimedBackOnQuestions");
+  get totalValueClaimedBackOnMessages(): BigInt {
+    let value = this.get("totalValueClaimedBackOnMessages");
     return value!.toBigInt();
   }
 
-  set totalValueClaimedBackOnQuestions(value: BigInt) {
-    this.set("totalValueClaimedBackOnQuestions", Value.fromBigInt(value));
+  set totalValueClaimedBackOnMessages(value: BigInt) {
+    this.set("totalValueClaimedBackOnMessages", Value.fromBigInt(value));
   }
 
-  get totalValueReceivedOnAnswers(): BigInt {
-    let value = this.get("totalValueReceivedOnAnswers");
+  get totalValueReceivedOnResponses(): BigInt {
+    let value = this.get("totalValueReceivedOnResponses");
     return value!.toBigInt();
   }
 
-  set totalValueReceivedOnAnswers(value: BigInt) {
-    this.set("totalValueReceivedOnAnswers", Value.fromBigInt(value));
+  set totalValueReceivedOnResponses(value: BigInt) {
+    this.set("totalValueReceivedOnResponses", Value.fromBigInt(value));
   }
 
-  get totalQuestionsAsked(): BigInt {
-    let value = this.get("totalQuestionsAsked");
+  get totalMessagesSent(): BigInt {
+    let value = this.get("totalMessagesSent");
     return value!.toBigInt();
   }
 
-  set totalQuestionsAsked(value: BigInt) {
-    this.set("totalQuestionsAsked", Value.fromBigInt(value));
+  set totalMessagesSent(value: BigInt) {
+    this.set("totalMessagesSent", Value.fromBigInt(value));
   }
 
-  get totalQuestionsClaimedBack(): BigInt {
-    let value = this.get("totalQuestionsClaimedBack");
+  get totalMessagesClaimedBack(): BigInt {
+    let value = this.get("totalMessagesClaimedBack");
     return value!.toBigInt();
   }
 
-  set totalQuestionsClaimedBack(value: BigInt) {
-    this.set("totalQuestionsClaimedBack", Value.fromBigInt(value));
+  set totalMessagesClaimedBack(value: BigInt) {
+    this.set("totalMessagesClaimedBack", Value.fromBigInt(value));
   }
 
   get totalTipsClaimedBack(): BigInt {
@@ -2007,13 +2178,13 @@ export class PlatformIdentity extends Entity {
     this.set("totalTipsClaimedBack", Value.fromBigInt(value));
   }
 
-  get totalQuestionsAnswered(): BigInt {
-    let value = this.get("totalQuestionsAnswered");
+  get totalResponseCreated(): BigInt {
+    let value = this.get("totalResponseCreated");
     return value!.toBigInt();
   }
 
-  set totalQuestionsAnswered(value: BigInt) {
-    this.set("totalQuestionsAnswered", Value.fromBigInt(value));
+  set totalResponseCreated(value: BigInt) {
+    this.set("totalResponseCreated", Value.fromBigInt(value));
   }
 
   get totalTipsMade(): BigInt {

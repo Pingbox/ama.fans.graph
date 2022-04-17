@@ -9,41 +9,44 @@ type ExampleEntity @entity {
 type AmaUserEntity @entity {
   id: ID!
   txHash: String!
-  questionsCreated: BigInt!
+  messagesCreated: BigInt!
   tipsCreated: BigInt!
-  answersCreated: BigInt!
+  responsesCreated: BigInt!
   blockUserCreated: BigInt!
   following: BigInt!
   whitelistUserCreated: BigInt!
-  junkResponseCreated: BigInt!
+  goodResponseCreated: BigInt!
+  badResponseCreated: BigInt!
 
-  questionsReceived: BigInt!
-  answersReceived: BigInt!
+
+  messagesReceived: BigInt!
+  responsesReceived: BigInt!
   blockUserReceived: BigInt!
-  junkResponseReceived: BigInt!
+  goodResponseReceived: BigInt!
+  badResponseReceived: BigInt!
 
   followers: BigInt!
   whitelistUserReceived: BigInt!
 
 
 
-  valueSpentOnQuestions: BigInt!
+  valueSpentOnMessages: BigInt!
   valueSpentOnTips: BigInt!
 
 
-  valueReceivedOnQuestions: BigInt!
+  valueReceivedOnMessages: BigInt!
 
   "The value which you get when you answer a question"
-  valueReceivedOnAnswers: BigInt!
+  valueReceivedOnResponses: BigInt!
 
-  "The aggragte value in tips which your questions have received" 
+  "The aggragte value in tips which your Messages have received" 
   valueReceivedOnTips: BigInt!
 
 
-  questionsClaimedBack: BigInt!
+  messagesClaimedBack: BigInt!
   tipsClaimedBack: BigInt!
 
-  questionsValueClaimedBack: BigInt!
+  messagesValueClaimedBack: BigInt!
   tipsValueClaimedBack: BigInt!
 
   address: String!
@@ -51,6 +54,12 @@ type AmaUserEntity @entity {
   createdAt: BigInt!
   earningsWithdrawn: BigInt! 
   twitterUsername: String
+
+  profileTipsSent: BigInt!
+  profileTipsValueSent: BigInt!
+
+  profileTipsReceived: BigInt!
+  profileTipsValueReceived: BigInt!
 
 }
 
@@ -81,14 +90,11 @@ type RequestFulfilledEntity @entity {
 }
 
 
-
-
-
-type QuestionCreatedEntity @entity {
+type MessageCreatedEntity @entity {
   id: ID!
   txHash: String!
   recipient: String!
-  questionId: Bytes! 
+  messageId: Bytes! 
   createdBy: String!
   answerLink: String!
   value: BigInt!
@@ -96,17 +102,19 @@ type QuestionCreatedEntity @entity {
   link: String! 
   answered: Boolean
   claimed: Boolean
-  junkResponse: Boolean
+  response: BigInt!
   createdAt: BigInt!
   tips: BigInt!
   tipsTotalValue: BigInt!
+  messageType: BigInt!
+  responseType: BigInt!
 }
 
 
-type QuestionAnsweredEntity @entity {
+type ResponseCreatedEntity @entity {
   id: ID!
   txHash: String!
-  questionId: Bytes! 
+  messageId: Bytes! 
   owner: String! 
   creator: String! 
   tokenId: BigInt! 
@@ -116,10 +124,10 @@ type QuestionAnsweredEntity @entity {
 }
 
 
-type QuestionValueClaimedEntity @entity {
+type MessageValueClaimedEntity @entity {
   id: ID!
   txHash: String!
-  questionId: Bytes! 
+  messageId: Bytes! 
   createdBy: String! 
   value: BigInt! 
   createdAt: BigInt!
@@ -129,7 +137,7 @@ type QuestionValueClaimedEntity @entity {
 type TipCreatedEntity @entity {
   id: ID!
   txHash: String!
-  questionId: Bytes! 
+  messageId: Bytes! 
   tipId: Bytes! 
   createdBy: String! 
   value: BigInt! 
@@ -141,7 +149,7 @@ type TipCreatedEntity @entity {
 type TipValueClaimedEntity @entity {
   id: ID!
   txHash: String!
-  questionId: Bytes! # bytes32
+  messageId: Bytes! # bytes32
   tipId: Bytes! # bytes32
   createdBy: String! 
   value: BigInt! 
@@ -156,6 +164,18 @@ type AmountReceivedEntity @entity {
   value: BigInt! 
   createdAt: BigInt!
 }
+
+type TransferEntity @entity {
+  id: ID!
+  txHash: String!
+  sender: String!
+  recipient: String! 
+  value: BigInt! 
+  createdAt: BigInt!
+}
+
+
+
 
 
 type BlockedEntity @entity {
@@ -215,30 +235,31 @@ type WithdrawEntity @entity {
   createdAt: BigInt!
 }
 
-type JunkResponseEntity @entity {
+type ResponseMarkedEntity @entity {
   id: ID!
   txHash: String!
-  questionId: Bytes!
+  messageId: Bytes!
   owner: String!
   answerer: String!
   createdAt: BigInt!
+  responseType: BigInt!
 }
 
 type PlatformIdentity @entity {
   id: ID!
   txHash: String!
-  totalValueSpentOnQuestions: BigInt!
+  totalValueSpentOnMessages: BigInt!
   totalValueSpentOnTips: BigInt!
   totalValueClaimedBackOnTips: BigInt!
-  totalValueClaimedBackOnQuestions: BigInt!
+  totalValueClaimedBackOnMessages: BigInt!
 
 
-  totalValueReceivedOnAnswers: BigInt!
-  totalQuestionsAsked: BigInt!
-  totalQuestionsClaimedBack: BigInt!
+  totalValueReceivedOnResponses: BigInt!
+  totalMessagesSent: BigInt!
+  totalMessagesClaimedBack: BigInt!
   totalTipsClaimedBack: BigInt!
 
-  totalQuestionsAnswered: BigInt!
+  totalResponseCreated: BigInt!
   totalTipsMade: BigInt!
   totalUsers: BigInt!
 }

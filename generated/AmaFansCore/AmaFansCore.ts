@@ -76,29 +76,71 @@ export class Follow__Params {
   }
 }
 
-export class JunkResponse extends ethereum.Event {
-  get params(): JunkResponse__Params {
-    return new JunkResponse__Params(this);
+export class MessageCreated extends ethereum.Event {
+  get params(): MessageCreated__Params {
+    return new MessageCreated__Params(this);
   }
 }
 
-export class JunkResponse__Params {
-  _event: JunkResponse;
+export class MessageCreated__Params {
+  _event: MessageCreated;
 
-  constructor(event: JunkResponse) {
+  constructor(event: MessageCreated) {
     this._event = event;
   }
 
-  get questionId(): Bytes {
+  get recipient(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get messageId(): Bytes {
+    return this._event.parameters[1].value.toBytes();
+  }
+
+  get createdBy(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+
+  get value(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+
+  get expiryTime(): BigInt {
+    return this._event.parameters[4].value.toBigInt();
+  }
+
+  get link(): string {
+    return this._event.parameters[5].value.toString();
+  }
+
+  get messageType(): BigInt {
+    return this._event.parameters[6].value.toBigInt();
+  }
+}
+
+export class MessageValueClaimed extends ethereum.Event {
+  get params(): MessageValueClaimed__Params {
+    return new MessageValueClaimed__Params(this);
+  }
+}
+
+export class MessageValueClaimed__Params {
+  _event: MessageValueClaimed;
+
+  constructor(event: MessageValueClaimed) {
+    this._event = event;
+  }
+
+  get messageId(): Bytes {
     return this._event.parameters[0].value.toBytes();
   }
 
-  get owner(): Address {
+  get createdBy(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
-  get answerer(): Address {
-    return this._event.parameters[2].value.toAddress();
+  get value(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
   }
 }
 
@@ -120,20 +162,20 @@ export class Paused__Params {
   }
 }
 
-export class QuestionAnswered extends ethereum.Event {
-  get params(): QuestionAnswered__Params {
-    return new QuestionAnswered__Params(this);
+export class ResponseCreated extends ethereum.Event {
+  get params(): ResponseCreated__Params {
+    return new ResponseCreated__Params(this);
   }
 }
 
-export class QuestionAnswered__Params {
-  _event: QuestionAnswered;
+export class ResponseCreated__Params {
+  _event: ResponseCreated;
 
-  constructor(event: QuestionAnswered) {
+  constructor(event: ResponseCreated) {
     this._event = event;
   }
 
-  get questionId(): Bytes {
+  get messageId(): Bytes {
     return this._event.parameters[0].value.toBytes();
   }
 
@@ -158,67 +200,33 @@ export class QuestionAnswered__Params {
   }
 }
 
-export class QuestionCreated extends ethereum.Event {
-  get params(): QuestionCreated__Params {
-    return new QuestionCreated__Params(this);
+export class ResponseMarked extends ethereum.Event {
+  get params(): ResponseMarked__Params {
+    return new ResponseMarked__Params(this);
   }
 }
 
-export class QuestionCreated__Params {
-  _event: QuestionCreated;
+export class ResponseMarked__Params {
+  _event: ResponseMarked;
 
-  constructor(event: QuestionCreated) {
+  constructor(event: ResponseMarked) {
     this._event = event;
   }
 
-  get recipient(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get questionId(): Bytes {
-    return this._event.parameters[1].value.toBytes();
-  }
-
-  get createdBy(): Address {
-    return this._event.parameters[2].value.toAddress();
-  }
-
-  get value(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
-  }
-
-  get expiryTime(): BigInt {
-    return this._event.parameters[4].value.toBigInt();
-  }
-
-  get link(): string {
-    return this._event.parameters[5].value.toString();
-  }
-}
-
-export class QuestionValueClaimed extends ethereum.Event {
-  get params(): QuestionValueClaimed__Params {
-    return new QuestionValueClaimed__Params(this);
-  }
-}
-
-export class QuestionValueClaimed__Params {
-  _event: QuestionValueClaimed;
-
-  constructor(event: QuestionValueClaimed) {
-    this._event = event;
-  }
-
-  get questionId(): Bytes {
+  get messageId(): Bytes {
     return this._event.parameters[0].value.toBytes();
   }
 
-  get createdBy(): Address {
+  get owner(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
-  get value(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+  get answerer(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+
+  get responseType(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
   }
 }
 
@@ -313,7 +321,7 @@ export class TipCreated__Params {
     this._event = event;
   }
 
-  get questionId(): Bytes {
+  get messageId(): Bytes {
     return this._event.parameters[0].value.toBytes();
   }
 
@@ -343,7 +351,7 @@ export class TipValueClaimed__Params {
     this._event = event;
   }
 
-  get questionId(): Bytes {
+  get messageId(): Bytes {
     return this._event.parameters[0].value.toBytes();
   }
 
@@ -357,6 +365,32 @@ export class TipValueClaimed__Params {
 
   get value(): BigInt {
     return this._event.parameters[3].value.toBigInt();
+  }
+}
+
+export class Transfer extends ethereum.Event {
+  get params(): Transfer__Params {
+    return new Transfer__Params(this);
+  }
+}
+
+export class Transfer__Params {
+  _event: Transfer;
+
+  constructor(event: Transfer) {
+    this._event = event;
+  }
+
+  get sender(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get recipient(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get value(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
   }
 }
 
@@ -488,7 +522,7 @@ export class Withdraw__Params {
   }
 }
 
-export class AmaFansCore__getQuestionTipIdsResult {
+export class AmaFansCore__getMessageTipIdsResult {
   value0: Array<Bytes>;
   value1: BigInt;
 
@@ -505,7 +539,24 @@ export class AmaFansCore__getQuestionTipIdsResult {
   }
 }
 
-export class AmaFansCore__getUserQuestionIdsResult {
+export class AmaFansCore__getUserPrivateMessageIdsResult {
+  value0: Array<Bytes>;
+  value1: BigInt;
+
+  constructor(value0: Array<Bytes>, value1: BigInt) {
+    this.value0 = value0;
+    this.value1 = value1;
+  }
+
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set("value0", ethereum.Value.fromFixedBytesArray(this.value0));
+    map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
+    return map;
+  }
+}
+
+export class AmaFansCore__getUserPublicMessageIdsResult {
   value0: Array<Bytes>;
   value1: BigInt;
 
@@ -539,7 +590,7 @@ export class AmaFansCore__getUserTipIdsResult {
   }
 }
 
-export class AmaFansCore__questionsResult {
+export class AmaFansCore__messagesResult {
   value0: string;
   value1: string;
   value2: BigInt;
@@ -550,7 +601,8 @@ export class AmaFansCore__questionsResult {
   value7: BigInt;
   value8: i32;
   value9: BigInt;
-  value10: boolean;
+  value10: i32;
+  value11: BigInt;
 
   constructor(
     value0: string,
@@ -563,7 +615,8 @@ export class AmaFansCore__questionsResult {
     value7: BigInt,
     value8: i32,
     value9: BigInt,
-    value10: boolean
+    value10: i32,
+    value11: BigInt
   ) {
     this.value0 = value0;
     this.value1 = value1;
@@ -576,6 +629,7 @@ export class AmaFansCore__questionsResult {
     this.value8 = value8;
     this.value9 = value9;
     this.value10 = value10;
+    this.value11 = value11;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
@@ -593,7 +647,11 @@ export class AmaFansCore__questionsResult {
       ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(this.value8))
     );
     map.set("value9", ethereum.Value.fromUnsignedBigInt(this.value9));
-    map.set("value10", ethereum.Value.fromBoolean(this.value10));
+    map.set(
+      "value10",
+      ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(this.value10))
+    );
+    map.set("value11", ethereum.Value.fromUnsignedBigInt(this.value11));
     return map;
   }
 }
@@ -681,21 +739,6 @@ export class AmaFansCore extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBytes());
   }
 
-  ZERO_BYTES32(): Bytes {
-    let result = super.call("ZERO_BYTES32", "ZERO_BYTES32():(bytes32)", []);
-
-    return result[0].toBytes();
-  }
-
-  try_ZERO_BYTES32(): ethereum.CallResult<Bytes> {
-    let result = super.tryCall("ZERO_BYTES32", "ZERO_BYTES32():(bytes32)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBytes());
-  }
-
   balance(): BigInt {
     let result = super.call("balance", "balance():(uint256)", []);
 
@@ -709,31 +752,6 @@ export class AmaFansCore extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  blockList(param0: Address, param1: Address): boolean {
-    let result = super.call("blockList", "blockList(address,address):(bool)", [
-      ethereum.Value.fromAddress(param0),
-      ethereum.Value.fromAddress(param1)
-    ]);
-
-    return result[0].toBoolean();
-  }
-
-  try_blockList(
-    param0: Address,
-    param1: Address
-  ): ethereum.CallResult<boolean> {
-    let result = super.tryCall(
-      "blockList",
-      "blockList(address,address):(bool)",
-      [ethereum.Value.fromAddress(param0), ethereum.Value.fromAddress(param1)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
   checkBlocked(_sender: Address, _recipient: Address): boolean {
@@ -800,29 +818,6 @@ export class AmaFansCore extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
-  defaultQuestionTimeLimit(): BigInt {
-    let result = super.call(
-      "defaultQuestionTimeLimit",
-      "defaultQuestionTimeLimit():(uint256)",
-      []
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_defaultQuestionTimeLimit(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "defaultQuestionTimeLimit",
-      "defaultQuestionTimeLimit():(uint256)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
   feeCollector(): Address {
     let result = super.call("feeCollector", "feeCollector():(address)", []);
 
@@ -853,39 +848,39 @@ export class AmaFansCore extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  getQuestionTipIds(
-    _questionId: Bytes,
-    skip: BigInt,
-    limit: BigInt
-  ): AmaFansCore__getQuestionTipIdsResult {
+  getMessageTipIds(
+    messageId_: Bytes,
+    skip_: BigInt,
+    limit_: BigInt
+  ): AmaFansCore__getMessageTipIdsResult {
     let result = super.call(
-      "getQuestionTipIds",
-      "getQuestionTipIds(bytes32,uint256,uint256):(bytes32[],uint256)",
+      "getMessageTipIds",
+      "getMessageTipIds(bytes32,uint256,uint256):(bytes32[],uint256)",
       [
-        ethereum.Value.fromFixedBytes(_questionId),
-        ethereum.Value.fromUnsignedBigInt(skip),
-        ethereum.Value.fromUnsignedBigInt(limit)
+        ethereum.Value.fromFixedBytes(messageId_),
+        ethereum.Value.fromUnsignedBigInt(skip_),
+        ethereum.Value.fromUnsignedBigInt(limit_)
       ]
     );
 
-    return new AmaFansCore__getQuestionTipIdsResult(
+    return new AmaFansCore__getMessageTipIdsResult(
       result[0].toBytesArray(),
       result[1].toBigInt()
     );
   }
 
-  try_getQuestionTipIds(
-    _questionId: Bytes,
-    skip: BigInt,
-    limit: BigInt
-  ): ethereum.CallResult<AmaFansCore__getQuestionTipIdsResult> {
+  try_getMessageTipIds(
+    messageId_: Bytes,
+    skip_: BigInt,
+    limit_: BigInt
+  ): ethereum.CallResult<AmaFansCore__getMessageTipIdsResult> {
     let result = super.tryCall(
-      "getQuestionTipIds",
-      "getQuestionTipIds(bytes32,uint256,uint256):(bytes32[],uint256)",
+      "getMessageTipIds",
+      "getMessageTipIds(bytes32,uint256,uint256):(bytes32[],uint256)",
       [
-        ethereum.Value.fromFixedBytes(_questionId),
-        ethereum.Value.fromUnsignedBigInt(skip),
-        ethereum.Value.fromUnsignedBigInt(limit)
+        ethereum.Value.fromFixedBytes(messageId_),
+        ethereum.Value.fromUnsignedBigInt(skip_),
+        ethereum.Value.fromUnsignedBigInt(limit_)
       ]
     );
     if (result.reverted) {
@@ -893,7 +888,7 @@ export class AmaFansCore extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new AmaFansCore__getQuestionTipIdsResult(
+      new AmaFansCore__getMessageTipIdsResult(
         value[0].toBytesArray(),
         value[1].toBigInt()
       )
@@ -973,39 +968,39 @@ export class AmaFansCore extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  getUserQuestionIds(
-    _address: Address,
-    skip: BigInt,
-    limit: BigInt
-  ): AmaFansCore__getUserQuestionIdsResult {
+  getUserPrivateMessageIds(
+    address_: Address,
+    skip_: BigInt,
+    limit_: BigInt
+  ): AmaFansCore__getUserPrivateMessageIdsResult {
     let result = super.call(
-      "getUserQuestionIds",
-      "getUserQuestionIds(address,uint256,uint256):(bytes32[],uint256)",
+      "getUserPrivateMessageIds",
+      "getUserPrivateMessageIds(address,uint256,uint256):(bytes32[],uint256)",
       [
-        ethereum.Value.fromAddress(_address),
-        ethereum.Value.fromUnsignedBigInt(skip),
-        ethereum.Value.fromUnsignedBigInt(limit)
+        ethereum.Value.fromAddress(address_),
+        ethereum.Value.fromUnsignedBigInt(skip_),
+        ethereum.Value.fromUnsignedBigInt(limit_)
       ]
     );
 
-    return new AmaFansCore__getUserQuestionIdsResult(
+    return new AmaFansCore__getUserPrivateMessageIdsResult(
       result[0].toBytesArray(),
       result[1].toBigInt()
     );
   }
 
-  try_getUserQuestionIds(
-    _address: Address,
-    skip: BigInt,
-    limit: BigInt
-  ): ethereum.CallResult<AmaFansCore__getUserQuestionIdsResult> {
+  try_getUserPrivateMessageIds(
+    address_: Address,
+    skip_: BigInt,
+    limit_: BigInt
+  ): ethereum.CallResult<AmaFansCore__getUserPrivateMessageIdsResult> {
     let result = super.tryCall(
-      "getUserQuestionIds",
-      "getUserQuestionIds(address,uint256,uint256):(bytes32[],uint256)",
+      "getUserPrivateMessageIds",
+      "getUserPrivateMessageIds(address,uint256,uint256):(bytes32[],uint256)",
       [
-        ethereum.Value.fromAddress(_address),
-        ethereum.Value.fromUnsignedBigInt(skip),
-        ethereum.Value.fromUnsignedBigInt(limit)
+        ethereum.Value.fromAddress(address_),
+        ethereum.Value.fromUnsignedBigInt(skip_),
+        ethereum.Value.fromUnsignedBigInt(limit_)
       ]
     );
     if (result.reverted) {
@@ -1013,28 +1008,102 @@ export class AmaFansCore extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new AmaFansCore__getUserQuestionIdsResult(
+      new AmaFansCore__getUserPrivateMessageIdsResult(
         value[0].toBytesArray(),
         value[1].toBigInt()
       )
     );
   }
 
-  getUserQuestionIdsLength(_address: Address): BigInt {
+  getUserPrivateMessagesIdsLength(address_: Address): BigInt {
     let result = super.call(
-      "getUserQuestionIdsLength",
-      "getUserQuestionIdsLength(address):(uint256)",
-      [ethereum.Value.fromAddress(_address)]
+      "getUserPrivateMessagesIdsLength",
+      "getUserPrivateMessagesIdsLength(address):(uint256)",
+      [ethereum.Value.fromAddress(address_)]
     );
 
     return result[0].toBigInt();
   }
 
-  try_getUserQuestionIdsLength(_address: Address): ethereum.CallResult<BigInt> {
+  try_getUserPrivateMessagesIdsLength(
+    address_: Address
+  ): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
-      "getUserQuestionIdsLength",
-      "getUserQuestionIdsLength(address):(uint256)",
-      [ethereum.Value.fromAddress(_address)]
+      "getUserPrivateMessagesIdsLength",
+      "getUserPrivateMessagesIdsLength(address):(uint256)",
+      [ethereum.Value.fromAddress(address_)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  getUserPublicMessageIds(
+    address_: Address,
+    skip_: BigInt,
+    limit_: BigInt
+  ): AmaFansCore__getUserPublicMessageIdsResult {
+    let result = super.call(
+      "getUserPublicMessageIds",
+      "getUserPublicMessageIds(address,uint256,uint256):(bytes32[],uint256)",
+      [
+        ethereum.Value.fromAddress(address_),
+        ethereum.Value.fromUnsignedBigInt(skip_),
+        ethereum.Value.fromUnsignedBigInt(limit_)
+      ]
+    );
+
+    return new AmaFansCore__getUserPublicMessageIdsResult(
+      result[0].toBytesArray(),
+      result[1].toBigInt()
+    );
+  }
+
+  try_getUserPublicMessageIds(
+    address_: Address,
+    skip_: BigInt,
+    limit_: BigInt
+  ): ethereum.CallResult<AmaFansCore__getUserPublicMessageIdsResult> {
+    let result = super.tryCall(
+      "getUserPublicMessageIds",
+      "getUserPublicMessageIds(address,uint256,uint256):(bytes32[],uint256)",
+      [
+        ethereum.Value.fromAddress(address_),
+        ethereum.Value.fromUnsignedBigInt(skip_),
+        ethereum.Value.fromUnsignedBigInt(limit_)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      new AmaFansCore__getUserPublicMessageIdsResult(
+        value[0].toBytesArray(),
+        value[1].toBigInt()
+      )
+    );
+  }
+
+  getUserPublicMessagesIdsLength(address_: Address): BigInt {
+    let result = super.call(
+      "getUserPublicMessagesIdsLength",
+      "getUserPublicMessagesIdsLength(address):(uint256)",
+      [ethereum.Value.fromAddress(address_)]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_getUserPublicMessagesIdsLength(
+    address_: Address
+  ): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "getUserPublicMessagesIdsLength",
+      "getUserPublicMessagesIdsLength(address):(uint256)",
+      [ethereum.Value.fromAddress(address_)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -1044,17 +1113,17 @@ export class AmaFansCore extends ethereum.SmartContract {
   }
 
   getUserTipIds(
-    _address: Address,
-    skip: BigInt,
-    limit: BigInt
+    address_: Address,
+    skip_: BigInt,
+    limit_: BigInt
   ): AmaFansCore__getUserTipIdsResult {
     let result = super.call(
       "getUserTipIds",
       "getUserTipIds(address,uint256,uint256):(bytes32[],uint256)",
       [
-        ethereum.Value.fromAddress(_address),
-        ethereum.Value.fromUnsignedBigInt(skip),
-        ethereum.Value.fromUnsignedBigInt(limit)
+        ethereum.Value.fromAddress(address_),
+        ethereum.Value.fromUnsignedBigInt(skip_),
+        ethereum.Value.fromUnsignedBigInt(limit_)
       ]
     );
 
@@ -1065,17 +1134,17 @@ export class AmaFansCore extends ethereum.SmartContract {
   }
 
   try_getUserTipIds(
-    _address: Address,
-    skip: BigInt,
-    limit: BigInt
+    address_: Address,
+    skip_: BigInt,
+    limit_: BigInt
   ): ethereum.CallResult<AmaFansCore__getUserTipIdsResult> {
     let result = super.tryCall(
       "getUserTipIds",
       "getUserTipIds(address,uint256,uint256):(bytes32[],uint256)",
       [
-        ethereum.Value.fromAddress(_address),
-        ethereum.Value.fromUnsignedBigInt(skip),
-        ethereum.Value.fromUnsignedBigInt(limit)
+        ethereum.Value.fromAddress(address_),
+        ethereum.Value.fromUnsignedBigInt(skip_),
+        ethereum.Value.fromUnsignedBigInt(limit_)
       ]
     );
     if (result.reverted) {
@@ -1134,23 +1203,57 @@ export class AmaFansCore extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
-  maxExtendLimit(): BigInt {
-    let result = super.call("maxExtendLimit", "maxExtendLimit():(uint256)", []);
+  messages(param0: Bytes): AmaFansCore__messagesResult {
+    let result = super.call(
+      "messages",
+      "messages(bytes32):(string,string,uint256,uint256,address,address,uint256,uint256,uint8,uint256,uint8,uint256)",
+      [ethereum.Value.fromFixedBytes(param0)]
+    );
 
-    return result[0].toBigInt();
+    return new AmaFansCore__messagesResult(
+      result[0].toString(),
+      result[1].toString(),
+      result[2].toBigInt(),
+      result[3].toBigInt(),
+      result[4].toAddress(),
+      result[5].toAddress(),
+      result[6].toBigInt(),
+      result[7].toBigInt(),
+      result[8].toI32(),
+      result[9].toBigInt(),
+      result[10].toI32(),
+      result[11].toBigInt()
+    );
   }
 
-  try_maxExtendLimit(): ethereum.CallResult<BigInt> {
+  try_messages(
+    param0: Bytes
+  ): ethereum.CallResult<AmaFansCore__messagesResult> {
     let result = super.tryCall(
-      "maxExtendLimit",
-      "maxExtendLimit():(uint256)",
-      []
+      "messages",
+      "messages(bytes32):(string,string,uint256,uint256,address,address,uint256,uint256,uint8,uint256,uint8,uint256)",
+      [ethereum.Value.fromFixedBytes(param0)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
+    return ethereum.CallResult.fromValue(
+      new AmaFansCore__messagesResult(
+        value[0].toString(),
+        value[1].toString(),
+        value[2].toBigInt(),
+        value[3].toBigInt(),
+        value[4].toAddress(),
+        value[5].toAddress(),
+        value[6].toBigInt(),
+        value[7].toBigInt(),
+        value[8].toI32(),
+        value[9].toBigInt(),
+        value[10].toI32(),
+        value[11].toBigInt()
+      )
+    );
   }
 
   minTimeLock(): BigInt {
@@ -1168,14 +1271,18 @@ export class AmaFansCore extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  minimumBid(): BigInt {
-    let result = super.call("minimumBid", "minimumBid():(uint256)", []);
+  minimumBid(_messageType: BigInt): BigInt {
+    let result = super.call("minimumBid", "minimumBid(uint256):(uint256)", [
+      ethereum.Value.fromUnsignedBigInt(_messageType)
+    ]);
 
     return result[0].toBigInt();
   }
 
-  try_minimumBid(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("minimumBid", "minimumBid():(uint256)", []);
+  try_minimumBid(_messageType: BigInt): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("minimumBid", "minimumBid(uint256):(uint256)", [
+      ethereum.Value.fromUnsignedBigInt(_messageType)
+    ]);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -1213,55 +1320,50 @@ export class AmaFansCore extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
-  questions(param0: Bytes): AmaFansCore__questionsResult {
+  privateMinimumBid(): BigInt {
     let result = super.call(
-      "questions",
-      "questions(bytes32):(string,string,uint256,uint256,address,address,uint256,uint256,uint8,uint256,bool)",
-      [ethereum.Value.fromFixedBytes(param0)]
+      "privateMinimumBid",
+      "privateMinimumBid():(uint256)",
+      []
     );
 
-    return new AmaFansCore__questionsResult(
-      result[0].toString(),
-      result[1].toString(),
-      result[2].toBigInt(),
-      result[3].toBigInt(),
-      result[4].toAddress(),
-      result[5].toAddress(),
-      result[6].toBigInt(),
-      result[7].toBigInt(),
-      result[8].toI32(),
-      result[9].toBigInt(),
-      result[10].toBoolean()
-    );
+    return result[0].toBigInt();
   }
 
-  try_questions(
-    param0: Bytes
-  ): ethereum.CallResult<AmaFansCore__questionsResult> {
+  try_privateMinimumBid(): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
-      "questions",
-      "questions(bytes32):(string,string,uint256,uint256,address,address,uint256,uint256,uint8,uint256,bool)",
-      [ethereum.Value.fromFixedBytes(param0)]
+      "privateMinimumBid",
+      "privateMinimumBid():(uint256)",
+      []
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(
-      new AmaFansCore__questionsResult(
-        value[0].toString(),
-        value[1].toString(),
-        value[2].toBigInt(),
-        value[3].toBigInt(),
-        value[4].toAddress(),
-        value[5].toAddress(),
-        value[6].toBigInt(),
-        value[7].toBigInt(),
-        value[8].toI32(),
-        value[9].toBigInt(),
-        value[10].toBoolean()
-      )
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  publicMinimumBid(): BigInt {
+    let result = super.call(
+      "publicMinimumBid",
+      "publicMinimumBid():(uint256)",
+      []
     );
+
+    return result[0].toBigInt();
+  }
+
+  try_publicMinimumBid(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "publicMinimumBid",
+      "publicMinimumBid():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   recipientUpFront(): BigInt {
@@ -1385,13 +1487,18 @@ export class AmaFansCore extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  userMinimumBid(_sender: Address, _recipient: Address): BigInt {
+  userMinimumBid(
+    _sender: Address,
+    _recipient: Address,
+    _messageType: BigInt
+  ): BigInt {
     let result = super.call(
       "userMinimumBid",
-      "userMinimumBid(address,address):(uint256)",
+      "userMinimumBid(address,address,uint256):(uint256)",
       [
         ethereum.Value.fromAddress(_sender),
-        ethereum.Value.fromAddress(_recipient)
+        ethereum.Value.fromAddress(_recipient),
+        ethereum.Value.fromUnsignedBigInt(_messageType)
       ]
     );
 
@@ -1400,14 +1507,16 @@ export class AmaFansCore extends ethereum.SmartContract {
 
   try_userMinimumBid(
     _sender: Address,
-    _recipient: Address
+    _recipient: Address,
+    _messageType: BigInt
   ): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
       "userMinimumBid",
-      "userMinimumBid(address,address):(uint256)",
+      "userMinimumBid(address,address,uint256):(uint256)",
       [
         ethereum.Value.fromAddress(_sender),
-        ethereum.Value.fromAddress(_recipient)
+        ethereum.Value.fromAddress(_recipient),
+        ethereum.Value.fromUnsignedBigInt(_messageType)
       ]
     );
     if (result.reverted) {
@@ -1448,32 +1557,32 @@ export class BlockUserCall__Outputs {
   }
 }
 
-export class ClaimBackQuestionValueCall extends ethereum.Call {
-  get inputs(): ClaimBackQuestionValueCall__Inputs {
-    return new ClaimBackQuestionValueCall__Inputs(this);
+export class ClaimBackMessageValueCall extends ethereum.Call {
+  get inputs(): ClaimBackMessageValueCall__Inputs {
+    return new ClaimBackMessageValueCall__Inputs(this);
   }
 
-  get outputs(): ClaimBackQuestionValueCall__Outputs {
-    return new ClaimBackQuestionValueCall__Outputs(this);
+  get outputs(): ClaimBackMessageValueCall__Outputs {
+    return new ClaimBackMessageValueCall__Outputs(this);
   }
 }
 
-export class ClaimBackQuestionValueCall__Inputs {
-  _call: ClaimBackQuestionValueCall;
+export class ClaimBackMessageValueCall__Inputs {
+  _call: ClaimBackMessageValueCall;
 
-  constructor(call: ClaimBackQuestionValueCall) {
+  constructor(call: ClaimBackMessageValueCall) {
     this._call = call;
   }
 
-  get questionId(): Bytes {
+  get messageId_(): Bytes {
     return this._call.inputValues[0].value.toBytes();
   }
 }
 
-export class ClaimBackQuestionValueCall__Outputs {
-  _call: ClaimBackQuestionValueCall;
+export class ClaimBackMessageValueCall__Outputs {
+  _call: ClaimBackMessageValueCall;
 
-  constructor(call: ClaimBackQuestionValueCall) {
+  constructor(call: ClaimBackMessageValueCall) {
     this._call = call;
   }
 }
@@ -1495,7 +1604,7 @@ export class ClaimBackTipValueCall__Inputs {
     this._call = call;
   }
 
-  get tipId(): Bytes {
+  get tipId_(): Bytes {
     return this._call.inputValues[0].value.toBytes();
   }
 }
@@ -1508,24 +1617,70 @@ export class ClaimBackTipValueCall__Outputs {
   }
 }
 
-export class CreateAnswerCall extends ethereum.Call {
-  get inputs(): CreateAnswerCall__Inputs {
-    return new CreateAnswerCall__Inputs(this);
+export class CreateMessageCall extends ethereum.Call {
+  get inputs(): CreateMessageCall__Inputs {
+    return new CreateMessageCall__Inputs(this);
   }
 
-  get outputs(): CreateAnswerCall__Outputs {
-    return new CreateAnswerCall__Outputs(this);
+  get outputs(): CreateMessageCall__Outputs {
+    return new CreateMessageCall__Outputs(this);
   }
 }
 
-export class CreateAnswerCall__Inputs {
-  _call: CreateAnswerCall;
+export class CreateMessageCall__Inputs {
+  _call: CreateMessageCall;
 
-  constructor(call: CreateAnswerCall) {
+  constructor(call: CreateMessageCall) {
     this._call = call;
   }
 
-  get questionId_(): Bytes {
+  get recipient_(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get timelock_(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
+  }
+
+  get messageType_(): BigInt {
+    return this._call.inputValues[2].value.toBigInt();
+  }
+
+  get messageLink_(): string {
+    return this._call.inputValues[3].value.toString();
+  }
+}
+
+export class CreateMessageCall__Outputs {
+  _call: CreateMessageCall;
+
+  constructor(call: CreateMessageCall) {
+    this._call = call;
+  }
+
+  get value0(): Bytes {
+    return this._call.outputValues[0].value.toBytes();
+  }
+}
+
+export class CreateResponseCall extends ethereum.Call {
+  get inputs(): CreateResponseCall__Inputs {
+    return new CreateResponseCall__Inputs(this);
+  }
+
+  get outputs(): CreateResponseCall__Outputs {
+    return new CreateResponseCall__Outputs(this);
+  }
+}
+
+export class CreateResponseCall__Inputs {
+  _call: CreateResponseCall;
+
+  constructor(call: CreateResponseCall) {
+    this._call = call;
+  }
+
+  get messageId_(): Bytes {
     return this._call.inputValues[0].value.toBytes();
   }
 
@@ -1538,53 +1693,11 @@ export class CreateAnswerCall__Inputs {
   }
 }
 
-export class CreateAnswerCall__Outputs {
-  _call: CreateAnswerCall;
+export class CreateResponseCall__Outputs {
+  _call: CreateResponseCall;
 
-  constructor(call: CreateAnswerCall) {
+  constructor(call: CreateResponseCall) {
     this._call = call;
-  }
-}
-
-export class CreateQuestionCall extends ethereum.Call {
-  get inputs(): CreateQuestionCall__Inputs {
-    return new CreateQuestionCall__Inputs(this);
-  }
-
-  get outputs(): CreateQuestionCall__Outputs {
-    return new CreateQuestionCall__Outputs(this);
-  }
-}
-
-export class CreateQuestionCall__Inputs {
-  _call: CreateQuestionCall;
-
-  constructor(call: CreateQuestionCall) {
-    this._call = call;
-  }
-
-  get recipient_(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get timelock_(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-
-  get questionLink_(): string {
-    return this._call.inputValues[2].value.toString();
-  }
-}
-
-export class CreateQuestionCall__Outputs {
-  _call: CreateQuestionCall;
-
-  constructor(call: CreateQuestionCall) {
-    this._call = call;
-  }
-
-  get value0(): Bytes {
-    return this._call.outputValues[0].value.toBytes();
   }
 }
 
@@ -1605,7 +1718,7 @@ export class CreateTipCall__Inputs {
     this._call = call;
   }
 
-  get questionId(): Bytes {
+  get messageId_(): Bytes {
     return this._call.inputValues[0].value.toBytes();
   }
 }
@@ -1732,32 +1845,36 @@ export class InitializeCall__Outputs {
   }
 }
 
-export class MarkJunkReponseCall extends ethereum.Call {
-  get inputs(): MarkJunkReponseCall__Inputs {
-    return new MarkJunkReponseCall__Inputs(this);
+export class MarkReponseCall extends ethereum.Call {
+  get inputs(): MarkReponseCall__Inputs {
+    return new MarkReponseCall__Inputs(this);
   }
 
-  get outputs(): MarkJunkReponseCall__Outputs {
-    return new MarkJunkReponseCall__Outputs(this);
+  get outputs(): MarkReponseCall__Outputs {
+    return new MarkReponseCall__Outputs(this);
   }
 }
 
-export class MarkJunkReponseCall__Inputs {
-  _call: MarkJunkReponseCall;
+export class MarkReponseCall__Inputs {
+  _call: MarkReponseCall;
 
-  constructor(call: MarkJunkReponseCall) {
+  constructor(call: MarkReponseCall) {
     this._call = call;
   }
 
-  get questionId_(): Bytes {
+  get messageId_(): Bytes {
     return this._call.inputValues[0].value.toBytes();
+  }
+
+  get responseType_(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
   }
 }
 
-export class MarkJunkReponseCall__Outputs {
-  _call: MarkJunkReponseCall;
+export class MarkReponseCall__Outputs {
+  _call: MarkReponseCall;
 
-  constructor(call: MarkJunkReponseCall) {
+  constructor(call: MarkReponseCall) {
     this._call = call;
   }
 }
@@ -1876,12 +1993,46 @@ export class SetMinimumBidCall__Inputs {
   get _minimumBid(): BigInt {
     return this._call.inputValues[0].value.toBigInt();
   }
+
+  get _messageType(): i32 {
+    return this._call.inputValues[1].value.toI32();
+  }
 }
 
 export class SetMinimumBidCall__Outputs {
   _call: SetMinimumBidCall;
 
   constructor(call: SetMinimumBidCall) {
+    this._call = call;
+  }
+}
+
+export class SetNFTContractCall extends ethereum.Call {
+  get inputs(): SetNFTContractCall__Inputs {
+    return new SetNFTContractCall__Inputs(this);
+  }
+
+  get outputs(): SetNFTContractCall__Outputs {
+    return new SetNFTContractCall__Outputs(this);
+  }
+}
+
+export class SetNFTContractCall__Inputs {
+  _call: SetNFTContractCall;
+
+  constructor(call: SetNFTContractCall) {
+    this._call = call;
+  }
+
+  get _address(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class SetNFTContractCall__Outputs {
+  _call: SetNFTContractCall;
+
+  constructor(call: SetNFTContractCall) {
     this._call = call;
   }
 }
@@ -1996,6 +2147,10 @@ export class SetUserMinimumBidCall__Inputs {
   get minimumBidByUser(): BigInt {
     return this._call.inputValues[0].value.toBigInt();
   }
+
+  get _messageType(): i32 {
+    return this._call.inputValues[1].value.toI32();
+  }
 }
 
 export class SetUserMinimumBidCall__Outputs {
@@ -2006,32 +2161,36 @@ export class SetUserMinimumBidCall__Outputs {
   }
 }
 
-export class SetdefaultQuestionTimeLimitCall extends ethereum.Call {
-  get inputs(): SetdefaultQuestionTimeLimitCall__Inputs {
-    return new SetdefaultQuestionTimeLimitCall__Inputs(this);
+export class TransferCall extends ethereum.Call {
+  get inputs(): TransferCall__Inputs {
+    return new TransferCall__Inputs(this);
   }
 
-  get outputs(): SetdefaultQuestionTimeLimitCall__Outputs {
-    return new SetdefaultQuestionTimeLimitCall__Outputs(this);
+  get outputs(): TransferCall__Outputs {
+    return new TransferCall__Outputs(this);
   }
 }
 
-export class SetdefaultQuestionTimeLimitCall__Inputs {
-  _call: SetdefaultQuestionTimeLimitCall;
+export class TransferCall__Inputs {
+  _call: TransferCall;
 
-  constructor(call: SetdefaultQuestionTimeLimitCall) {
+  constructor(call: TransferCall) {
     this._call = call;
   }
 
-  get _defaultQuestionTimeLimit(): BigInt {
+  get amount_(): BigInt {
     return this._call.inputValues[0].value.toBigInt();
+  }
+
+  get recipient_(): Address {
+    return this._call.inputValues[1].value.toAddress();
   }
 }
 
-export class SetdefaultQuestionTimeLimitCall__Outputs {
-  _call: SetdefaultQuestionTimeLimitCall;
+export class TransferCall__Outputs {
+  _call: TransferCall;
 
-  constructor(call: SetdefaultQuestionTimeLimitCall) {
+  constructor(call: TransferCall) {
     this._call = call;
   }
 }

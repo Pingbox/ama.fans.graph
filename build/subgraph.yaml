@@ -6,9 +6,9 @@ dataSources:
     name: AmaFansCore
     network: celo-alfajores
     source:
-      address: "0xCaC8a8CD7f8fdF091cd8E945ccF7bE5B689CDb2B"
+      address: "0x3fB4327e857Ab4326433794011EC2bfAEa7DE4bB"
       abi: AmaFansCore
-      startBlock: 10782586
+      startBlock: 10951637
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -33,18 +33,16 @@ dataSources:
       eventHandlers:
         - event: AmountReceived(indexed address,uint256)
           handler: handleAmountReceived
-        - event: Blocked(indexed address,indexed address)
-          handler: handleBlocked
         - event: Paused(address)
           handler: handlePaused
-        - event: QuestionAnswered(indexed bytes32,indexed address,indexed
+        - event: MessageCreated(indexed address,indexed bytes32,indexed
+            address,uint256,uint256,string,uint256)
+          handler: handleMessageCreated
+        - event: MessageValueClaimed(indexed bytes32,indexed address,uint256)
+          handler: handleMessageValueClaimed
+        - event: ResponseCreated(indexed bytes32,indexed address,indexed
             address,string,uint256,uint256)
-          handler: handleQuestionAnswered
-        - event: QuestionCreated(indexed address,indexed bytes32,indexed
-            address,uint256,uint256,string)
-          handler: handleQuestionCreated
-        - event: QuestionValueClaimed(indexed bytes32,indexed address,uint256)
-          handler: handleQuestionValueClaimed
+          handler: handleResponseCreated
         - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
           handler: handleRoleAdminChanged
         - event: RoleGranted(indexed bytes32,indexed address,indexed address)
@@ -71,6 +69,8 @@ dataSources:
           handler: handleFollow
         - event: UnFollow(indexed address,indexed address)
           handler: handleUnFollow
-        - event: JunkResponse(indexed bytes32,indexed address,indexed address)
-          handler: handleJunkResponse
+        - event: ResponseMarked(indexed bytes32,indexed address,indexed address,uint256)
+          handler: handleResponseMarked
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
       file: AmaFansCore/AmaFansCore.wasm

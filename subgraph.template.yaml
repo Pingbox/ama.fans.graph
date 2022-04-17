@@ -34,48 +34,63 @@ dataSources:
       eventHandlers:
         - event: AmountReceived(indexed address,uint256)
           handler: handleAmountReceived
-        - event: Blocked(indexed address,indexed address)
-          handler: handleBlocked
+
         - event: Paused(address)
           handler: handlePaused
-        - event: QuestionAnswered(indexed bytes32,indexed address,indexed address,string,uint256,uint256)
-          handler: handleQuestionAnswered
-        - event: QuestionCreated(indexed address,indexed bytes32,indexed address,uint256,uint256,string)
-          handler: handleQuestionCreated
-        - event: QuestionValueClaimed(indexed bytes32,indexed address,uint256)
-          handler: handleQuestionValueClaimed
+
+        - event: MessageCreated(indexed address,indexed bytes32,indexed address,uint256,uint256,string,uint256)
+          handler: handleMessageCreated
+
+        - event: MessageValueClaimed(indexed bytes32,indexed address,uint256)
+          handler: handleMessageValueClaimed
+
+        - event: ResponseCreated(indexed bytes32,indexed address,indexed address,string,uint256,uint256)
+          handler: handleResponseCreated
+        
         - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
           handler: handleRoleAdminChanged
+
         - event: RoleGranted(indexed bytes32,indexed address,indexed address)
           handler: handleRoleGranted
+
         - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
           handler: handleRoleRevoked
+
         - event: TipCreated(indexed bytes32,indexed bytes32,indexed address,uint256)
           handler: handleTipCreated
+
         - event: TipValueClaimed(indexed bytes32,indexed bytes32,indexed address,uint256)
           handler: handleTipValueClaimed
+
         - event: Unpaused(address)
           handler: handleUnpaused
+
         - event: Withdraw(indexed address,uint256)
           handler: handleWithdraw
         
-
         - event: Blocked(indexed address,indexed address)
           handler: handleBlocked
+
         - event: UnBlock(indexed address,indexed address)
           handler: handleUnBlock
 
         - event: Whitelisted(indexed address,indexed address)
           handler: handleWhitelisted
+        
         - event: UnWhitelisted(indexed address,indexed address)
           handler: handleUnWhitelisted
 
         - event: Follow(indexed address,indexed address)
           handler: handleFollow
+        
         - event: UnFollow(indexed address,indexed address)
           handler: handleUnFollow
 
-        - event: JunkResponse(indexed bytes32,indexed address,indexed address)
-          handler: handleJunkResponse
-          
+        - event: ResponseMarked(indexed bytes32,indexed address,indexed address,uint256)
+          handler: handleResponseMarked
+
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+
+
       file: ./src/mapping.ts
