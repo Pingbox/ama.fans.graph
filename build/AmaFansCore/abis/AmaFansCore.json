@@ -149,6 +149,68 @@
       {
         "indexed": true,
         "internalType": "bytes32",
+        "name": "postId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "createdBy",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "link",
+        "type": "string"
+      }
+    ],
+    "name": "PostCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "postId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "postTipId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "createdBy",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "PostTipCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
         "name": "messageId",
         "type": "bytes32"
       },
@@ -650,6 +712,38 @@
   {
     "inputs": [
       {
+        "internalType": "string",
+        "name": "postLink_",
+        "type": "string"
+      }
+    ],
+    "name": "createPost",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "postId_",
+        "type": "bytes32"
+      }
+    ],
+    "name": "createPostTip",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bytes32",
         "name": "messageId_",
         "type": "bytes32"
@@ -725,10 +819,34 @@
   {
     "inputs": [
       {
-        "internalType": "bytes32",
-        "name": "messageId_",
-        "type": "bytes32"
+        "internalType": "uint256",
+        "name": "skip_",
+        "type": "uint256"
       },
+      {
+        "internalType": "uint256",
+        "name": "limit_",
+        "type": "uint256"
+      }
+    ],
+    "name": "gePublicMessageIds",
+    "outputs": [
+      {
+        "internalType": "bytes32[]",
+        "name": "",
+        "type": "bytes32[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
       {
         "internalType": "uint256",
         "name": "skip_",
@@ -740,7 +858,65 @@
         "type": "uint256"
       }
     ],
-    "name": "getMessageTipIds",
+    "name": "getPostIds",
+    "outputs": [
+      {
+        "internalType": "bytes32[]",
+        "name": "",
+        "type": "bytes32[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "skip_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "limit_",
+        "type": "uint256"
+      }
+    ],
+    "name": "getPostTipIds",
+    "outputs": [
+      {
+        "internalType": "bytes32[]",
+        "name": "",
+        "type": "bytes32[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "skip_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "limit_",
+        "type": "uint256"
+      }
+    ],
+    "name": "getPrivateMessageIds",
     "outputs": [
       {
         "internalType": "bytes32[]",
@@ -821,11 +997,6 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "address_",
-        "type": "address"
-      },
-      {
         "internalType": "uint256",
         "name": "skip_",
         "type": "uint256"
@@ -836,7 +1007,7 @@
         "type": "uint256"
       }
     ],
-    "name": "getUserPrivateMessageIds",
+    "name": "getTipIds",
     "outputs": [
       {
         "internalType": "bytes32[]",
@@ -855,28 +1026,9 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "address_",
-        "type": "address"
-      }
-    ],
-    "name": "getUserPrivateMessagesIdsLength",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "address_",
-        "type": "address"
+        "internalType": "bytes32",
+        "name": "messageId_",
+        "type": "bytes32"
       },
       {
         "internalType": "uint256",
@@ -889,7 +1041,7 @@
         "type": "uint256"
       }
     ],
-    "name": "getUserPublicMessageIds",
+    "name": "getTipIdsOfMessage",
     "outputs": [
       {
         "internalType": "bytes32[]",
@@ -908,28 +1060,9 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "address_",
-        "type": "address"
-      }
-    ],
-    "name": "getUserPublicMessagesIdsLength",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "address_",
-        "type": "address"
+        "internalType": "bytes32",
+        "name": "postId_",
+        "type": "bytes32"
       },
       {
         "internalType": "uint256",
@@ -942,7 +1075,7 @@
         "type": "uint256"
       }
     ],
-    "name": "getUserTipIds",
+    "name": "getTipIdsOfPost",
     "outputs": [
       {
         "internalType": "bytes32[]",
@@ -1005,6 +1138,11 @@
       {
         "internalType": "uint256",
         "name": "_minimumBid",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_postMinimumBid",
         "type": "uint256"
       },
       {
@@ -1215,6 +1353,154 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "postIds",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "postMinimumBid",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "postTipIds",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "name": "postTips",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "createdBy",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "createdTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "postId",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "name": "posts",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "postLink",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "initialValue",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tipsTotalValue",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "createdBy",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "createdTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "privateMessageIds",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "privateMinimumBid",
     "outputs": [
@@ -1222,6 +1508,25 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "publicMessageIds",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
       }
     ],
     "stateMutability": "view",
@@ -1324,6 +1629,19 @@
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "_postMinimumBid",
+        "type": "uint256"
+      }
+    ],
+    "name": "setPostMinimumBid",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "_recipientUpFront",
         "type": "uint256"
       }
@@ -1404,6 +1722,25 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "tipIds",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
       }
     ],
     "stateMutability": "view",
@@ -1549,6 +1886,35 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "users",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "publicMinimumBid",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "privateMinimumBid",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "verified",
+        "type": "bytes"
       }
     ],
     "stateMutability": "view",

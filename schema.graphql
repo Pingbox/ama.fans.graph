@@ -10,7 +10,11 @@ type AmaUserEntity @entity {
   id: ID!
   txHash: String!
   messagesCreated: BigInt!
+  postsCreated: BigInt!
+
+
   tipsCreated: BigInt!
+  postTipsCreated: BigInt!
   responsesCreated: BigInt!
   blockUserCreated: BigInt!
   following: BigInt!
@@ -30,17 +34,28 @@ type AmaUserEntity @entity {
 
 
 
+  "The aggragte value which a user has spent on creating messages" 
   valueSpentOnMessages: BigInt!
+
+
+  "The aggragte value which a user has spent on creating posts"
+  valueSpentOnPosts: BigInt!
+
+  "The aggragte value in tips which a user has spent on tipping on messages" 
   valueSpentOnTips: BigInt!
 
+  "The aggragte value in tips which a user has spent on tipping on posts"
+  valueSpentOnPostTips: BigInt!
 
-  valueReceivedOnMessages: BigInt!
 
   "The value which you get when you answer a question"
   valueReceivedOnResponses: BigInt!
 
   "The aggragte value in tips which your Messages have received" 
   valueReceivedOnTips: BigInt!
+
+  "The aggragate value in tips which has been received on a user's post ha received" 
+  valueReceivedOnPostTips: BigInt!
 
 
   messagesClaimedBack: BigInt!
@@ -248,18 +263,47 @@ type ResponseMarkedEntity @entity {
 type PlatformIdentity @entity {
   id: ID!
   txHash: String!
+  totalValueSpentOnPosts: BigInt!
   totalValueSpentOnMessages: BigInt!
+
   totalValueSpentOnTips: BigInt!
+  totalValueSpentOnPostTips: BigInt!
+
   totalValueClaimedBackOnTips: BigInt!
   totalValueClaimedBackOnMessages: BigInt!
 
 
   totalValueReceivedOnResponses: BigInt!
+  totalPosts: BigInt!
   totalMessagesSent: BigInt!
   totalMessagesClaimedBack: BigInt!
   totalTipsClaimedBack: BigInt!
 
   totalResponseCreated: BigInt!
   totalTipsMade: BigInt!
+  totalPostTips: BigInt!
   totalUsers: BigInt!
+}
+
+
+type PostEntity @entity {
+  id: ID!
+  txHash: String!
+  postId: Bytes! 
+  createdBy: String!
+  value: BigInt!
+  link: String! 
+  createdAt: BigInt!
+  tips: BigInt!
+  tipsTotalValue: BigInt!
+}
+
+type PostTipEntity @entity {
+  id: ID!
+  txHash: String!
+  postId: Bytes! 
+  postTipId: Bytes! 
+  createdBy: String! 
+  value: BigInt! 
+  createdAt: BigInt!
 }

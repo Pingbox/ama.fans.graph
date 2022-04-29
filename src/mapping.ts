@@ -17,6 +17,8 @@ import {
   ResponseCreated,
   MessageCreated,
   MessageValueClaimed,
+  PostCreated,
+  PostTipCreated,
   RoleAdminChanged,
   RoleGranted,
   RoleRevoked,
@@ -32,7 +34,7 @@ import {
 import { AmountReceivedEntity, ResponseCreatedEntity, MessageCreatedEntity, MessageValueClaimedEntity,
   TipCreatedEntity, TipValueClaimedEntity, AmaUserEntity, BlockedEntity, UnBlockedEntity,
   FollowEntity, UnFollowEntity, WhitelistedEntity, UnWhitelistedEntity, WithdrawEntity,
-    ResponseMarkedEntity, PlatformIdentity, TransferEntity} from "../generated/schema"
+    ResponseMarkedEntity, PlatformIdentity, TransferEntity, PostEntity, PostTipEntity} from "../generated/schema"
 
 export function handleAmountReceived(event: AmountReceived): void {
   // Entities can be loaded from the store using a string ID; this ID
@@ -69,9 +71,11 @@ function insertUser(userAddress: string, timestamp: BigInt): AmaUserEntity{
     user.address = userAddress
     user.createdAt = timestamp
 
-
+    user.postsCreated = BigInt.fromI32(0)
     user.messagesCreated = BigInt.fromI32(0)
     user.tipsCreated = BigInt.fromI32(0)
+    user.postTipsCreated = BigInt.fromI32(0)
+    
     user.blockUserCreated = BigInt.fromI32(0)
     user.followers = BigInt.fromI32(0)
     user.whitelistUserCreated =  BigInt.fromI32(0)
@@ -87,18 +91,22 @@ function insertUser(userAddress: string, timestamp: BigInt): AmaUserEntity{
     user.goodResponseReceived = BigInt.fromI32(0)
     user.badResponseReceived = BigInt.fromI32(0)
     
+    //Value Spent by user
     user.valueSpentOnTips = BigInt.fromI32(0)
+    user.valueSpentOnPostTips = BigInt.fromI32(0)
     user.valueSpentOnMessages = BigInt.fromI32(0)
 
 
-    user.valueReceivedOnMessages = BigInt.fromI32(0)
+    //Value Received by user
     user.valueReceivedOnResponses = BigInt.fromI32(0)
     user.valueReceivedOnTips = BigInt.fromI32(0)
+    user.valueReceivedOnPostTips = BigInt.fromI32(0)
 
-
+    //Number of uints claimed back by user
     user.messagesClaimedBack = BigInt.fromI32(0)
     user.tipsClaimedBack = BigInt.fromI32(0)
   
+    //Value claimed back by user
     user.messagesValueClaimedBack = BigInt.fromI32(0)
     user.tipsValueClaimedBack = BigInt.fromI32(0)
   
@@ -110,8 +118,6 @@ function insertUser(userAddress: string, timestamp: BigInt): AmaUserEntity{
     user.profileTipsValueSent = BigInt.fromI32(0)
     user.profileTipsReceived = BigInt.fromI32(0)
     user.profileTipsValueReceived = BigInt.fromI32(0)
-
-
 
     return user
   }
@@ -380,11 +386,6 @@ export function handleUnFollow(event: UnFollow): void {
 }
 
 
-
-
-
-
-
 export function handleResponseCreated(event: ResponseCreated): void {
   let platform= PlatformIdentity.load(platofrmId);
   if (!platform) {
@@ -527,13 +528,9 @@ export function handleMessageCreated(event: MessageCreated): void {
 
   }
 
-  if (!recipient.valueReceivedOnMessages){
-    recipient.valueReceivedOnMessages = BigInt.fromI32(0)
 
-  }
 
   recipient.messagesReceived  =  recipient.messagesReceived.plus(BigInt.fromI32(1))
-  recipient.valueReceivedOnMessages  = recipient.valueReceivedOnMessages.plus(event.params.value)
   recipient.save()
 
 
@@ -845,6 +842,139 @@ export function handleTransfer(event: Transfer): void {
   recipient.save()
 
 }
+
+
+export function handlePostCreated(event: PostCreated): void {
+
+  let platform= PlatformIdentity.load(platofrmId);
+  if (!platform) {
+    platform = new PlatformIdentity(platofrmId)
+  }
+  if (!platform.totalValueSpentOnPosts) {
+    platform.totalValueSpentOnPosts = BigInt.fromI32(0)  
+  }
+  if (!platform.totalPosts) {
+    platform.totalPosts = BigInt.fromI32(0)  
+  }
+
+  platform.totalValueSpentOnPosts = platform.totalValueSpentOnPosts.plus(event.params.value)
+  platform.totalPosts = platform.totalPosts.plus(BigInt.fromI32(1))
+  platform.save()
+
+  let senderId = event.params.createdBy.toHexString()
+  let sender = AmaUserEntity.load(senderId)
+
+  if (!sender) {
+    log.info('Sender couldnt be found {}', [senderId])
+    sender = insertUser(senderId, event.block.timestamp)
+  }
+
+  if (!sender.postsCreated){
+    sender.postsCreated = BigInt.fromI32(0)
+  }
+
+  if (!sender.valueSpentOnPosts){
+    sender.valueSpentOnPosts = BigInt.fromI32(0)
+  }
+
+  sender.postsCreated  =  sender.postsCreated.plus(BigInt.fromI32(1))
+  sender.valueSpentOnPosts  = sender.valueSpentOnPosts.plus(event.params.value)
+  sender.save()
+
+  let post = new PostEntity(event.params.postId.toHexString())
+
+  post.postId = event.params.postId
+  post.createdBy = event.params.createdBy.toHexString()
+  post.value = event.params.value
+  post.link = event.params.link
+  post.createdAt = event.block.timestamp
+  post.tips = BigInt.fromI32(0)
+  post.tipsTotalValue = BigInt.fromI32(0)
+  post.txHash =  event.transaction.hash.toHex()
+  post.save()
+  
+}
+
+
+export function handlePostTipCreated(event: PostTipCreated): void {
+  let platform= PlatformIdentity.load(platofrmId);
+  if (!platform) {
+    platform = new PlatformIdentity(platofrmId)
+  }
+  if (!platform.totalPostTips) {
+    platform.totalPostTips = BigInt.fromI32(0)  
+  }
+  if (!platform.totalValueSpentOnPostTips) {
+    platform.totalValueSpentOnPostTips = BigInt.fromI32(0)  
+  }
+
+
+  platform.totalValueSpentOnPostTips = platform.totalValueSpentOnPostTips.plus(event.params.value)
+  platform.totalPostTips = platform.totalPostTips.plus(BigInt.fromI32(1))
+  platform.save()
+
+
+  let senderId = event.params.createdBy.toHexString()
+
+  let sender = AmaUserEntity.load(senderId)
+
+  if (!sender) {
+    sender = insertUser(senderId, event.block.timestamp)
+
+
+  }
+
+  if (!sender.postTipsCreated){
+    sender.postTipsCreated = BigInt.fromI32(0)
+  }
+
+  if (!sender.valueSpentOnPostTips){
+    sender.valueSpentOnPostTips = BigInt.fromI32(0)
+
+  }
+
+  
+  sender.postTipsCreated  =  sender.postTipsCreated.plus(BigInt.fromI32(1))
+  sender.valueSpentOnPostTips  = sender.valueSpentOnPostTips.plus(event.params.value)
+  sender.save()
+
+
+  let postTip  = new PostTipEntity(event.params.postTipId.toHex())
+  postTip.postId = event.params.postId
+  postTip.postTipId = event.params.postTipId
+  postTip.createdBy = event.params.createdBy.toHexString()
+  postTip.value = event.params.value
+  postTip.createdAt = event.block.timestamp
+  postTip.txHash =  event.transaction.hash.toHex()
+  postTip.save()
+  
+  let post = PostEntity.load(event.params.postId.toHexString())
+  if (post) {
+    post.tips  =  post.tips.plus(BigInt.fromI32(1))
+    post.tipsTotalValue = post.tipsTotalValue.plus(event.params.value)
+    post.save()
+
+    let user = AmaUserEntity.load(post.createdBy)
+    if(user){
+      if (!user.valueReceivedOnPostTips) {
+        user.valueReceivedOnPostTips = BigInt.fromI32(0)  
+      }
+  
+
+      user.valueReceivedOnPostTips = user.valueReceivedOnPostTips.plus(event.params.value)
+      user.save()
+
+    }
+    
+  }
+
+}
+
+
+
+
+
+
 
 
 export function handleRoleAdminChanged(event: RoleAdminChanged): void {}

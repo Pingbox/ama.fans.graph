@@ -56,8 +56,14 @@ dataSources:
         - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
           handler: handleRoleRevoked
 
+        - event: PostCreated(indexed bytes32,indexed address,uint256,string)
+          handler: handlePostCreated
+
         - event: TipCreated(indexed bytes32,indexed bytes32,indexed address,uint256)
           handler: handleTipCreated
+
+        - event: PostTipCreated(indexed bytes32,indexed bytes32,indexed address,uint256)
+          handler: handlePostTipCreated
 
         - event: TipValueClaimed(indexed bytes32,indexed bytes32,indexed address,uint256)
           handler: handleTipValueClaimed

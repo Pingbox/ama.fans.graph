@@ -397,6 +397,11 @@ export function handleTipValueClaimed(event: TipValueClaimed): void {
 
 }
 
+
+export function handlePostCreated(event:): void{}
+export function handlePostTipCreated(event:): void{}
+
+
 export function handleUnpaused(event: Unpaused): void {}
 
 export function handleWithdraw(event: Withdraw): void {}
