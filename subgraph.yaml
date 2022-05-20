@@ -6,9 +6,9 @@ dataSources:
     name: AmaFansCore
     network: 'celo-alfajores'
     source:
-      address: '0x2682d8333BA1460f1d5666b01C013545E22a889d'
+      address: '0xE853E5a407235FFf3C0Df7B0469E325acb82752A'
       abi: AmaFansCore   
-      startBlock: 11175351
+      startBlock: 11474567
 
     mapping:
       kind: ethereum/events

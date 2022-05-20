@@ -738,6 +738,7 @@ export class MessageCreatedEntity extends Entity {
     this.set("tipsTotalValue", Value.fromBigInt(BigInt.zero()));
     this.set("messageType", Value.fromBigInt(BigInt.zero()));
     this.set("responseType", Value.fromBigInt(BigInt.zero()));
+    this.set("responseValue", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -910,6 +911,15 @@ export class MessageCreatedEntity extends Entity {
   set responseType(value: BigInt) {
     this.set("responseType", Value.fromBigInt(value));
   }
+
+  get responseValue(): BigInt {
+    let value = this.get("responseValue");
+    return value!.toBigInt();
+  }
+
+  set responseValue(value: BigInt) {
+    this.set("responseValue", Value.fromBigInt(value));
+  }
 }
 
 export class ResponseCreatedEntity extends Entity {
@@ -921,7 +931,7 @@ export class ResponseCreatedEntity extends Entity {
     this.set("messageId", Value.fromBytes(Bytes.empty()));
     this.set("owner", Value.fromString(""));
     this.set("creator", Value.fromString(""));
-    this.set("tokenId", Value.fromBigInt(BigInt.zero()));
+    this.set("responseValue", Value.fromBigInt(BigInt.zero()));
     this.set("answerLink", Value.fromString(""));
     this.set("value", Value.fromBigInt(BigInt.zero()));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
@@ -993,13 +1003,13 @@ export class ResponseCreatedEntity extends Entity {
     this.set("creator", Value.fromString(value));
   }
 
-  get tokenId(): BigInt {
-    let value = this.get("tokenId");
+  get responseValue(): BigInt {
+    let value = this.get("responseValue");
     return value!.toBigInt();
   }
 
-  set tokenId(value: BigInt) {
-    this.set("tokenId", Value.fromBigInt(value));
+  set responseValue(value: BigInt) {
+    this.set("responseValue", Value.fromBigInt(value));
   }
 
   get answerLink(): string {

@@ -417,7 +417,7 @@ export function handleResponseCreated(event: ResponseCreated): void {
 
   response.owner = event.params.owner.toHexString() 
   response.creator = event.params.creator.toHexString()
-  response.tokenId = event.params.tokenId
+  response.responseValue = event.params.responseValue
   response.answerLink = event.params.answerLink
   response.value = event.params.value
   response.createdAt = event.block.timestamp
@@ -431,6 +431,7 @@ export function handleResponseCreated(event: ResponseCreated): void {
 
     message.answered = true
     message.answerLink = event.params.answerLink
+    message.responseValue = event.params.responseValue;
     message.save()
   }
 
@@ -556,7 +557,7 @@ export function handleMessageCreated(event: MessageCreated): void {
   newMessage.save()
 }
 
-export function handleQuestionValueClaimed(event: MessageValueClaimed): void {
+export function handleMessageValueClaimed(event: MessageValueClaimed): void {
   let platform= PlatformIdentity.load(platofrmId);
   if (!platform) {
     platform = new PlatformIdentity(platofrmId)

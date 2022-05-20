@@ -123,6 +123,7 @@ type MessageCreatedEntity @entity {
   tipsTotalValue: BigInt!
   messageType: BigInt!
   responseType: BigInt!
+  responseValue: BigInt!
 }
 
 
@@ -132,7 +133,7 @@ type ResponseCreatedEntity @entity {
   messageId: Bytes! 
   owner: String! 
   creator: String! 
-  tokenId: BigInt! 
+  responseValue: BigInt! 
   answerLink: String! 
   value: BigInt! 
   createdAt: BigInt!

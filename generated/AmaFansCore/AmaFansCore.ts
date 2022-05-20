@@ -222,6 +222,32 @@ export class PostTipCreated__Params {
   }
 }
 
+export class PostTransferred extends ethereum.Event {
+  get params(): PostTransferred__Params {
+    return new PostTransferred__Params(this);
+  }
+}
+
+export class PostTransferred__Params {
+  _event: PostTransferred;
+
+  constructor(event: PostTransferred) {
+    this._event = event;
+  }
+
+  get postId(): Bytes {
+    return this._event.parameters[0].value.toBytes();
+  }
+
+  get transferFrom(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get transferTo(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+}
+
 export class ResponseCreated extends ethereum.Event {
   get params(): ResponseCreated__Params {
     return new ResponseCreated__Params(this);
@@ -251,7 +277,7 @@ export class ResponseCreated__Params {
     return this._event.parameters[3].value.toString();
   }
 
-  get tokenId(): BigInt {
+  get responseValue(): BigInt {
     return this._event.parameters[4].value.toBigInt();
   }
 
@@ -944,6 +970,21 @@ export class AmaFansCore extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  baseURI(): string {
+    let result = super.call("baseURI", "baseURI():(string)", []);
+
+    return result[0].toString();
+  }
+
+  try_baseURI(): ethereum.CallResult<string> {
+    let result = super.tryCall("baseURI", "baseURI():(string)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toString());
+  }
+
   checkBlocked(_sender: Address, _recipient: Address): boolean {
     let result = super.call(
       "checkBlocked",
@@ -968,6 +1009,27 @@ export class AmaFansCore extends ethereum.SmartContract {
         ethereum.Value.fromAddress(_sender),
         ethereum.Value.fromAddress(_recipient)
       ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  checkFollower(_address: Address): boolean {
+    let result = super.call("checkFollower", "checkFollower(address):(bool)", [
+      ethereum.Value.fromAddress(_address)
+    ]);
+
+    return result[0].toBoolean();
+  }
+
+  try_checkFollower(_address: Address): ethereum.CallResult<boolean> {
+    let result = super.tryCall(
+      "checkFollower",
+      "checkFollower(address):(bool)",
+      [ethereum.Value.fromAddress(_address)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -1925,6 +1987,25 @@ export class AmaFansCore extends ethereum.SmartContract {
     );
   }
 
+  uri(_contentHash: string): string {
+    let result = super.call("uri", "uri(string):(string)", [
+      ethereum.Value.fromString(_contentHash)
+    ]);
+
+    return result[0].toString();
+  }
+
+  try_uri(_contentHash: string): ethereum.CallResult<string> {
+    let result = super.tryCall("uri", "uri(string):(string)", [
+      ethereum.Value.fromString(_contentHash)
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toString());
+  }
+
   userBalance(): BigInt {
     let result = super.call("userBalance", "userBalance():(uint256)", []);
 
@@ -2130,7 +2211,7 @@ export class CreateMessageCall__Inputs {
     return this._call.inputValues[2].value.toBigInt();
   }
 
-  get messageLink_(): string {
+  get messageHash_(): string {
     return this._call.inputValues[3].value.toString();
   }
 }
@@ -2164,7 +2245,7 @@ export class CreatePostCall__Inputs {
     this._call = call;
   }
 
-  get postLink_(): string {
+  get postHash_(): string {
     return this._call.inputValues[0].value.toString();
   }
 }
@@ -2232,12 +2313,8 @@ export class CreateResponseCall__Inputs {
     return this._call.inputValues[0].value.toBytes();
   }
 
-  get answerLink_(): string {
+  get answerHash_(): string {
     return this._call.inputValues[1].value.toString();
-  }
-
-  get tokenURI_(): string {
-    return this._call.inputValues[2].value.toString();
   }
 }
 
@@ -2387,6 +2464,10 @@ export class InitializeCall__Inputs {
   get trustedForwarder(): Address {
     return this._call.inputValues[6].value.toAddress();
   }
+
+  get _baseURI(): string {
+    return this._call.inputValues[7].value.toString();
+  }
 }
 
 export class InitializeCall__Outputs {
@@ -2521,6 +2602,36 @@ export class RevokeRoleCall__Outputs {
   _call: RevokeRoleCall;
 
   constructor(call: RevokeRoleCall) {
+    this._call = call;
+  }
+}
+
+export class SetBaseURICall extends ethereum.Call {
+  get inputs(): SetBaseURICall__Inputs {
+    return new SetBaseURICall__Inputs(this);
+  }
+
+  get outputs(): SetBaseURICall__Outputs {
+    return new SetBaseURICall__Outputs(this);
+  }
+}
+
+export class SetBaseURICall__Inputs {
+  _call: SetBaseURICall;
+
+  constructor(call: SetBaseURICall) {
+    this._call = call;
+  }
+
+  get _baseURI(): string {
+    return this._call.inputValues[0].value.toString();
+  }
+}
+
+export class SetBaseURICall__Outputs {
+  _call: SetBaseURICall;
+
+  constructor(call: SetBaseURICall) {
     this._call = call;
   }
 }
@@ -2773,6 +2884,40 @@ export class TransferCall__Outputs {
   _call: TransferCall;
 
   constructor(call: TransferCall) {
+    this._call = call;
+  }
+}
+
+export class TransferPostCall extends ethereum.Call {
+  get inputs(): TransferPostCall__Inputs {
+    return new TransferPostCall__Inputs(this);
+  }
+
+  get outputs(): TransferPostCall__Outputs {
+    return new TransferPostCall__Outputs(this);
+  }
+}
+
+export class TransferPostCall__Inputs {
+  _call: TransferPostCall;
+
+  constructor(call: TransferPostCall) {
+    this._call = call;
+  }
+
+  get postId_(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get transferTo_(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+}
+
+export class TransferPostCall__Outputs {
+  _call: TransferPostCall;
+
+  constructor(call: TransferPostCall) {
     this._call = call;
   }
 }

@@ -211,6 +211,31 @@
       {
         "indexed": true,
         "internalType": "bytes32",
+        "name": "postId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "transferFrom",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "transferTo",
+        "type": "address"
+      }
+    ],
+    "name": "PostTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
         "name": "messageId",
         "type": "bytes32"
       },
@@ -235,7 +260,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "tokenId",
+        "name": "responseValue",
         "type": "uint256"
       },
       {
@@ -589,6 +614,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "baseURI",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -615,6 +653,25 @@
       }
     ],
     "name": "checkBlocked",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "checkFollower",
     "outputs": [
       {
         "internalType": "bool",
@@ -694,7 +751,7 @@
       },
       {
         "internalType": "string",
-        "name": "messageLink_",
+        "name": "messageHash_",
         "type": "string"
       }
     ],
@@ -713,7 +770,7 @@
     "inputs": [
       {
         "internalType": "string",
-        "name": "postLink_",
+        "name": "postHash_",
         "type": "string"
       }
     ],
@@ -750,18 +807,13 @@
       },
       {
         "internalType": "string",
-        "name": "answerLink_",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "tokenURI_",
+        "name": "answerHash_",
         "type": "string"
       }
     ],
     "name": "createResponse",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -1169,6 +1221,11 @@
         "internalType": "address",
         "name": "trustedForwarder",
         "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "_baseURI",
+        "type": "string"
       }
     ],
     "name": "initialize",
@@ -1270,7 +1327,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "tokenId",
+        "name": "responseValue",
         "type": "uint256"
       },
       {
@@ -1597,6 +1654,19 @@
   {
     "inputs": [
       {
+        "internalType": "string",
+        "name": "_baseURI",
+        "type": "string"
+      }
+    ],
+    "name": "setBaseURI",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256",
         "name": "_minimumBid",
         "type": "uint256"
@@ -1806,6 +1876,24 @@
   {
     "inputs": [
       {
+        "internalType": "bytes32",
+        "name": "postId_",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "transferTo_",
+        "type": "address"
+      }
+    ],
+    "name": "transferPost",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "_address",
         "type": "address"
@@ -1847,6 +1935,25 @@
     "name": "unpause",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_contentHash",
+        "type": "string"
+      }
+    ],
+    "name": "uri",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
