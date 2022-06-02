@@ -1,0 +1,252 @@
+{
+	"id": "722be9ddcb2f1910077178814dd3824c",
+	"_format": "hh-sol-build-info-1",
+	"solcVersion": "0.8.7",
+	"solcLongVersion": "0.8.7+commit.e28d00a7",
+	"input": {
+		"language": "Solidity",
+		"sources": {
+			"interfaces/ICommon.sol": {
+				"content": "// SPDX-License-Identifier: GNU AGPLv3\n//https://choosealicense.com/licenses/\n\npragma solidity ^0.8.0;\n\ninterface ICommon  {\n   \n   \n    struct Storage{\n        bool initialized;\n        mapping(address => uint256)  balances;\n    }\n\n    receive() payable external;\n}"
+			}
+		},
+		"settings": {
+			"optimizer": {
+				"enabled": false,
+				"runs": 200
+			},
+			"outputSelection": {
+				"*": {
+					"": [
+						"ast"
+					],
+					"*": [
+						"abi",
+						"metadata",
+						"devdoc",
+						"userdoc",
+						"storageLayout",
+						"evm.legacyAssembly",
+						"evm.bytecode",
+						"evm.deployedBytecode",
+						"evm.methodIdentifiers",
+						"evm.gasEstimates",
+						"evm.assembly"
+					]
+				}
+			}
+		}
+	},
+	"output": {
+		"contracts": {
+			"interfaces/ICommon.sol": {
+				"ICommon": {
+					"abi": [
+						{
+							"stateMutability": "payable",
+							"type": "receive"
+						}
+					],
+					"devdoc": {
+						"kind": "dev",
+						"methods": {},
+						"version": 1
+					},
+					"evm": {
+						"assembly": "",
+						"bytecode": {
+							"functionDebugData": {},
+							"generatedSources": [],
+							"linkReferences": {},
+							"object": "",
+							"opcodes": "",
+							"sourceMap": ""
+						},
+						"deployedBytecode": {
+							"functionDebugData": {},
+							"generatedSources": [],
+							"immutableReferences": {},
+							"linkReferences": {},
+							"object": "",
+							"opcodes": "",
+							"sourceMap": ""
+						},
+						"gasEstimates": null,
+						"legacyAssembly": null,
+						"methodIdentifiers": {}
+					},
+					"metadata": "{\"compiler\":{\"version\":\"0.8.7+commit.e28d00a7\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"stateMutability\":\"payable\",\"type\":\"receive\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"interfaces/ICommon.sol\":\"ICommon\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"interfaces/ICommon.sol\":{\"keccak256\":\"0x9f869dd22665d0aa2770971d257a2dbc325e57f8acd5e959ae1111007fba138e\",\"license\":\"GNU AGPLv3\",\"urls\":[\"bzz-raw://9e4e4db5409c184e3dab72047257a341c1d5edb8dc41e963a3d0f0a2bc77b807\",\"dweb:/ipfs/QmYaJpCPrMSYUFgxdw5oycFTMA9ofbYFKsGMRQJoMsDAT4\"]}},\"version\":1}",
+					"storageLayout": {
+						"storage": [],
+						"types": null
+					},
+					"userdoc": {
+						"kind": "user",
+						"methods": {},
+						"version": 1
+					}
+				}
+			}
+		},
+		"sources": {
+			"interfaces/ICommon.sol": {
+				"ast": {
+					"absolutePath": "interfaces/ICommon.sol",
+					"exportedSymbols": {
+						"ICommon": [
+							12
+						]
+					},
+					"id": 13,
+					"license": "GNU AGPLv3",
+					"nodeType": "SourceUnit",
+					"nodes": [
+						{
+							"id": 1,
+							"literals": [
+								"solidity",
+								"^",
+								"0.8",
+								".0"
+							],
+							"nodeType": "PragmaDirective",
+							"src": "79:23:0"
+						},
+						{
+							"abstract": false,
+							"baseContracts": [],
+							"contractDependencies": [],
+							"contractKind": "interface",
+							"fullyImplemented": false,
+							"id": 12,
+							"linearizedBaseContracts": [
+								12
+							],
+							"name": "ICommon",
+							"nameLocation": "114:7:0",
+							"nodeType": "ContractDefinition",
+							"nodes": [
+								{
+									"canonicalName": "ICommon.Storage",
+									"id": 8,
+									"members": [
+										{
+											"constant": false,
+											"id": 3,
+											"mutability": "mutable",
+											"name": "initialized",
+											"nameLocation": "166:11:0",
+											"nodeType": "VariableDeclaration",
+											"scope": 8,
+											"src": "161:16:0",
+											"stateVariable": false,
+											"storageLocation": "default",
+											"typeDescriptions": {
+												"typeIdentifier": "t_bool",
+												"typeString": "bool"
+											},
+											"typeName": {
+												"id": 2,
+												"name": "bool",
+												"nodeType": "ElementaryTypeName",
+												"src": "161:4:0",
+												"typeDescriptions": {
+													"typeIdentifier": "t_bool",
+													"typeString": "bool"
+												}
+											},
+											"visibility": "internal"
+										},
+										{
+											"constant": false,
+											"id": 7,
+											"mutability": "mutable",
+											"name": "balances",
+											"nameLocation": "216:8:0",
+											"nodeType": "VariableDeclaration",
+											"scope": 8,
+											"src": "187:37:0",
+											"stateVariable": false,
+											"storageLocation": "default",
+											"typeDescriptions": {
+												"typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+												"typeString": "mapping(address => uint256)"
+											},
+											"typeName": {
+												"id": 6,
+												"keyType": {
+													"id": 4,
+													"name": "address",
+													"nodeType": "ElementaryTypeName",
+													"src": "195:7:0",
+													"typeDescriptions": {
+														"typeIdentifier": "t_address",
+														"typeString": "address"
+													}
+												},
+												"nodeType": "Mapping",
+												"src": "187:27:0",
+												"typeDescriptions": {
+													"typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+													"typeString": "mapping(address => uint256)"
+												},
+												"valueType": {
+													"id": 5,
+													"name": "uint256",
+													"nodeType": "ElementaryTypeName",
+													"src": "206:7:0",
+													"typeDescriptions": {
+														"typeIdentifier": "t_uint256",
+														"typeString": "uint256"
+													}
+												}
+											},
+											"visibility": "internal"
+										}
+									],
+									"name": "Storage",
+									"nameLocation": "144:7:0",
+									"nodeType": "StructDefinition",
+									"scope": 12,
+									"src": "137:94:0",
+									"visibility": "public"
+								},
+								{
+									"id": 11,
+									"implemented": false,
+									"kind": "receive",
+									"modifiers": [],
+									"name": "",
+									"nameLocation": "-1:-1:-1",
+									"nodeType": "FunctionDefinition",
+									"parameters": {
+										"id": 9,
+										"nodeType": "ParameterList",
+										"parameters": [],
+										"src": "244:2:0"
+									},
+									"returnParameters": {
+										"id": 10,
+										"nodeType": "ParameterList",
+										"parameters": [],
+										"src": "263:0:0"
+									},
+									"scope": 12,
+									"src": "237:27:0",
+									"stateMutability": "payable",
+									"virtual": false,
+									"visibility": "external"
+								}
+							],
+							"scope": 13,
+							"src": "104:162:0",
+							"usedErrors": []
+						}
+					],
+					"src": "79:187:0"
+				},
+				"id": 0
+			}
+		}
+	}
+}

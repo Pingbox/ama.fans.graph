@@ -3,11 +3,51 @@ schema:
   file: schema.graphql
 dataSources:
   - kind: ethereum
-    name: AmaFansCore
+    name: MessageFacet
     network: celo-alfajores
     source:
       address: "0xE853E5a407235FFf3C0Df7B0469E325acb82752A"
-      abi: AmaFansCore
+      abi: MessageFacet
+      startBlock: 11474567
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - MessageCreated
+        - MessageValueClaimed
+        - ResponseCreated
+        - TipCreated
+        - TipValueClaimed
+        - ResponseMarked
+        - AmountReceived
+      abis:
+        - name: MessageFacet
+          file: MessageFacet/abis/MessageFacet.json
+      eventHandlers:
+        - event: MessageCreated(indexed address,indexed address,indexed
+            bytes32,bytes32,string,bytes)
+          handler: handleMessageCreated
+        - event: MessageValueClaimed(indexed bytes32,indexed address,uint256)
+          handler: handleMessageValueClaimed
+        - event: ResponseCreated(indexed bytes32,indexed address,indexed
+            address,string,uint256,uint256)
+          handler: handleResponseCreated
+        - event: TipCreated(indexed bytes32,indexed bytes32,indexed address,uint256)
+          handler: handleTipCreated
+        - event: TipValueClaimed(indexed bytes32,indexed bytes32,indexed address,uint256)
+          handler: handleTipValueClaimed
+        - event: ResponseMarked(indexed bytes32,indexed address,indexed address,uint256)
+          handler: handleResponseMarked
+        - event: AmountReceived(indexed address,uint256)
+          handler: handleAmountReceived
+      file: MessageFacet/MessageFacet.wasm
+  - kind: ethereum
+    name: PostFacet
+    network: celo-alfajores
+    source:
+      address: "0xE853E5a407235FFf3C0Df7B0469E325acb82752A"
+      abi: PostFacet
       startBlock: 11474567
     mapping:
       kind: ethereum/events
@@ -15,50 +55,91 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - AmountReceived
-        - Blocked
-        - Paused
-        - QuestionAnswered
-        - QuestionCreated
-        - QuestionValueClaimed
-        - RoleAdminChanged
-        - RoleGranted
-        - RoleRevoked
-        - TipCreated
-        - TipValueClaimed
-        - Unpaused
-        - Withdraw
+        - PostCreated
+        - PostTipCreated
       abis:
-        - name: AmaFansCore
-          file: AmaFansCore/abis/AmaFansCore.json
+        - name: PostFacet
+          file: PostFacet/abis/PostFacet.json
+      eventHandlers:
+        - event: AmountReceived(indexed address,uint256)
+          handler: handlePostAmountReceived
+        - event: PostCreated(indexed bytes32,indexed address,uint256,string)
+          handler: handlePostCreated
+        - event: PostTipCreated(indexed bytes32,indexed bytes32,indexed address,uint256)
+          handler: handlePostTipCreated
+      file: PostFacet/PostFacet.wasm
+  - kind: ethereum
+    name: SessionFacet
+    network: celo-alfajores
+    source:
+      address: "0xE853E5a407235FFf3C0Df7B0469E325acb82752A"
+      abi: SessionFacet
+      startBlock: 11474567
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - SessionCreated
+        - SessionLinkUpdated
+        - SessionTopUp
+        - SessionEndTimeUpdated
+        - RewardDistributedOnAma
+        - SessionEndedBeforeTime
+        - SessionRewardLeftClaimed
+        - SessionTopUp
+        - AmountReceived
+      abis:
+        - name: SessionFacet
+          file: SessionFacet/abis/SessionFacet.json
+      eventHandlers:
+        - event: SessionCreated(indexed bytes32,indexed
+            address,uint256,uint256,uint256,uint256,string)
+          handler: handleSessionCreated
+        - event: SessionLinkUpdated(indexed bytes32,string)
+          handler: handleSessionLinkUpdated
+        - event: SessionTopUp(indexed bytes32,uint256,uint256)
+          handler: handleSessionTopUp
+        - event: SessionEndTimeUpdated(indexed bytes32,uint256,uint256)
+          handler: handleSessionEndTimeUpdated
+        - event: RewardDistributedOnAma(indexed bytes32,indexed bytes32,uint256,uint256)
+          handler: handleRewardDistributedOnAma
+        - event: SessionEndedBeforeTime(indexed bytes32,uint256,uint256)
+          handler: handleSessionEndedBeforeTime
+        - event: SessionRewardLeftClaimed(indexed bytes32,uint256)
+          handler: handleSessionRewardLeftClaimed
+        - event: SessionTopUp(indexed bytes32,uint256,uint256)
+          handler: handleSessionTopUp
+        - event: AmountReceived(indexed address,uint256)
+          handler: handleAmountReceived
+      file: SessionFacet/SessionFacet.wasm
+  - kind: ethereum
+    name: UserFacet
+    network: celo-alfajores
+    source:
+      address: "0xE853E5a407235FFf3C0Df7B0469E325acb82752A"
+      abi: UserFacet
+      startBlock: 11474567
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - AmountReceived
+        - Withdraw
+        - Blocked
+        - UnBlock
+        - Whitelisted
+        - UnWhitelisted
+        - Follow
+        - UnFollow
+        - Transfer
+      abis:
+        - name: UserFacet
+          file: UserFacet/abis/UserFacet.json
       eventHandlers:
         - event: AmountReceived(indexed address,uint256)
           handler: handleAmountReceived
-        - event: Paused(address)
-          handler: handlePaused
-        - event: MessageCreated(indexed address,indexed bytes32,indexed
-            address,uint256,uint256,string,uint256)
-          handler: handleMessageCreated
-        - event: MessageValueClaimed(indexed bytes32,indexed address,uint256)
-          handler: handleMessageValueClaimed
-        - event: ResponseCreated(indexed bytes32,indexed address,indexed
-            address,string,uint256,uint256)
-          handler: handleResponseCreated
-        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
-          handler: handleRoleAdminChanged
-        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
-          handler: handleRoleGranted
-        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
-          handler: handleRoleRevoked
-        - event: PostCreated(indexed bytes32,indexed address,uint256,string)
-          handler: handlePostCreated
-        - event: TipCreated(indexed bytes32,indexed bytes32,indexed address,uint256)
-          handler: handleTipCreated
-        - event: PostTipCreated(indexed bytes32,indexed bytes32,indexed address,uint256)
-          handler: handlePostTipCreated
-        - event: TipValueClaimed(indexed bytes32,indexed bytes32,indexed address,uint256)
-          handler: handleTipValueClaimed
-        - event: Unpaused(address)
-          handler: handleUnpaused
         - event: Withdraw(indexed address,uint256)
           handler: handleWithdraw
         - event: Blocked(indexed address,indexed address)
@@ -73,8 +154,35 @@ dataSources:
           handler: handleFollow
         - event: UnFollow(indexed address,indexed address)
           handler: handleUnFollow
-        - event: ResponseMarked(indexed bytes32,indexed address,indexed address,uint256)
-          handler: handleResponseMarked
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-      file: AmaFansCore/AmaFansCore.wasm
+      file: MessageFacet/MessageFacet.wasm
+  - kind: ethereum
+    name: OwnershipFacet
+    network: celo-alfajores
+    source:
+      address: "0xE853E5a407235FFf3C0Df7B0469E325acb82752A"
+      abi: OwnershipFacet
+      startBlock: 11474567
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - RoleAdminChanged
+        - RoleGranted
+        - RoleRevoked
+        - OwnershipTransferred
+      abis:
+        - name: OwnershipFacet
+          file: OwnershipFacet/abis/OwnershipFacet.json
+      eventHandlers:
+        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
+          handler: handleRoleAdminChanged
+        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleGranted
+        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleRevoked
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+      file: SessionFacet/SessionFacet.wasm

@@ -3,11 +3,11 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: AmaFansCore
+    name: MessageFacet
     network: '{{network}}'
     source:
-      address: '{{address}}'
-      abi: AmaFansCore   
+      address: '{{messageFacetAddress}}'
+      abi: MessageFacet   
       startBlock: {{startBlock}}
 
     mapping:
@@ -15,30 +15,20 @@ dataSources:
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - AmountReceived
-        - Blocked
-        - Paused
-        - QuestionAnswered
-        - QuestionCreated
-        - QuestionValueClaimed
-        - RoleAdminChanged
-        - RoleGranted
-        - RoleRevoked
+        - MessageCreated
+        - MessageValueClaimed
+        - ResponseCreated
         - TipCreated
         - TipValueClaimed
-        - Unpaused
-        - Withdraw
+        - ResponseMarked
+        - AmountReceived
+ 
       abis:
-        - name: AmaFansCore
-          file: ./abis/AmaFansCore.json
+        - name: MessageFacet
+          file: ./abis/MessageFacet.json
       eventHandlers:
-        - event: AmountReceived(indexed address,uint256)
-          handler: handleAmountReceived
 
-        - event: Paused(address)
-          handler: handlePaused
-
-        - event: MessageCreated(indexed address,indexed bytes32,indexed address,uint256,uint256,string,uint256)
+        - event: MessageCreated(indexed address,indexed address,indexed bytes32,bytes32,string,bytes)
           handler: handleMessageCreated
 
         - event: MessageValueClaimed(indexed bytes32,indexed address,uint256)
@@ -47,29 +37,140 @@ dataSources:
         - event: ResponseCreated(indexed bytes32,indexed address,indexed address,string,uint256,uint256)
           handler: handleResponseCreated
         
-        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
-          handler: handleRoleAdminChanged
-
-        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
-          handler: handleRoleGranted
-
-        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
-          handler: handleRoleRevoked
-
-        - event: PostCreated(indexed bytes32,indexed address,uint256,string)
-          handler: handlePostCreated
-
         - event: TipCreated(indexed bytes32,indexed bytes32,indexed address,uint256)
           handler: handleTipCreated
-
-        - event: PostTipCreated(indexed bytes32,indexed bytes32,indexed address,uint256)
-          handler: handlePostTipCreated
 
         - event: TipValueClaimed(indexed bytes32,indexed bytes32,indexed address,uint256)
           handler: handleTipValueClaimed
 
-        - event: Unpaused(address)
-          handler: handleUnpaused
+        - event: ResponseMarked(indexed bytes32,indexed address,indexed address,uint256)
+          handler: handleResponseMarked
+        
+        - event: AmountReceived(indexed address,uint256)
+          handler: handleAmountReceived
+
+      file: ./src/mappingUser.ts
+
+  - kind: ethereum
+    name: PostFacet
+    network: '{{network}}'
+    source:
+      address: '{{postFacetaddress}}'
+      abi: PostFacet   
+      startBlock: {{startBlock}}
+
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - AmountReceived
+        - PostCreated
+        - PostTipCreated
+
+      abis:
+        - name: PostFacet
+          file: ./abis/PostFacet.json
+      eventHandlers:
+        - event: AmountReceived(indexed address,uint256)
+          handler: handlePostAmountReceived
+
+        - event: PostCreated(indexed bytes32,indexed address,uint256,string)
+          handler: handlePostCreated
+
+        - event: PostTipCreated(indexed bytes32,indexed bytes32,indexed address,uint256)
+          handler: handlePostTipCreated
+
+      file: ./src/mappingPost.ts
+
+
+  - kind: ethereum
+    name: SessionFacet
+    network: '{{network}}'
+    source:
+      address: '{{sessionFacetaddress}}'
+      abi: SessionFacet   
+      startBlock: {{startBlock}}
+
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - SessionCreated
+        - SessionLinkUpdated
+        - SessionTopUp
+        - SessionEndTimeUpdated
+        - RewardDistributedOnAma
+        - SessionEndedBeforeTime
+        - SessionRewardLeftClaimed
+        - SessionTopUp
+        - AmountReceived
+        
+      abis:
+        - name: SessionFacet
+          file: ./abis/SessionFacet.json
+
+      eventHandlers:
+        - event: SessionCreated(indexed bytes32,indexed address,uint256,uint256,uint256,uint256,string)
+          handler: handleSessionCreated
+
+        - event: SessionLinkUpdated(indexed bytes32,string)
+          handler: handleSessionLinkUpdated
+
+        - event: SessionTopUp(indexed bytes32,uint256,uint256)
+          handler: handleSessionTopUp
+   
+        - event: SessionEndTimeUpdated(indexed bytes32,uint256,uint256)
+          handler: handleSessionEndTimeUpdated
+
+        - event: RewardDistributedOnAma(indexed bytes32,indexed bytes32,uint256,uint256)
+          handler: handleRewardDistributedOnAma
+
+        - event: SessionEndedBeforeTime(indexed bytes32,uint256,uint256)
+          handler: handleSessionEndedBeforeTime
+
+        - event: SessionRewardLeftClaimed(indexed bytes32,uint256)
+          handler: handleSessionRewardLeftClaimed
+
+        - event: SessionTopUp(indexed bytes32,uint256,uint256)
+          handler: handleSessionTopUp
+
+        - event: AmountReceived(indexed address,uint256)
+          handler: handleAmountReceived
+
+      file: ./src/mappingSession.ts
+
+
+
+  - kind: ethereum
+    name: UserFacet
+    network: '{{network}}'
+    source:
+      address: '{{userFacetaddress}}'
+      abi: UserFacet   
+      startBlock: {{startBlock}}
+
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - AmountReceived
+        - Withdraw
+        - Blocked
+        - UnBlock
+        - Whitelisted
+        - UnWhitelisted
+        - Follow
+        - UnFollow
+        - Transfer
+      abis:
+        - name: UserFacet
+          file: ./abis/UserFacet.json
+      eventHandlers:
+        - event: AmountReceived(indexed address,uint256)
+          handler: handleAmountReceived
 
         - event: Withdraw(indexed address,uint256)
           handler: handleWithdraw
@@ -92,11 +193,69 @@ dataSources:
         - event: UnFollow(indexed address,indexed address)
           handler: handleUnFollow
 
-        - event: ResponseMarked(indexed bytes32,indexed address,indexed address,uint256)
-          handler: handleResponseMarked
-
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
 
 
-      file: ./src/mapping.ts
+      file: ./src/mappingUser.ts
+
+
+  - kind: ethereum
+    name: OwnershipFacet
+    network: '{{network}}'
+    source:
+      address: '{{ownershipFacetaddress}}'
+      abi: OwnershipFacet   
+      startBlock: {{startBlock}}
+
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - RoleAdminChanged
+        - RoleGranted
+        - RoleRevoked
+        - OwnershipTransferred
+      abis:
+        - name: OwnershipFacet
+          file: ./abis/OwnershipFacet.json
+      eventHandlers:
+        
+        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
+          handler: handleRoleAdminChanged
+
+        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleGranted
+
+        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleRevoked
+
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+
+      file: ./src/mappingOwnership.ts
+
+
+  # - kind: ethereum
+  #   name: DiamondCutFacet
+  #   network: '{{network}}'
+  #   source:
+  #     address: '{{diamondCutFacetaddress}}'
+  #     abi: DiamondCutFacet   
+  #     startBlock: {{startBlock}}
+
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.5
+  #     language: wasm/assemblyscript
+  #     entities:
+  #       - DiamondCut
+  #     abis:
+  #       - name: DiamondCutFacet
+  #         file: ./abis/DiamondCutFacet.json
+  #     eventHandlers:
+  #       - event: DiamondCut((address,uint8,bytes4[])[],address,bytes)
+  #         handler: handleDiamondCut
+
+  #     file: ./src/mappingDiamondCut.ts

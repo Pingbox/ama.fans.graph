@@ -501,224 +501,6 @@ export class AmaUserEntity extends Entity {
   }
 }
 
-export class DomainRegisteredEntity extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-
-    this.set("useraddress", Value.fromString(""));
-    this.set("nodeHash", Value.fromBytes(Bytes.empty()));
-    this.set("twitterId", Value.fromBigInt(BigInt.zero()));
-    this.set("label", Value.fromString(""));
-    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(
-      id != null,
-      "Cannot save DomainRegisteredEntity entity without an ID"
-    );
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        `Entities of type DomainRegisteredEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
-      );
-      store.set("DomainRegisteredEntity", id.toString(), this);
-    }
-  }
-
-  static load(id: string): DomainRegisteredEntity | null {
-    return changetype<DomainRegisteredEntity | null>(
-      store.get("DomainRegisteredEntity", id)
-    );
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get useraddress(): string {
-    let value = this.get("useraddress");
-    return value!.toString();
-  }
-
-  set useraddress(value: string) {
-    this.set("useraddress", Value.fromString(value));
-  }
-
-  get nodeHash(): Bytes {
-    let value = this.get("nodeHash");
-    return value!.toBytes();
-  }
-
-  set nodeHash(value: Bytes) {
-    this.set("nodeHash", Value.fromBytes(value));
-  }
-
-  get twitterId(): BigInt {
-    let value = this.get("twitterId");
-    return value!.toBigInt();
-  }
-
-  set twitterId(value: BigInt) {
-    this.set("twitterId", Value.fromBigInt(value));
-  }
-
-  get twitterUsername(): string | null {
-    let value = this.get("twitterUsername");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set twitterUsername(value: string | null) {
-    if (!value) {
-      this.unset("twitterUsername");
-    } else {
-      this.set("twitterUsername", Value.fromString(<string>value));
-    }
-  }
-
-  get label(): string {
-    let value = this.get("label");
-    return value!.toString();
-  }
-
-  set label(value: string) {
-    this.set("label", Value.fromString(value));
-  }
-
-  get createdAt(): BigInt {
-    let value = this.get("createdAt");
-    return value!.toBigInt();
-  }
-
-  set createdAt(value: BigInt) {
-    this.set("createdAt", Value.fromBigInt(value));
-  }
-}
-
-export class RequestErroredEntity extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-
-    this.set("useraddress", Value.fromString(""));
-    this.set("data", Value.fromBytes(Bytes.empty()));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save RequestErroredEntity entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        `Entities of type RequestErroredEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
-      );
-      store.set("RequestErroredEntity", id.toString(), this);
-    }
-  }
-
-  static load(id: string): RequestErroredEntity | null {
-    return changetype<RequestErroredEntity | null>(
-      store.get("RequestErroredEntity", id)
-    );
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get useraddress(): string {
-    let value = this.get("useraddress");
-    return value!.toString();
-  }
-
-  set useraddress(value: string) {
-    this.set("useraddress", Value.fromString(value));
-  }
-
-  get data(): Bytes {
-    let value = this.get("data");
-    return value!.toBytes();
-  }
-
-  set data(value: Bytes) {
-    this.set("data", Value.fromBytes(value));
-  }
-}
-
-export class RequestFulfilledEntity extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-
-    this.set("useraddress", Value.fromString(""));
-    this.set("data", Value.fromBytes(Bytes.empty()));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(
-      id != null,
-      "Cannot save RequestFulfilledEntity entity without an ID"
-    );
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        `Entities of type RequestFulfilledEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
-      );
-      store.set("RequestFulfilledEntity", id.toString(), this);
-    }
-  }
-
-  static load(id: string): RequestFulfilledEntity | null {
-    return changetype<RequestFulfilledEntity | null>(
-      store.get("RequestFulfilledEntity", id)
-    );
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get useraddress(): string {
-    let value = this.get("useraddress");
-    return value!.toString();
-  }
-
-  set useraddress(value: string) {
-    this.set("useraddress", Value.fromString(value));
-  }
-
-  get data(): Bytes {
-    let value = this.get("data");
-    return value!.toBytes();
-  }
-
-  set data(value: Bytes) {
-    this.set("data", Value.fromBytes(value));
-  }
-}
-
 export class MessageCreatedEntity extends Entity {
   constructor(id: string) {
     super();
@@ -731,7 +513,7 @@ export class MessageCreatedEntity extends Entity {
     this.set("answerLink", Value.fromString(""));
     this.set("value", Value.fromBigInt(BigInt.zero()));
     this.set("expiryTime", Value.fromBigInt(BigInt.zero()));
-    this.set("link", Value.fromString(""));
+    this.set("messageLink", Value.fromString(""));
     this.set("response", Value.fromBigInt(BigInt.zero()));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
     this.set("tips", Value.fromBigInt(BigInt.zero()));
@@ -739,6 +521,10 @@ export class MessageCreatedEntity extends Entity {
     this.set("messageType", Value.fromBigInt(BigInt.zero()));
     this.set("responseType", Value.fromBigInt(BigInt.zero()));
     this.set("responseValue", Value.fromBigInt(BigInt.zero()));
+    this.set("activeSessionId", Value.fromBytes(Bytes.empty()));
+    this.set("data", Value.fromBytes(Bytes.empty()));
+    this.set("gasLimit", Value.fromBigInt(BigInt.zero()));
+    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -831,13 +617,13 @@ export class MessageCreatedEntity extends Entity {
     this.set("expiryTime", Value.fromBigInt(value));
   }
 
-  get link(): string {
-    let value = this.get("link");
+  get messageLink(): string {
+    let value = this.get("messageLink");
     return value!.toString();
   }
 
-  set link(value: string) {
-    this.set("link", Value.fromString(value));
+  set messageLink(value: string) {
+    this.set("messageLink", Value.fromString(value));
   }
 
   get answered(): boolean {
@@ -919,6 +705,42 @@ export class MessageCreatedEntity extends Entity {
 
   set responseValue(value: BigInt) {
     this.set("responseValue", Value.fromBigInt(value));
+  }
+
+  get activeSessionId(): Bytes {
+    let value = this.get("activeSessionId");
+    return value!.toBytes();
+  }
+
+  set activeSessionId(value: Bytes) {
+    this.set("activeSessionId", Value.fromBytes(value));
+  }
+
+  get data(): Bytes {
+    let value = this.get("data");
+    return value!.toBytes();
+  }
+
+  set data(value: Bytes) {
+    this.set("data", Value.fromBytes(value));
+  }
+
+  get gasLimit(): BigInt {
+    let value = this.get("gasLimit");
+    return value!.toBigInt();
+  }
+
+  set gasLimit(value: BigInt) {
+    this.set("gasLimit", Value.fromBigInt(value));
+  }
+
+  get gasPrice(): BigInt {
+    let value = this.get("gasPrice");
+    return value!.toBigInt();
+  }
+
+  set gasPrice(value: BigInt) {
+    this.set("gasPrice", Value.fromBigInt(value));
   }
 }
 
@@ -1336,9 +1158,10 @@ export class AmountReceivedEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
-    this.set("sender", Value.fromString(""));
+    this.set("receiver", Value.fromString(""));
     this.set("value", Value.fromBigInt(BigInt.zero()));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
+    this.set("facet", Value.fromString(""));
   }
 
   save(): void {
@@ -1377,13 +1200,13 @@ export class AmountReceivedEntity extends Entity {
     this.set("txHash", Value.fromString(value));
   }
 
-  get sender(): string {
-    let value = this.get("sender");
+  get receiver(): string {
+    let value = this.get("receiver");
     return value!.toString();
   }
 
-  set sender(value: string) {
-    this.set("sender", Value.fromString(value));
+  set receiver(value: string) {
+    this.set("receiver", Value.fromString(value));
   }
 
   get value(): BigInt {
@@ -1402,6 +1225,15 @@ export class AmountReceivedEntity extends Entity {
 
   set createdAt(value: BigInt) {
     this.set("createdAt", Value.fromBigInt(value));
+  }
+
+  get facet(): string {
+    let value = this.get("facet");
+    return value!.toString();
+  }
+
+  set facet(value: string) {
+    this.set("facet", Value.fromString(value));
   }
 }
 
@@ -2098,204 +1930,6 @@ export class ResponseMarkedEntity extends Entity {
   }
 }
 
-export class PlatformIdentity extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-
-    this.set("txHash", Value.fromString(""));
-    this.set("totalValueSpentOnPosts", Value.fromBigInt(BigInt.zero()));
-    this.set("totalValueSpentOnMessages", Value.fromBigInt(BigInt.zero()));
-    this.set("totalValueSpentOnTips", Value.fromBigInt(BigInt.zero()));
-    this.set("totalValueSpentOnPostTips", Value.fromBigInt(BigInt.zero()));
-    this.set("totalValueClaimedBackOnTips", Value.fromBigInt(BigInt.zero()));
-    this.set(
-      "totalValueClaimedBackOnMessages",
-      Value.fromBigInt(BigInt.zero())
-    );
-    this.set("totalValueReceivedOnResponses", Value.fromBigInt(BigInt.zero()));
-    this.set("totalPosts", Value.fromBigInt(BigInt.zero()));
-    this.set("totalMessagesSent", Value.fromBigInt(BigInt.zero()));
-    this.set("totalMessagesClaimedBack", Value.fromBigInt(BigInt.zero()));
-    this.set("totalTipsClaimedBack", Value.fromBigInt(BigInt.zero()));
-    this.set("totalResponseCreated", Value.fromBigInt(BigInt.zero()));
-    this.set("totalTipsMade", Value.fromBigInt(BigInt.zero()));
-    this.set("totalPostTips", Value.fromBigInt(BigInt.zero()));
-    this.set("totalUsers", Value.fromBigInt(BigInt.zero()));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save PlatformIdentity entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        `Entities of type PlatformIdentity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
-      );
-      store.set("PlatformIdentity", id.toString(), this);
-    }
-  }
-
-  static load(id: string): PlatformIdentity | null {
-    return changetype<PlatformIdentity | null>(
-      store.get("PlatformIdentity", id)
-    );
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get txHash(): string {
-    let value = this.get("txHash");
-    return value!.toString();
-  }
-
-  set txHash(value: string) {
-    this.set("txHash", Value.fromString(value));
-  }
-
-  get totalValueSpentOnPosts(): BigInt {
-    let value = this.get("totalValueSpentOnPosts");
-    return value!.toBigInt();
-  }
-
-  set totalValueSpentOnPosts(value: BigInt) {
-    this.set("totalValueSpentOnPosts", Value.fromBigInt(value));
-  }
-
-  get totalValueSpentOnMessages(): BigInt {
-    let value = this.get("totalValueSpentOnMessages");
-    return value!.toBigInt();
-  }
-
-  set totalValueSpentOnMessages(value: BigInt) {
-    this.set("totalValueSpentOnMessages", Value.fromBigInt(value));
-  }
-
-  get totalValueSpentOnTips(): BigInt {
-    let value = this.get("totalValueSpentOnTips");
-    return value!.toBigInt();
-  }
-
-  set totalValueSpentOnTips(value: BigInt) {
-    this.set("totalValueSpentOnTips", Value.fromBigInt(value));
-  }
-
-  get totalValueSpentOnPostTips(): BigInt {
-    let value = this.get("totalValueSpentOnPostTips");
-    return value!.toBigInt();
-  }
-
-  set totalValueSpentOnPostTips(value: BigInt) {
-    this.set("totalValueSpentOnPostTips", Value.fromBigInt(value));
-  }
-
-  get totalValueClaimedBackOnTips(): BigInt {
-    let value = this.get("totalValueClaimedBackOnTips");
-    return value!.toBigInt();
-  }
-
-  set totalValueClaimedBackOnTips(value: BigInt) {
-    this.set("totalValueClaimedBackOnTips", Value.fromBigInt(value));
-  }
-
-  get totalValueClaimedBackOnMessages(): BigInt {
-    let value = this.get("totalValueClaimedBackOnMessages");
-    return value!.toBigInt();
-  }
-
-  set totalValueClaimedBackOnMessages(value: BigInt) {
-    this.set("totalValueClaimedBackOnMessages", Value.fromBigInt(value));
-  }
-
-  get totalValueReceivedOnResponses(): BigInt {
-    let value = this.get("totalValueReceivedOnResponses");
-    return value!.toBigInt();
-  }
-
-  set totalValueReceivedOnResponses(value: BigInt) {
-    this.set("totalValueReceivedOnResponses", Value.fromBigInt(value));
-  }
-
-  get totalPosts(): BigInt {
-    let value = this.get("totalPosts");
-    return value!.toBigInt();
-  }
-
-  set totalPosts(value: BigInt) {
-    this.set("totalPosts", Value.fromBigInt(value));
-  }
-
-  get totalMessagesSent(): BigInt {
-    let value = this.get("totalMessagesSent");
-    return value!.toBigInt();
-  }
-
-  set totalMessagesSent(value: BigInt) {
-    this.set("totalMessagesSent", Value.fromBigInt(value));
-  }
-
-  get totalMessagesClaimedBack(): BigInt {
-    let value = this.get("totalMessagesClaimedBack");
-    return value!.toBigInt();
-  }
-
-  set totalMessagesClaimedBack(value: BigInt) {
-    this.set("totalMessagesClaimedBack", Value.fromBigInt(value));
-  }
-
-  get totalTipsClaimedBack(): BigInt {
-    let value = this.get("totalTipsClaimedBack");
-    return value!.toBigInt();
-  }
-
-  set totalTipsClaimedBack(value: BigInt) {
-    this.set("totalTipsClaimedBack", Value.fromBigInt(value));
-  }
-
-  get totalResponseCreated(): BigInt {
-    let value = this.get("totalResponseCreated");
-    return value!.toBigInt();
-  }
-
-  set totalResponseCreated(value: BigInt) {
-    this.set("totalResponseCreated", Value.fromBigInt(value));
-  }
-
-  get totalTipsMade(): BigInt {
-    let value = this.get("totalTipsMade");
-    return value!.toBigInt();
-  }
-
-  set totalTipsMade(value: BigInt) {
-    this.set("totalTipsMade", Value.fromBigInt(value));
-  }
-
-  get totalPostTips(): BigInt {
-    let value = this.get("totalPostTips");
-    return value!.toBigInt();
-  }
-
-  set totalPostTips(value: BigInt) {
-    this.set("totalPostTips", Value.fromBigInt(value));
-  }
-
-  get totalUsers(): BigInt {
-    let value = this.get("totalUsers");
-    return value!.toBigInt();
-  }
-
-  set totalUsers(value: BigInt) {
-    this.set("totalUsers", Value.fromBigInt(value));
-  }
-}
-
 export class PostEntity extends Entity {
   constructor(id: string) {
     super();
@@ -2309,6 +1943,8 @@ export class PostEntity extends Entity {
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
     this.set("tips", Value.fromBigInt(BigInt.zero()));
     this.set("tipsTotalValue", Value.fromBigInt(BigInt.zero()));
+    this.set("gasLimit", Value.fromBigInt(BigInt.zero()));
+    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -2407,6 +2043,24 @@ export class PostEntity extends Entity {
   set tipsTotalValue(value: BigInt) {
     this.set("tipsTotalValue", Value.fromBigInt(value));
   }
+
+  get gasLimit(): BigInt {
+    let value = this.get("gasLimit");
+    return value!.toBigInt();
+  }
+
+  set gasLimit(value: BigInt) {
+    this.set("gasLimit", Value.fromBigInt(value));
+  }
+
+  get gasPrice(): BigInt {
+    let value = this.get("gasPrice");
+    return value!.toBigInt();
+  }
+
+  set gasPrice(value: BigInt) {
+    this.set("gasPrice", Value.fromBigInt(value));
+  }
 }
 
 export class PostTipEntity extends Entity {
@@ -2420,6 +2074,8 @@ export class PostTipEntity extends Entity {
     this.set("createdBy", Value.fromString(""));
     this.set("value", Value.fromBigInt(BigInt.zero()));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
+    this.set("gasLimit", Value.fromBigInt(BigInt.zero()));
+    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -2499,5 +2155,23 @@ export class PostTipEntity extends Entity {
 
   set createdAt(value: BigInt) {
     this.set("createdAt", Value.fromBigInt(value));
+  }
+
+  get gasLimit(): BigInt {
+    let value = this.get("gasLimit");
+    return value!.toBigInt();
+  }
+
+  set gasLimit(value: BigInt) {
+    this.set("gasLimit", Value.fromBigInt(value));
+  }
+
+  get gasPrice(): BigInt {
+    let value = this.get("gasPrice");
+    return value!.toBigInt();
+  }
+
+  set gasPrice(value: BigInt) {
+    this.set("gasPrice", Value.fromBigInt(value));
   }
 }

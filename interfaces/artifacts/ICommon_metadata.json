@@ -1,0 +1,50 @@
+{
+	"compiler": {
+		"version": "0.8.7+commit.e28d00a7"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"stateMutability": "payable",
+				"type": "receive"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"interfaces/ICommon.sol": "ICommon"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"interfaces/ICommon.sol": {
+			"keccak256": "0x5ab5b144ef62c0cd7d70443913b597d15574f64ae42b0bdb5c0d0730086a58b0",
+			"license": "GNU AGPLv3",
+			"urls": [
+				"bzz-raw://61c150d7e1320e8c4cbe069ae700bc3b55cf693e87076982d02b0d434a0a5479",
+				"dweb:/ipfs/QmYVNsoyXagArGa75Spyb587CtsUpxGSgDY868SbBLRN8X"
+			]
+		}
+	},
+	"version": 1
+}

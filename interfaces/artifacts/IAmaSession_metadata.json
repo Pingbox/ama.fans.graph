@@ -1,0 +1,337 @@
+{
+	"compiler": {
+		"version": "0.8.7+commit.e28d00a7"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "owner_",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "sessionId_",
+						"type": "bytes32"
+					}
+				],
+				"name": "claimRewardLeft",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "owner_",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "startTime_",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "endTime_",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "rewardPerAMA_",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "rewardPool_",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "sessionLink_",
+						"type": "string"
+					}
+				],
+				"name": "createSession",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "owner_",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "sessionId_",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "messageId_",
+						"type": "bytes32"
+					}
+				],
+				"name": "deductRewardOnReply",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "owner_",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "sessionId_",
+						"type": "bytes32"
+					}
+				],
+				"name": "endSession",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "owner_",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "sessionId_",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "additionalTime",
+						"type": "uint256"
+					}
+				],
+				"name": "extendSession",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "sessionId_",
+						"type": "bytes32"
+					}
+				],
+				"name": "getSessionRewardPerAMA",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "owner_",
+						"type": "address"
+					}
+				],
+				"name": "isAnySessionLive",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "owner_",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "index_",
+						"type": "uint256"
+					}
+				],
+				"name": "sessionIdAtIndex",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "sessionId_",
+						"type": "bytes32"
+					}
+				],
+				"name": "sessionRewardPerAma",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_baseURI",
+						"type": "string"
+					}
+				],
+				"name": "setBaseURI",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "owner_",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "sessionId_",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "additionalFund",
+						"type": "uint256"
+					}
+				],
+				"name": "topUpSession",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "owner_",
+						"type": "address"
+					}
+				],
+				"name": "totalSessions",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "owner_",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "sessionId_",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "string",
+						"name": "newLink_",
+						"type": "string"
+					}
+				],
+				"name": "updateSessionLink",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"interfaces/IAmaSession.sol": "IAmaSession"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"interfaces/IAmaSession.sol": {
+			"keccak256": "0x7aefb7389dd7dbe9e05e72b8201585e34666918c64ea3accec14c6cff0f6a392",
+			"license": "GNU AGPLv3",
+			"urls": [
+				"bzz-raw://640fb22cb10c4fa4a250c8b6282e777724a5b21fb841f70dd3d92394b4d04bac",
+				"dweb:/ipfs/QmUTPyNqiW158nQRmhTV8ZitKHzaB14bUc7g6Cw9GkeiRf"
+			]
+		}
+	},
+	"version": 1
+}
