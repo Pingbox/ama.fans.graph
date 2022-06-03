@@ -82,6 +82,7 @@ export class AmaUserEntity extends Entity {
     this.set("txHash", Value.fromString(""));
     this.set("messagesCreated", Value.fromBigInt(BigInt.zero()));
     this.set("postsCreated", Value.fromBigInt(BigInt.zero()));
+    this.set("sessionsCreated", Value.fromBigInt(BigInt.zero()));
     this.set("tipsCreated", Value.fromBigInt(BigInt.zero()));
     this.set("postTipsCreated", Value.fromBigInt(BigInt.zero()));
     this.set("responsesCreated", Value.fromBigInt(BigInt.zero()));
@@ -97,6 +98,7 @@ export class AmaUserEntity extends Entity {
     this.set("badResponseReceived", Value.fromBigInt(BigInt.zero()));
     this.set("followers", Value.fromBigInt(BigInt.zero()));
     this.set("whitelistUserReceived", Value.fromBigInt(BigInt.zero()));
+    this.set("valueSpentOnSessions", Value.fromBigInt(BigInt.zero()));
     this.set("valueSpentOnMessages", Value.fromBigInt(BigInt.zero()));
     this.set("valueSpentOnPosts", Value.fromBigInt(BigInt.zero()));
     this.set("valueSpentOnTips", Value.fromBigInt(BigInt.zero()));
@@ -167,6 +169,15 @@ export class AmaUserEntity extends Entity {
 
   set postsCreated(value: BigInt) {
     this.set("postsCreated", Value.fromBigInt(value));
+  }
+
+  get sessionsCreated(): BigInt {
+    let value = this.get("sessionsCreated");
+    return value!.toBigInt();
+  }
+
+  set sessionsCreated(value: BigInt) {
+    this.set("sessionsCreated", Value.fromBigInt(value));
   }
 
   get tipsCreated(): BigInt {
@@ -302,6 +313,15 @@ export class AmaUserEntity extends Entity {
 
   set whitelistUserReceived(value: BigInt) {
     this.set("whitelistUserReceived", Value.fromBigInt(value));
+  }
+
+  get valueSpentOnSessions(): BigInt {
+    let value = this.get("valueSpentOnSessions");
+    return value!.toBigInt();
+  }
+
+  set valueSpentOnSessions(value: BigInt) {
+    this.set("valueSpentOnSessions", Value.fromBigInt(value));
   }
 
   get valueSpentOnMessages(): BigInt {
@@ -2155,6 +2175,826 @@ export class PostTipEntity extends Entity {
 
   set createdAt(value: BigInt) {
     this.set("createdAt", Value.fromBigInt(value));
+  }
+
+  get gasLimit(): BigInt {
+    let value = this.get("gasLimit");
+    return value!.toBigInt();
+  }
+
+  set gasLimit(value: BigInt) {
+    this.set("gasLimit", Value.fromBigInt(value));
+  }
+
+  get gasPrice(): BigInt {
+    let value = this.get("gasPrice");
+    return value!.toBigInt();
+  }
+
+  set gasPrice(value: BigInt) {
+    this.set("gasPrice", Value.fromBigInt(value));
+  }
+}
+
+export class SessionCreatedEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("sessionId", Value.fromBytes(Bytes.empty()));
+    this.set("txHash", Value.fromString(""));
+    this.set("owner", Value.fromString(""));
+    this.set("startTime", Value.fromBigInt(BigInt.zero()));
+    this.set("endTime", Value.fromBigInt(BigInt.zero()));
+    this.set("oldEndTime", Value.fromBigInt(BigInt.zero()));
+    this.set("rewardPerAMA", Value.fromBigInt(BigInt.zero()));
+    this.set("rewardPool", Value.fromBigInt(BigInt.zero()));
+    this.set("link", Value.fromString(""));
+    this.set("rewardPoolLeft", Value.fromBigInt(BigInt.zero()));
+    this.set("valueRefunnded", Value.fromBigInt(BigInt.zero()));
+    this.set("messagesSent", Value.fromBigInt(BigInt.zero()));
+    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
+    this.set("gasLimit", Value.fromBigInt(BigInt.zero()));
+    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save SessionCreatedEntity entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type SessionCreatedEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("SessionCreatedEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): SessionCreatedEntity | null {
+    return changetype<SessionCreatedEntity | null>(
+      store.get("SessionCreatedEntity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get sessionId(): Bytes {
+    let value = this.get("sessionId");
+    return value!.toBytes();
+  }
+
+  set sessionId(value: Bytes) {
+    this.set("sessionId", Value.fromBytes(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
+  }
+
+  get owner(): string {
+    let value = this.get("owner");
+    return value!.toString();
+  }
+
+  set owner(value: string) {
+    this.set("owner", Value.fromString(value));
+  }
+
+  get startTime(): BigInt {
+    let value = this.get("startTime");
+    return value!.toBigInt();
+  }
+
+  set startTime(value: BigInt) {
+    this.set("startTime", Value.fromBigInt(value));
+  }
+
+  get endTime(): BigInt {
+    let value = this.get("endTime");
+    return value!.toBigInt();
+  }
+
+  set endTime(value: BigInt) {
+    this.set("endTime", Value.fromBigInt(value));
+  }
+
+  get oldEndTime(): BigInt {
+    let value = this.get("oldEndTime");
+    return value!.toBigInt();
+  }
+
+  set oldEndTime(value: BigInt) {
+    this.set("oldEndTime", Value.fromBigInt(value));
+  }
+
+  get rewardPerAMA(): BigInt {
+    let value = this.get("rewardPerAMA");
+    return value!.toBigInt();
+  }
+
+  set rewardPerAMA(value: BigInt) {
+    this.set("rewardPerAMA", Value.fromBigInt(value));
+  }
+
+  get rewardPool(): BigInt {
+    let value = this.get("rewardPool");
+    return value!.toBigInt();
+  }
+
+  set rewardPool(value: BigInt) {
+    this.set("rewardPool", Value.fromBigInt(value));
+  }
+
+  get link(): string {
+    let value = this.get("link");
+    return value!.toString();
+  }
+
+  set link(value: string) {
+    this.set("link", Value.fromString(value));
+  }
+
+  get rewardPoolLeft(): BigInt {
+    let value = this.get("rewardPoolLeft");
+    return value!.toBigInt();
+  }
+
+  set rewardPoolLeft(value: BigInt) {
+    this.set("rewardPoolLeft", Value.fromBigInt(value));
+  }
+
+  get valueRefunnded(): BigInt {
+    let value = this.get("valueRefunnded");
+    return value!.toBigInt();
+  }
+
+  set valueRefunnded(value: BigInt) {
+    this.set("valueRefunnded", Value.fromBigInt(value));
+  }
+
+  get messagesSent(): BigInt {
+    let value = this.get("messagesSent");
+    return value!.toBigInt();
+  }
+
+  set messagesSent(value: BigInt) {
+    this.set("messagesSent", Value.fromBigInt(value));
+  }
+
+  get createdAt(): BigInt {
+    let value = this.get("createdAt");
+    return value!.toBigInt();
+  }
+
+  set createdAt(value: BigInt) {
+    this.set("createdAt", Value.fromBigInt(value));
+  }
+
+  get gasLimit(): BigInt {
+    let value = this.get("gasLimit");
+    return value!.toBigInt();
+  }
+
+  set gasLimit(value: BigInt) {
+    this.set("gasLimit", Value.fromBigInt(value));
+  }
+
+  get gasPrice(): BigInt {
+    let value = this.get("gasPrice");
+    return value!.toBigInt();
+  }
+
+  set gasPrice(value: BigInt) {
+    this.set("gasPrice", Value.fromBigInt(value));
+  }
+}
+
+export class SessionLinkUpdatedEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("txHash", Value.fromString(""));
+    this.set("sessionId", Value.fromBytes(Bytes.empty()));
+    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
+    this.set("link", Value.fromString(""));
+    this.set("gasLimit", Value.fromBigInt(BigInt.zero()));
+    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save SessionLinkUpdatedEntity entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type SessionLinkUpdatedEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("SessionLinkUpdatedEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): SessionLinkUpdatedEntity | null {
+    return changetype<SessionLinkUpdatedEntity | null>(
+      store.get("SessionLinkUpdatedEntity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
+  }
+
+  get sessionId(): Bytes {
+    let value = this.get("sessionId");
+    return value!.toBytes();
+  }
+
+  set sessionId(value: Bytes) {
+    this.set("sessionId", Value.fromBytes(value));
+  }
+
+  get createdAt(): BigInt {
+    let value = this.get("createdAt");
+    return value!.toBigInt();
+  }
+
+  set createdAt(value: BigInt) {
+    this.set("createdAt", Value.fromBigInt(value));
+  }
+
+  get link(): string {
+    let value = this.get("link");
+    return value!.toString();
+  }
+
+  set link(value: string) {
+    this.set("link", Value.fromString(value));
+  }
+
+  get gasLimit(): BigInt {
+    let value = this.get("gasLimit");
+    return value!.toBigInt();
+  }
+
+  set gasLimit(value: BigInt) {
+    this.set("gasLimit", Value.fromBigInt(value));
+  }
+
+  get gasPrice(): BigInt {
+    let value = this.get("gasPrice");
+    return value!.toBigInt();
+  }
+
+  set gasPrice(value: BigInt) {
+    this.set("gasPrice", Value.fromBigInt(value));
+  }
+}
+
+export class SessionTopUpEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("txHash", Value.fromString(""));
+    this.set("sessionId", Value.fromBytes(Bytes.empty()));
+    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
+    this.set("newRewardPool", Value.fromBigInt(BigInt.zero()));
+    this.set("additionalFund", Value.fromBigInt(BigInt.zero()));
+    this.set("gasLimit", Value.fromBigInt(BigInt.zero()));
+    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save SessionTopUpEntity entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type SessionTopUpEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("SessionTopUpEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): SessionTopUpEntity | null {
+    return changetype<SessionTopUpEntity | null>(
+      store.get("SessionTopUpEntity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
+  }
+
+  get sessionId(): Bytes {
+    let value = this.get("sessionId");
+    return value!.toBytes();
+  }
+
+  set sessionId(value: Bytes) {
+    this.set("sessionId", Value.fromBytes(value));
+  }
+
+  get createdAt(): BigInt {
+    let value = this.get("createdAt");
+    return value!.toBigInt();
+  }
+
+  set createdAt(value: BigInt) {
+    this.set("createdAt", Value.fromBigInt(value));
+  }
+
+  get newRewardPool(): BigInt {
+    let value = this.get("newRewardPool");
+    return value!.toBigInt();
+  }
+
+  set newRewardPool(value: BigInt) {
+    this.set("newRewardPool", Value.fromBigInt(value));
+  }
+
+  get additionalFund(): BigInt {
+    let value = this.get("additionalFund");
+    return value!.toBigInt();
+  }
+
+  set additionalFund(value: BigInt) {
+    this.set("additionalFund", Value.fromBigInt(value));
+  }
+
+  get gasLimit(): BigInt {
+    let value = this.get("gasLimit");
+    return value!.toBigInt();
+  }
+
+  set gasLimit(value: BigInt) {
+    this.set("gasLimit", Value.fromBigInt(value));
+  }
+
+  get gasPrice(): BigInt {
+    let value = this.get("gasPrice");
+    return value!.toBigInt();
+  }
+
+  set gasPrice(value: BigInt) {
+    this.set("gasPrice", Value.fromBigInt(value));
+  }
+}
+
+export class SessionEndTimeUpdateEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("txHash", Value.fromString(""));
+    this.set("sessionId", Value.fromBytes(Bytes.empty()));
+    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
+    this.set("newEndTime", Value.fromBigInt(BigInt.zero()));
+    this.set("additionalTime", Value.fromBigInt(BigInt.zero()));
+    this.set("gasLimit", Value.fromBigInt(BigInt.zero()));
+    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save SessionEndTimeUpdateEntity entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type SessionEndTimeUpdateEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("SessionEndTimeUpdateEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): SessionEndTimeUpdateEntity | null {
+    return changetype<SessionEndTimeUpdateEntity | null>(
+      store.get("SessionEndTimeUpdateEntity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
+  }
+
+  get sessionId(): Bytes {
+    let value = this.get("sessionId");
+    return value!.toBytes();
+  }
+
+  set sessionId(value: Bytes) {
+    this.set("sessionId", Value.fromBytes(value));
+  }
+
+  get createdAt(): BigInt {
+    let value = this.get("createdAt");
+    return value!.toBigInt();
+  }
+
+  set createdAt(value: BigInt) {
+    this.set("createdAt", Value.fromBigInt(value));
+  }
+
+  get newEndTime(): BigInt {
+    let value = this.get("newEndTime");
+    return value!.toBigInt();
+  }
+
+  set newEndTime(value: BigInt) {
+    this.set("newEndTime", Value.fromBigInt(value));
+  }
+
+  get additionalTime(): BigInt {
+    let value = this.get("additionalTime");
+    return value!.toBigInt();
+  }
+
+  set additionalTime(value: BigInt) {
+    this.set("additionalTime", Value.fromBigInt(value));
+  }
+
+  get gasLimit(): BigInt {
+    let value = this.get("gasLimit");
+    return value!.toBigInt();
+  }
+
+  set gasLimit(value: BigInt) {
+    this.set("gasLimit", Value.fromBigInt(value));
+  }
+
+  get gasPrice(): BigInt {
+    let value = this.get("gasPrice");
+    return value!.toBigInt();
+  }
+
+  set gasPrice(value: BigInt) {
+    this.set("gasPrice", Value.fromBigInt(value));
+  }
+}
+
+export class RewardDistributedOnAmaEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("txHash", Value.fromString(""));
+    this.set("sessionId", Value.fromBytes(Bytes.empty()));
+    this.set("messageId", Value.fromBytes(Bytes.empty()));
+    this.set("rewardPerAMA", Value.fromBigInt(BigInt.zero()));
+    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
+    this.set("rewardsLeft", Value.fromBigInt(BigInt.zero()));
+    this.set("gasLimit", Value.fromBigInt(BigInt.zero()));
+    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save RewardDistributedOnAmaEntity entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type RewardDistributedOnAmaEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("RewardDistributedOnAmaEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): RewardDistributedOnAmaEntity | null {
+    return changetype<RewardDistributedOnAmaEntity | null>(
+      store.get("RewardDistributedOnAmaEntity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
+  }
+
+  get sessionId(): Bytes {
+    let value = this.get("sessionId");
+    return value!.toBytes();
+  }
+
+  set sessionId(value: Bytes) {
+    this.set("sessionId", Value.fromBytes(value));
+  }
+
+  get messageId(): Bytes {
+    let value = this.get("messageId");
+    return value!.toBytes();
+  }
+
+  set messageId(value: Bytes) {
+    this.set("messageId", Value.fromBytes(value));
+  }
+
+  get rewardPerAMA(): BigInt {
+    let value = this.get("rewardPerAMA");
+    return value!.toBigInt();
+  }
+
+  set rewardPerAMA(value: BigInt) {
+    this.set("rewardPerAMA", Value.fromBigInt(value));
+  }
+
+  get createdAt(): BigInt {
+    let value = this.get("createdAt");
+    return value!.toBigInt();
+  }
+
+  set createdAt(value: BigInt) {
+    this.set("createdAt", Value.fromBigInt(value));
+  }
+
+  get rewardsLeft(): BigInt {
+    let value = this.get("rewardsLeft");
+    return value!.toBigInt();
+  }
+
+  set rewardsLeft(value: BigInt) {
+    this.set("rewardsLeft", Value.fromBigInt(value));
+  }
+
+  get gasLimit(): BigInt {
+    let value = this.get("gasLimit");
+    return value!.toBigInt();
+  }
+
+  set gasLimit(value: BigInt) {
+    this.set("gasLimit", Value.fromBigInt(value));
+  }
+
+  get gasPrice(): BigInt {
+    let value = this.get("gasPrice");
+    return value!.toBigInt();
+  }
+
+  set gasPrice(value: BigInt) {
+    this.set("gasPrice", Value.fromBigInt(value));
+  }
+}
+
+export class SessionEndedBeforeTimeEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("txHash", Value.fromString(""));
+    this.set("sessionId", Value.fromBytes(Bytes.empty()));
+    this.set("oldEndTime", Value.fromBigInt(BigInt.zero()));
+    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
+    this.set("newTime", Value.fromBigInt(BigInt.zero()));
+    this.set("gasLimit", Value.fromBigInt(BigInt.zero()));
+    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save SessionEndedBeforeTimeEntity entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type SessionEndedBeforeTimeEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("SessionEndedBeforeTimeEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): SessionEndedBeforeTimeEntity | null {
+    return changetype<SessionEndedBeforeTimeEntity | null>(
+      store.get("SessionEndedBeforeTimeEntity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
+  }
+
+  get sessionId(): Bytes {
+    let value = this.get("sessionId");
+    return value!.toBytes();
+  }
+
+  set sessionId(value: Bytes) {
+    this.set("sessionId", Value.fromBytes(value));
+  }
+
+  get oldEndTime(): BigInt {
+    let value = this.get("oldEndTime");
+    return value!.toBigInt();
+  }
+
+  set oldEndTime(value: BigInt) {
+    this.set("oldEndTime", Value.fromBigInt(value));
+  }
+
+  get createdAt(): BigInt {
+    let value = this.get("createdAt");
+    return value!.toBigInt();
+  }
+
+  set createdAt(value: BigInt) {
+    this.set("createdAt", Value.fromBigInt(value));
+  }
+
+  get newTime(): BigInt {
+    let value = this.get("newTime");
+    return value!.toBigInt();
+  }
+
+  set newTime(value: BigInt) {
+    this.set("newTime", Value.fromBigInt(value));
+  }
+
+  get gasLimit(): BigInt {
+    let value = this.get("gasLimit");
+    return value!.toBigInt();
+  }
+
+  set gasLimit(value: BigInt) {
+    this.set("gasLimit", Value.fromBigInt(value));
+  }
+
+  get gasPrice(): BigInt {
+    let value = this.get("gasPrice");
+    return value!.toBigInt();
+  }
+
+  set gasPrice(value: BigInt) {
+    this.set("gasPrice", Value.fromBigInt(value));
+  }
+}
+
+export class SessionRewardLeftClaimedEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("txHash", Value.fromString(""));
+    this.set("sessionId", Value.fromBytes(Bytes.empty()));
+    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
+    this.set("rewardLeft", Value.fromBigInt(BigInt.zero()));
+    this.set("gasLimit", Value.fromBigInt(BigInt.zero()));
+    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save SessionRewardLeftClaimedEntity entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type SessionRewardLeftClaimedEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("SessionRewardLeftClaimedEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): SessionRewardLeftClaimedEntity | null {
+    return changetype<SessionRewardLeftClaimedEntity | null>(
+      store.get("SessionRewardLeftClaimedEntity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
+  }
+
+  get sessionId(): Bytes {
+    let value = this.get("sessionId");
+    return value!.toBytes();
+  }
+
+  set sessionId(value: Bytes) {
+    this.set("sessionId", Value.fromBytes(value));
+  }
+
+  get createdAt(): BigInt {
+    let value = this.get("createdAt");
+    return value!.toBigInt();
+  }
+
+  set createdAt(value: BigInt) {
+    this.set("createdAt", Value.fromBigInt(value));
+  }
+
+  get rewardLeft(): BigInt {
+    let value = this.get("rewardLeft");
+    return value!.toBigInt();
+  }
+
+  set rewardLeft(value: BigInt) {
+    this.set("rewardLeft", Value.fromBigInt(value));
   }
 
   get gasLimit(): BigInt {

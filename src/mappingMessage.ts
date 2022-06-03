@@ -17,19 +17,35 @@ import {
 
 import { AmountReceivedEntity, ResponseCreatedEntity, MessageCreatedEntity, MessageValueClaimedEntity,
   TipCreatedEntity, TipValueClaimedEntity, AmaUserEntity,
-    ResponseMarkedEntity} from "../generated/schema"
+    ResponseMarkedEntity, SessionCreatedEntity} from "../generated/schema"
 
 
 export function handleMessageCreated(event: MessageCreated): void {
-    //Actions Takes:
-    // A
+    //event MessageCreated(address indexed createdBy, address indexed recipient, bytes32 indexed messageId, bytes32 activeSessionId, string messageLink, bytes data);
     //sedner, recipient_,timelock_,messageType_,messageHash_,msg.value,_isWhiteListed
-    let decoded = ethereum.decode("(address,address,uint256,uint256,bytes32,uint256,bool))", event.params.data).toTuple();
-    let expiryTime = decoded[2].toBigInt().plus(event.block.timestamp)
-    let messageType = decoded[3].toBigInt()
-    let messageHash = decoded[4].toBytes()
-    let value = decoded[5].toBigInt()
+    //(address,address,uint256,uint8,string,uint256,bool)
+        let expiryTime = BigInt.fromI32(0);
+        let messageType = BigInt.fromI32(0);
+        let value = BigInt.fromI32(0);
+        let decoded = ethereum.decode("(address,address,uint256,uint8,string,uint256,bool))", event.params.data)
+        log.error('Data recieved {}', [
+            event.params.data.toString()
+        ])
+        if(decoded){
+            let data = decoded.toTuple()
+            let expiryTime = data[2].toBigInt().plus(event.block.timestamp)
+            let messageType = data[3].toBigInt()
+            let value = data[5].toBigInt()    
+        }
 
+    //If activeSEssionId is present i.e the message was sent when the reciever has an session in effect, 
+    //Update the message counter of the session.
+    if(event.params.activeSessionId){
+        let session = SessionCreatedEntity.load(event.params.activeSessionId.toString())
+        if(session){
+            session.messagesSent  = session.messagesSent.plus(BigInt.fromI32(1))
+        }
+    }
 
     log.debug('QuestionCreated: Block number: {}, block hash: {}, transaction hash: {}', [
         event.block.number.toString(), // "47596000"
@@ -103,6 +119,7 @@ export function handleMessageCreated(event: MessageCreated): void {
     newMessage.gasLimit =  event.transaction.gasLimit
     newMessage.gasPrice =  event.transaction.gasPrice
     newMessage.activeSessionId = event.params.activeSessionId
+    newMessage.data = event.params.data
 
     newMessage.save()
 }

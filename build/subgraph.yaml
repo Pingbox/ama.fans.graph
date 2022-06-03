@@ -6,9 +6,9 @@ dataSources:
     name: MessageFacet
     network: celo-alfajores
     source:
-      address: "0xE853E5a407235FFf3C0Df7B0469E325acb82752A"
+      address: "0xE5a7a6aCF5c9FA0a2aB0644c4f174e73db296d37"
       abi: MessageFacet
-      startBlock: 11474567
+      startBlock: 11778181
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -46,9 +46,9 @@ dataSources:
     name: PostFacet
     network: celo-alfajores
     source:
-      address: "0xE853E5a407235FFf3C0Df7B0469E325acb82752A"
+      address: "0xE5a7a6aCF5c9FA0a2aB0644c4f174e73db296d37"
       abi: PostFacet
-      startBlock: 11474567
+      startBlock: 11778181
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -72,9 +72,9 @@ dataSources:
     name: SessionFacet
     network: celo-alfajores
     source:
-      address: "0xE853E5a407235FFf3C0Df7B0469E325acb82752A"
+      address: "0xE5a7a6aCF5c9FA0a2aB0644c4f174e73db296d37"
       abi: SessionFacet
-      startBlock: 11474567
+      startBlock: 11778181
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -87,7 +87,6 @@ dataSources:
         - RewardDistributedOnAma
         - SessionEndedBeforeTime
         - SessionRewardLeftClaimed
-        - SessionTopUp
         - AmountReceived
       abis:
         - name: SessionFacet
@@ -108,8 +107,6 @@ dataSources:
           handler: handleSessionEndedBeforeTime
         - event: SessionRewardLeftClaimed(indexed bytes32,uint256)
           handler: handleSessionRewardLeftClaimed
-        - event: SessionTopUp(indexed bytes32,uint256,uint256)
-          handler: handleSessionTopUp
         - event: AmountReceived(indexed address,uint256)
           handler: handleAmountReceived
       file: SessionFacet/SessionFacet.wasm
@@ -117,9 +114,9 @@ dataSources:
     name: UserFacet
     network: celo-alfajores
     source:
-      address: "0xE853E5a407235FFf3C0Df7B0469E325acb82752A"
+      address: "0xE5a7a6aCF5c9FA0a2aB0644c4f174e73db296d37"
       abi: UserFacet
-      startBlock: 11474567
+      startBlock: 11778181
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -156,14 +153,14 @@ dataSources:
           handler: handleUnFollow
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-      file: MessageFacet/MessageFacet.wasm
+      file: UserFacet/UserFacet.wasm
   - kind: ethereum
     name: OwnershipFacet
     network: celo-alfajores
     source:
-      address: "0xE853E5a407235FFf3C0Df7B0469E325acb82752A"
+      address: "0xE5a7a6aCF5c9FA0a2aB0644c4f174e73db296d37"
       abi: OwnershipFacet
-      startBlock: 11474567
+      startBlock: 11778181
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -185,4 +182,4 @@ dataSources:
           handler: handleRoleRevoked
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
-      file: SessionFacet/SessionFacet.wasm
+      file: OwnershipFacet/OwnershipFacet.wasm

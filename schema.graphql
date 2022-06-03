@@ -11,6 +11,7 @@ type AmaUserEntity @entity {
   txHash: String!
   messagesCreated: BigInt!
   postsCreated: BigInt!
+  sessionsCreated: BigInt!
 
 
   tipsCreated: BigInt!
@@ -32,6 +33,10 @@ type AmaUserEntity @entity {
   followers: BigInt!
   whitelistUserReceived: BigInt!
 
+
+
+  "The aggragte value which a user has spent on sessions" 
+  valueSpentOnSessions: BigInt!
 
 
   "The aggragte value which a user has spent on creating messages" 
@@ -276,10 +281,12 @@ type SessionCreatedEntity @entity {
   owner: String!
   startTime: BigInt!
   endTime: BigInt!
+  oldEndTime: BigInt!
   rewardPerAMA: BigInt!
   rewardPool: BigInt!
   link: String!
   rewardPoolLeft: BigInt!
+  valueRefunnded: BigInt!
   messagesSent: BigInt!
   createdAt: BigInt!
   gasLimit: BigInt!
@@ -292,6 +299,9 @@ type SessionLinkUpdatedEntity @entity {
   sessionId: Bytes!
   createdAt: BigInt!
   link: String!  
+  gasLimit: BigInt!
+  gasPrice: BigInt! 
+
   }
 
 type SessionTopUpEntity @entity {
@@ -299,8 +309,24 @@ type SessionTopUpEntity @entity {
   txHash: String!
   sessionId: Bytes!
   createdAt: BigInt!
+  newRewardPool: BigInt!
+  additionalFund: BigInt!
+  gasLimit: BigInt!
+  gasPrice: BigInt! 
+
+}
+
+
+type SessionEndTimeUpdateEntity @entity{
+  id: ID!
+  txHash: String!
+  sessionId: Bytes!
+  createdAt: BigInt!
   newEndTime: BigInt!
   additionalTime: BigInt!
+  gasLimit: BigInt!
+  gasPrice: BigInt! 
+
 }
 
 type RewardDistributedOnAmaEntity @entity {
@@ -311,6 +337,9 @@ type RewardDistributedOnAmaEntity @entity {
   rewardPerAMA: BigInt!
   createdAt: BigInt!
   rewardsLeft: BigInt!
+  gasLimit: BigInt!
+  gasPrice: BigInt! 
+
 }
 
 type SessionEndedBeforeTimeEntity @entity {
@@ -320,6 +349,9 @@ type SessionEndedBeforeTimeEntity @entity {
   oldEndTime: BigInt!
   createdAt: BigInt!
   newTime: BigInt!
+  gasLimit: BigInt!
+  gasPrice: BigInt! 
+
 }
 
 type SessionRewardLeftClaimedEntity @entity {
@@ -328,4 +360,7 @@ type SessionRewardLeftClaimedEntity @entity {
   sessionId: Bytes!
   createdAt: BigInt!
   rewardLeft: BigInt!
+  gasLimit: BigInt!
+  gasPrice: BigInt! 
+
 }

@@ -6,9 +6,9 @@ dataSources:
     name: MessageFacet
     network: 'celo-alfajores'
     source:
-      address: '0xE853E5a407235FFf3C0Df7B0469E325acb82752A'
+      address: '0xE5a7a6aCF5c9FA0a2aB0644c4f174e73db296d37'
       abi: MessageFacet   
-      startBlock: 11474567
+      startBlock: 11778181
 
     mapping:
       kind: ethereum/events
@@ -49,15 +49,15 @@ dataSources:
         - event: AmountReceived(indexed address,uint256)
           handler: handleAmountReceived
 
-      file: ./src/mappingUser.ts
+      file: ./src/mappingMessage.ts
 
   - kind: ethereum
     name: PostFacet
     network: 'celo-alfajores'
     source:
-      address: '0xE853E5a407235FFf3C0Df7B0469E325acb82752A'
+      address: '0xE5a7a6aCF5c9FA0a2aB0644c4f174e73db296d37'
       abi: PostFacet   
-      startBlock: 11474567
+      startBlock: 11778181
 
     mapping:
       kind: ethereum/events
@@ -88,9 +88,9 @@ dataSources:
     name: SessionFacet
     network: 'celo-alfajores'
     source:
-      address: '0xE853E5a407235FFf3C0Df7B0469E325acb82752A'
+      address: '0xE5a7a6aCF5c9FA0a2aB0644c4f174e73db296d37'
       abi: SessionFacet   
-      startBlock: 11474567
+      startBlock: 11778181
 
     mapping:
       kind: ethereum/events
@@ -104,7 +104,6 @@ dataSources:
         - RewardDistributedOnAma
         - SessionEndedBeforeTime
         - SessionRewardLeftClaimed
-        - SessionTopUp
         - AmountReceived
         
       abis:
@@ -133,9 +132,6 @@ dataSources:
         - event: SessionRewardLeftClaimed(indexed bytes32,uint256)
           handler: handleSessionRewardLeftClaimed
 
-        - event: SessionTopUp(indexed bytes32,uint256,uint256)
-          handler: handleSessionTopUp
-
         - event: AmountReceived(indexed address,uint256)
           handler: handleAmountReceived
 
@@ -147,9 +143,9 @@ dataSources:
     name: UserFacet
     network: 'celo-alfajores'
     source:
-      address: '0xE853E5a407235FFf3C0Df7B0469E325acb82752A'
+      address: '0xE5a7a6aCF5c9FA0a2aB0644c4f174e73db296d37'
       abi: UserFacet   
-      startBlock: 11474567
+      startBlock: 11778181
 
     mapping:
       kind: ethereum/events
@@ -204,9 +200,9 @@ dataSources:
     name: OwnershipFacet
     network: 'celo-alfajores'
     source:
-      address: '0xE853E5a407235FFf3C0Df7B0469E325acb82752A'
+      address: '0xE5a7a6aCF5c9FA0a2aB0644c4f174e73db296d37'
       abi: OwnershipFacet   
-      startBlock: 11474567
+      startBlock: 11778181
 
     mapping:
       kind: ethereum/events
@@ -241,9 +237,9 @@ dataSources:
   #   name: DiamondCutFacet
   #   network: 'celo-alfajores'
   #   source:
-  #     address: '0xE853E5a407235FFf3C0Df7B0469E325acb82752A'
+  #     address: ''
   #     abi: DiamondCutFacet   
-  #     startBlock: 11474567
+  #     startBlock: 11778181
 
   #   mapping:
   #     kind: ethereum/events

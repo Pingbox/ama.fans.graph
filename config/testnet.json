@@ -1,10 +1,7 @@
+
 {
   "network": "celo-alfajores",
-  "messageFacetAddress": "0xE853E5a407235FFf3C0Df7B0469E325acb82752A",
-  "postFacetaddress": "0xE853E5a407235FFf3C0Df7B0469E325acb82752A",
-  "sessionFacetaddress": "0xE853E5a407235FFf3C0Df7B0469E325acb82752A",
-  "userFacetaddress": "0xE853E5a407235FFf3C0Df7B0469E325acb82752A",
-  "ownershipFacetaddress": "0xE853E5a407235FFf3C0Df7B0469E325acb82752A",
-  "diamondCutFacetaddress": "0xE853E5a407235FFf3C0Df7B0469E325acb82752A",
-  "startBlock": "11474567"
+  "mainAddress": "0xE5a7a6aCF5c9FA0a2aB0644c4f174e73db296d37",
+  "startBlock": "11778181"
 }
+

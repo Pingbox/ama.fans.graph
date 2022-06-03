@@ -6,7 +6,7 @@ dataSources:
     name: MessageFacet
     network: '{{network}}'
     source:
-      address: '{{messageFacetAddress}}'
+      address: '{{mainAddress}}'
       abi: MessageFacet   
       startBlock: {{startBlock}}
 
@@ -49,13 +49,13 @@ dataSources:
         - event: AmountReceived(indexed address,uint256)
           handler: handleAmountReceived
 
-      file: ./src/mappingUser.ts
+      file: ./src/mappingMessage.ts
 
   - kind: ethereum
     name: PostFacet
     network: '{{network}}'
     source:
-      address: '{{postFacetaddress}}'
+      address: '{{mainAddress}}'
       abi: PostFacet   
       startBlock: {{startBlock}}
 
@@ -88,7 +88,7 @@ dataSources:
     name: SessionFacet
     network: '{{network}}'
     source:
-      address: '{{sessionFacetaddress}}'
+      address: '{{mainAddress}}'
       abi: SessionFacet   
       startBlock: {{startBlock}}
 
@@ -104,7 +104,6 @@ dataSources:
         - RewardDistributedOnAma
         - SessionEndedBeforeTime
         - SessionRewardLeftClaimed
-        - SessionTopUp
         - AmountReceived
         
       abis:
@@ -133,9 +132,6 @@ dataSources:
         - event: SessionRewardLeftClaimed(indexed bytes32,uint256)
           handler: handleSessionRewardLeftClaimed
 
-        - event: SessionTopUp(indexed bytes32,uint256,uint256)
-          handler: handleSessionTopUp
-
         - event: AmountReceived(indexed address,uint256)
           handler: handleAmountReceived
 
@@ -147,7 +143,7 @@ dataSources:
     name: UserFacet
     network: '{{network}}'
     source:
-      address: '{{userFacetaddress}}'
+      address: '{{mainAddress}}'
       abi: UserFacet   
       startBlock: {{startBlock}}
 
@@ -204,7 +200,7 @@ dataSources:
     name: OwnershipFacet
     network: '{{network}}'
     source:
-      address: '{{ownershipFacetaddress}}'
+      address: '{{mainAddress}}'
       abi: OwnershipFacet   
       startBlock: {{startBlock}}
 

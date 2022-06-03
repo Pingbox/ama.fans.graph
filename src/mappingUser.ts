@@ -46,6 +46,8 @@ function insertUser(userAddress: string, timestamp: BigInt): AmaUserEntity{
     user.messagesCreated = BigInt.fromI32(0)
     user.tipsCreated = BigInt.fromI32(0)
     user.postTipsCreated = BigInt.fromI32(0)
+    user.postTipsCreated = BigInt.fromI32(0)
+    user.sessionsCreated = BigInt.fromI32(0)
     
     user.blockUserCreated = BigInt.fromI32(0)
     user.followers = BigInt.fromI32(0)
@@ -66,7 +68,8 @@ function insertUser(userAddress: string, timestamp: BigInt): AmaUserEntity{
     user.valueSpentOnTips = BigInt.fromI32(0)
     user.valueSpentOnPostTips = BigInt.fromI32(0)
     user.valueSpentOnMessages = BigInt.fromI32(0)
-
+    user.valueSpentOnSessions = BigInt.fromI32(0)
+  
 
     //Value Received by user
     user.valueReceivedOnResponses = BigInt.fromI32(0)
