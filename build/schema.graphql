@@ -364,3 +364,51 @@ type SessionRewardLeftClaimedEntity @entity {
   gasPrice: BigInt! 
 
 }
+
+
+type OwnershipTransferredEntity @entity{
+  id: ID!
+  role: Bytes!
+  sender: String!
+  previousOwner: String!
+  newOwner: String!
+  txHash: String!
+  createdAt: BigInt!
+  gasLimit: BigInt!
+  gasPrice: BigInt!
+}
+
+type RoleAdminChangedEntity @entity {
+  id: ID!
+  role: Bytes!
+  sender: String!
+  previousAdminRole: Bytes!
+  newAdminRole: Bytes!
+  txHash: String!
+  createdAt: BigInt!
+  gasLimit: BigInt!
+  gasPrice: BigInt!
+}
+
+type RoleGrantedEntity @entity {
+  id: ID!
+  role: Bytes!
+  sender: String!
+  account: String!
+  txHash: String!
+  createdAt: BigInt!
+  gasLimit: BigInt!
+  gasPrice: BigInt!
+}
+
+type RoleRevokedEntity @entity {
+  id: ID!
+  role: Bytes!
+  sender: String!
+  account: String!
+  txHash: String!
+  createdAt: BigInt!
+  gasLimit: BigInt!
+  gasPrice: BigInt! 
+
+}

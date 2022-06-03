@@ -45,7 +45,7 @@ export class MessageCreated__Params {
     this._event = event;
   }
 
-  get createdBy(): Address {
+  get sender(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
@@ -65,8 +65,16 @@ export class MessageCreated__Params {
     return this._event.parameters[4].value.toString();
   }
 
-  get data(): Bytes {
-    return this._event.parameters[5].value.toBytes();
+  get messageType(): BigInt {
+    return this._event.parameters[5].value.toBigInt();
+  }
+
+  get msgValue(): BigInt {
+    return this._event.parameters[6].value.toBigInt();
+  }
+
+  get timelock(): BigInt {
+    return this._event.parameters[7].value.toBigInt();
   }
 }
 
@@ -856,11 +864,11 @@ export class SetMinimumBidCall__Inputs {
     this._call = call;
   }
 
-  get _minimumBid(): BigInt {
+  get minimumBid_(): BigInt {
     return this._call.inputValues[0].value.toBigInt();
   }
 
-  get _messageType(): BigInt {
+  get messageType_(): BigInt {
     return this._call.inputValues[1].value.toBigInt();
   }
 }

@@ -24,20 +24,7 @@ export function handleMessageCreated(event: MessageCreated): void {
     //event MessageCreated(address indexed createdBy, address indexed recipient, bytes32 indexed messageId, bytes32 activeSessionId, string messageLink, bytes data);
     //sedner, recipient_,timelock_,messageType_,messageHash_,msg.value,_isWhiteListed
     //(address,address,uint256,uint8,string,uint256,bool)
-        let expiryTime = BigInt.fromI32(0);
-        let messageType = BigInt.fromI32(0);
-        let value = BigInt.fromI32(0);
-        let decoded = ethereum.decode("(address,address,uint256,uint8,string,uint256,bool))", event.params.data)
-        log.error('Data recieved {}', [
-            event.params.data.toString()
-        ])
-        if(decoded){
-            let data = decoded.toTuple()
-            let expiryTime = data[2].toBigInt().plus(event.block.timestamp)
-            let messageType = data[3].toBigInt()
-            let value = data[5].toBigInt()    
-        }
-
+    
     //If activeSEssionId is present i.e the message was sent when the reciever has an session in effect, 
     //Update the message counter of the session.
     if(event.params.activeSessionId){
@@ -47,14 +34,7 @@ export function handleMessageCreated(event: MessageCreated): void {
         }
     }
 
-    log.debug('QuestionCreated: Block number: {}, block hash: {}, transaction hash: {}', [
-        event.block.number.toString(), // "47596000"
-        event.block.hash.toHexString(), // "0x..."
-        event.transaction.hash.toHexString(), // "0x..."
-    ])
-
-
-    let senderId = event.params.createdBy.toHexString()
+    let senderId = event.params.sender.toHexString()
     let recipientId = event.params.recipient.toHexString()
 
     let sender = AmaUserEntity.load(senderId)
@@ -79,7 +59,7 @@ export function handleMessageCreated(event: MessageCreated): void {
 
 
     sender.messagesCreated  =  sender.messagesCreated.plus(BigInt.fromI32(1))
-    sender.valueSpentOnMessages  = sender.valueSpentOnMessages.plus(value)
+    sender.valueSpentOnMessages  = sender.valueSpentOnMessages.plus(event.params.msgValue)
     sender.save()
 
 
@@ -104,14 +84,14 @@ export function handleMessageCreated(event: MessageCreated): void {
 
     newMessage.recipient = event.params.recipient.toString()
     newMessage.messageId = event.params.messageId
-    newMessage.createdBy = event.params.createdBy.toHexString()
-    newMessage.value = value
-    newMessage.expiryTime = expiryTime
+    newMessage.createdBy = event.params.sender.toHexString()
+    newMessage.value = event.params.msgValue
+    newMessage.expiryTime = event.params.timelock.plus( event.block.timestamp)
     newMessage.messageLink = event.params.messageLink
     newMessage.answered = false
     newMessage.claimed = false
     newMessage.responseType = BigInt.fromI32(0)
-    newMessage.messageType = messageType
+    newMessage.messageType =  event.params.messageType
     newMessage.createdAt = event.block.timestamp
     newMessage.tips = BigInt.fromI32(0)
     newMessage.tipsTotalValue = BigInt.fromI32(0)
@@ -119,7 +99,7 @@ export function handleMessageCreated(event: MessageCreated): void {
     newMessage.gasLimit =  event.transaction.gasLimit
     newMessage.gasPrice =  event.transaction.gasPrice
     newMessage.activeSessionId = event.params.activeSessionId
-    newMessage.data = event.params.data
+
 
     newMessage.save()
 }

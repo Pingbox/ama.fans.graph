@@ -28,7 +28,7 @@ dataSources:
           file: ./abis/MessageFacet.json
       eventHandlers:
 
-        - event: MessageCreated(indexed address,indexed address,indexed bytes32,bytes32,string,bytes)
+        - event: MessageCreated(indexed address,indexed address,indexed bytes32,bytes32,string,uint256,uint256,uint256)
           handler: handleMessageCreated
 
         - event: MessageValueClaimed(indexed bytes32,indexed address,uint256)

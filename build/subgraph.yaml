@@ -6,7 +6,7 @@ dataSources:
     name: MessageFacet
     network: celo-alfajores
     source:
-      address: "0xE5a7a6aCF5c9FA0a2aB0644c4f174e73db296d37"
+      address: "0xEE227558924b256e2C6798eD7aBf488431D7678a"
       abi: MessageFacet
       startBlock: 11778181
     mapping:
@@ -26,7 +26,7 @@ dataSources:
           file: MessageFacet/abis/MessageFacet.json
       eventHandlers:
         - event: MessageCreated(indexed address,indexed address,indexed
-            bytes32,bytes32,string,bytes)
+            bytes32,bytes32,string,uint256,uint256,uint256)
           handler: handleMessageCreated
         - event: MessageValueClaimed(indexed bytes32,indexed address,uint256)
           handler: handleMessageValueClaimed
@@ -46,7 +46,7 @@ dataSources:
     name: PostFacet
     network: celo-alfajores
     source:
-      address: "0xE5a7a6aCF5c9FA0a2aB0644c4f174e73db296d37"
+      address: "0xEE227558924b256e2C6798eD7aBf488431D7678a"
       abi: PostFacet
       startBlock: 11778181
     mapping:
@@ -72,7 +72,7 @@ dataSources:
     name: SessionFacet
     network: celo-alfajores
     source:
-      address: "0xE5a7a6aCF5c9FA0a2aB0644c4f174e73db296d37"
+      address: "0xEE227558924b256e2C6798eD7aBf488431D7678a"
       abi: SessionFacet
       startBlock: 11778181
     mapping:
@@ -114,7 +114,7 @@ dataSources:
     name: UserFacet
     network: celo-alfajores
     source:
-      address: "0xE5a7a6aCF5c9FA0a2aB0644c4f174e73db296d37"
+      address: "0xEE227558924b256e2C6798eD7aBf488431D7678a"
       abi: UserFacet
       startBlock: 11778181
     mapping:
@@ -158,7 +158,7 @@ dataSources:
     name: OwnershipFacet
     network: celo-alfajores
     source:
-      address: "0xE5a7a6aCF5c9FA0a2aB0644c4f174e73db296d37"
+      address: "0xEE227558924b256e2C6798eD7aBf488431D7678a"
       abi: OwnershipFacet
       startBlock: 11778181
     mapping:
