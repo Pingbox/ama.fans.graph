@@ -14,7 +14,7 @@ import {
 import { AmountReceivedEntity, PostEntity, PostTipEntity, AmaUserEntity} from "../generated/schema"
 
 
-export function handleAmountReceived(event: AmountReceived): void {
+export function handlePostAmountReceived(event: AmountReceived): void {
     // Entities can be loaded from the store using a string ID; this ID
     // needs to be unique across all entities of the same type
     let id = event.transaction.hash.toHex() + "-" + event.logIndex.toString()
@@ -53,7 +53,7 @@ export function handlePostCreated(event: PostCreated): void {
 
     let post = new PostEntity(event.params.postId.toHexString())
 
-    post.postId = event.params.postId
+    post.postId = event.params.postId.toHexString()
     post.createdBy = event.params.createdBy.toHexString()
     post.value = event.params.value
     post.link = event.params.link
@@ -96,8 +96,8 @@ export function handlePostCreated(event: PostCreated): void {
   
   
     let postTip  = new PostTipEntity(event.params.postTipId.toHex())
-    postTip.postId = event.params.postId
-    postTip.postTipId = event.params.postTipId
+    postTip.postId = event.params.postId.toHexString()
+    postTip.postTipId = event.params.postTipId.toHexString()
     postTip.createdBy = event.params.createdBy.toHexString()
     postTip.value = event.params.value
     postTip.createdAt = event.block.timestamp

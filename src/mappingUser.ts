@@ -4,7 +4,6 @@ import { log } from '@graphprotocol/graph-ts'
 const platofrmId =  "0x39bea80e7720932f5ef0db947964fa325382ba8fe519ff0586e972a55eca12c3"
 
 import {
-  AmountReceived,
   Blocked,
   UnBlock,
   Whitelisted, 
@@ -12,7 +11,6 @@ import {
   Follow,
   UnFollow,
   Withdraw,
-  Transfer
 } from "../generated/UserFacet/UserFacet"
 
 
@@ -21,18 +19,6 @@ import { AmountReceivedEntity,  BlockedEntity, UnBlockedEntity,
   FollowEntity, UnFollowEntity, WhitelistedEntity, UnWhitelistedEntity, WithdrawEntity,
      AmaUserEntity, TransferEntity} from "../generated/schema"
 
-export function handleAmountReceived(event: AmountReceived): void {
-  // Entities can be loaded from the store using a string ID; this ID
-  // needs to be unique across all entities of the same type
-  let id = event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  let entity = new AmountReceivedEntity(id)
-  entity.receiver = event.params.receiver.toHexString()
-  entity.value = event.params.value
-  entity.createdAt = event.block.timestamp
-  entity.txHash =  event.transaction.hash.toHex()
-  entity.facet = "user"
-  entity.save()
-}
 
 
 function insertUser(userAddress: string, timestamp: BigInt): AmaUserEntity{
@@ -290,80 +276,6 @@ export function handleUnFollow(event: UnFollow): void {
     userWhoLostFollower.followers = userWhoLostFollower.followers.minus(BigInt.fromI32(1))
     userWhoLostFollower.save()
     }
-}
-
-export function handleWithdraw(event: Withdraw): void {
-  let id = event.transaction.hash.toHex()
-  let withdrawEvent = new WithdrawEntity(id)
-  withdrawEvent.user = event.params.user.toHexString()
-  withdrawEvent.value = event.params.value
-  withdrawEvent.createdAt = event.block.timestamp
-  withdrawEvent.txHash =  event.transaction.hash.toHex()
-
-  withdrawEvent.save()
-  let user = AmaUserEntity.load(event.params.user.toHexString())
-  if(user == null){
-    user = insertUser(event.params.user.toHexString(), event.block.timestamp)
-  }
-
-    if (user.earningsWithdrawn !== null){
-      user.earningsWithdrawn = user.earningsWithdrawn.abs().plus(BigInt.fromI32(1))
-            
-      }else{
-        user.earningsWithdrawn = BigInt.fromI32(1)
-      }
-    user.save()
-}
-
-export function handleTransfer(event: Transfer): void {
-  let id = event.transaction.hash.toHex() 
-  let transfer = new TransferEntity(id)
-  transfer.sender = event.params.sender.toHexString()
-  transfer.recipient = event.params.recipient.toHexString()
-  transfer.value = event.params.value
-  transfer.createdAt = event.block.timestamp
-  transfer.txHash =  event.transaction.hash.toHex()
-  transfer.save()
-
-  let sender = AmaUserEntity.load(event.params.sender.toHexString())
-  let recipient = AmaUserEntity.load(event.params.recipient.toHexString())
-
-  if (!sender) {
-    sender = insertUser(event.params.sender.toHexString(), event.block.timestamp)
-  }
-
-  if (!recipient) {
-    recipient = insertUser(event.params.recipient.toHexString(), event.block.timestamp)
-  }
-  
-  if (sender.profileTipsSent !== null){
-    sender.profileTipsSent = sender.profileTipsSent.abs().plus(BigInt.fromI32(1))
-      }else{
-    sender.profileTipsSent = BigInt.fromI32(1)
-    }
-
-  if (sender.profileTipsValueSent !== null){
-      sender.profileTipsValueSent = sender.profileTipsValueSent.abs().plus(event.params.value)
-        }else{
-      sender.profileTipsValueSent =event.params.value
-      }
-  sender.save()
-  
-
-  if (recipient.profileTipsReceived !== null){
-    recipient.profileTipsReceived = recipient.profileTipsReceived.abs().plus(BigInt.fromI32(1))
-      }else{
-    recipient.profileTipsReceived = BigInt.fromI32(1)
-    }
-
-  if (sender.profileTipsValueReceived !== null){
-      sender.profileTipsValueReceived = sender.profileTipsValueReceived.abs().plus(event.params.value)
-        }else{
-      sender.profileTipsValueReceived =event.params.value
-  }
-
-  recipient.save()
-
 }
 
 

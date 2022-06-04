@@ -53,7 +53,6 @@ export function handleAmountReceived(event: AmountReceived): void {
 }
 
 
-
 export function handleSessionCreated(event: SessionCreated): void {
 
     let ownerId = event.params.owner.toHexString()
@@ -78,13 +77,14 @@ export function handleSessionCreated(event: SessionCreated): void {
 
     let session = new SessionCreatedEntity(event.params.sessionId.toHexString())
 
-    session.sessionId = event.params.sessionId
+    session.sessionId = event.params.sessionId.toHexString()
     session.owner = event.params.owner.toHexString()
     session.startTime = event.params.startTime
     session.endTime = event.params.endTime
     session.createdAt = event.block.timestamp
     session.rewardPerAMA = event.params.rewardPerAMA
     session.rewardPool = event.params.rewardPool
+    session.rewardPoolLeft = event.params.rewardPool
     session.link = event.params.link
     session.createdAt = event.block.timestamp
     session.txHash =  event.transaction.hash.toHex()
@@ -100,113 +100,122 @@ export function handleSessionLinkUpdated(event: SessionLinkUpdated): void {
     let session = SessionCreatedEntity.load(event.params.sessionId.toString())
     if(session){
         session.link  = event.params.link
+        session.save()
+
     }
     
-    let object = new SessionLinkUpdatedEntity(event.params.sessionId.toHexString())
-    object.txHash =  event.transaction.hash.toHex()
-    object.gasPrice =  event.transaction.gasPrice
-    object.gasLimit =  event.transaction.gasLimit
-    object.createdAt = event.block.timestamp
-    object.sessionId = event.params.sessionId
-    object.link = event.params.link
-    object.save()
-
+    let sessionLinkUpdate = new SessionLinkUpdatedEntity(event.params.sessionId.toHexString())
+    sessionLinkUpdate.txHash =  event.transaction.hash.toHex()
+    sessionLinkUpdate.gasPrice =  event.transaction.gasPrice
+    sessionLinkUpdate.gasLimit =  event.transaction.gasLimit
+    sessionLinkUpdate.createdAt = event.block.timestamp
+    sessionLinkUpdate.sessionId = event.params.sessionId.toHexString()
+    sessionLinkUpdate.link = event.params.link
+    sessionLinkUpdate.save()
 }
 
 
 export function handleSessionTopUp(event: SessionTopUp): void {
-    let session = SessionCreatedEntity.load(event.params.sessionId.toString())
+    let session = SessionCreatedEntity.load(event.params.sessionId.toHexString())
     if(session){
         session.rewardPool  = event.params.newRewardPool
+        session.save()
+
     }
     
-    let object = new SessionTopUpEntity(event.params.sessionId.toHexString())
-    object.txHash =  event.transaction.hash.toHex()
-    object.gasPrice =  event.transaction.gasPrice
-    object.gasLimit =  event.transaction.gasLimit
-    object.createdAt = event.block.timestamp
-    object.sessionId = event.params.sessionId
-    object.newRewardPool = event.params.newRewardPool
-    object.additionalFund = event.params.additionalFund
-    object.save()
+    let sessionTopup = new SessionTopUpEntity(event.params.sessionId.toHexString())
+    sessionTopup.txHash =  event.transaction.hash.toHex()
+    sessionTopup.gasPrice =  event.transaction.gasPrice
+    sessionTopup.gasLimit =  event.transaction.gasLimit
+    sessionTopup.createdAt = event.block.timestamp
+    sessionTopup.sessionId = event.params.sessionId.toHexString()
+    sessionTopup.newRewardPool = event.params.newRewardPool
+    sessionTopup.additionalFund = event.params.additionalFund
+    sessionTopup.save()
 
 }
 
 
 
 export function handleSessionEndTimeUpdated(event: SessionEndTimeUpdated): void {
-    let session = SessionCreatedEntity.load(event.params.sessionId.toString())
+    let session = SessionCreatedEntity.load(event.params.sessionId.toHexString())
     if(session){
         session.endTime  = event.params.newEndTime
+        session.save()
     }
     
-    let object = new SessionEndTimeUpdateEntity(event.params.sessionId.toHexString())
-    object.txHash =  event.transaction.hash.toHex()
-    object.gasPrice =  event.transaction.gasPrice
-    object.gasLimit =  event.transaction.gasLimit
-    object.createdAt = event.block.timestamp
-    object.sessionId = event.params.sessionId
-    object.newEndTime = event.params.newEndTime
-    object.additionalTime = event.params.additionalTime
-    object.save()
+    let sessionUpdated = new SessionEndTimeUpdateEntity(event.params.sessionId.toHexString())
+    sessionUpdated.txHash =  event.transaction.hash.toHex()
+    sessionUpdated.gasPrice =  event.transaction.gasPrice
+    sessionUpdated.gasLimit =  event.transaction.gasLimit
+    sessionUpdated.createdAt = event.block.timestamp
+    sessionUpdated.sessionId = event.params.sessionId.toHexString()
+    sessionUpdated.newEndTime = event.params.newEndTime
+    sessionUpdated.additionalTime = event.params.additionalTime
+    sessionUpdated.save()
 }
 
 
 
 export function handleRewardDistributedOnAma(event: RewardDistributedOnAma): void {
 
-    let session = SessionCreatedEntity.load(event.params.sessionId.toString())
+    let session = SessionCreatedEntity.load(event.params.sessionId.toHexString())
     if(session){
         session.rewardPoolLeft  = event.params.rewardsLeft
+        session.save()
     }
     
-    let object = new RewardDistributedOnAmaEntity(event.params.sessionId.toHexString())
-    object.txHash =  event.transaction.hash.toHex()
-    object.gasPrice =  event.transaction.gasPrice
-    object.gasLimit =  event.transaction.gasLimit
-    object.createdAt = event.block.timestamp
-    object.sessionId = event.params.sessionId
-    object.rewardsLeft = event.params.rewardsLeft
-    object.rewardPerAMA = event.params.rewardPerAMA
-    object.messageId = event.params.messageId
-    object.save()
+    let rewardDistributed = new RewardDistributedOnAmaEntity(event.params.sessionId.toHexString())
+    rewardDistributed.txHash =  event.transaction.hash.toHex()
+    rewardDistributed.gasPrice =  event.transaction.gasPrice
+    rewardDistributed.gasLimit =  event.transaction.gasLimit
+    rewardDistributed.createdAt = event.block.timestamp
+    rewardDistributed.sessionId = event.params.sessionId.toHexString()
+    rewardDistributed.rewardsLeft = event.params.rewardsLeft
+    rewardDistributed.rewardPerAMA = event.params.rewardPerAMA
+    rewardDistributed.messageId = event.params.messageId.toHexString()
+    rewardDistributed.save()
 }
 
 
 
 export function handleSessionEndedBeforeTime(event: SessionEndedBeforeTime): void {
-    let session = SessionCreatedEntity.load(event.params.sessionId.toString())
+    let session = SessionCreatedEntity.load(event.params.sessionId.toHexString())
     if(session){
         session.oldEndTime = session.endTime
         session.endTime  = event.block.timestamp
+        session.save()
+
     }
 
-    let object = new SessionEndedBeforeTimeEntity(event.params.sessionId.toHexString())
-    object.txHash =  event.transaction.hash.toHex()
-    object.gasPrice =  event.transaction.gasPrice
-    object.gasLimit =  event.transaction.gasLimit
-    object.createdAt = event.block.timestamp
-    object.sessionId = event.params.sessionId
-    object.oldEndTime = event.params.oldEndTime
-    object.oldEndTime = event.params.oldEndTime
-    object.save()
+    let sessionUpdatedObject = new SessionEndedBeforeTimeEntity(event.params.sessionId.toHexString())
+    sessionUpdatedObject.txHash =  event.transaction.hash.toHex()
+    sessionUpdatedObject.gasPrice =  event.transaction.gasPrice
+    sessionUpdatedObject.gasLimit =  event.transaction.gasLimit
+    sessionUpdatedObject.createdAt = event.block.timestamp
+    sessionUpdatedObject.sessionId = event.params.sessionId.toHexString()
+    sessionUpdatedObject.oldEndTime = event.params.oldEndTime
+    sessionUpdatedObject.oldEndTime = event.params.oldEndTime
+    sessionUpdatedObject.save()
 
 }
 
 
 export function handleSessionRewardLeftClaimed(event: SessionRewardLeftClaimed): void {
-    let session = SessionCreatedEntity.load(event.params.sessionId.toString())
+    let session = SessionCreatedEntity.load(event.params.sessionId.toHexString())
     if(session){
-        session.valueRefunnded  = event.params.rewardLeft
+        session.valueRefunded  = event.params.rewardLeft
+        session.save()
+
     }
-    let object = new SessionRewardLeftClaimedEntity(event.params.sessionId.toHexString())
-    object.txHash =  event.transaction.hash.toHex()
-    object.gasPrice =  event.transaction.gasPrice
-    object.gasLimit =  event.transaction.gasLimit
-    object.createdAt = event.block.timestamp
-    object.sessionId = event.params.sessionId
-    object.rewardLeft = event.params.rewardLeft
-    object.save()
+    let sessionRewardLeft = new SessionRewardLeftClaimedEntity(event.params.sessionId.toHexString())
+    sessionRewardLeft.txHash =  event.transaction.hash.toHex()
+    sessionRewardLeft.gasPrice =  event.transaction.gasPrice
+    sessionRewardLeft.gasLimit =  event.transaction.gasLimit
+    sessionRewardLeft.createdAt = event.block.timestamp
+    sessionRewardLeft.sessionId = event.params.sessionId.toHexString()
+    sessionRewardLeft.rewardLeft = event.params.rewardLeft
+    sessionRewardLeft.save()
 }
 
 

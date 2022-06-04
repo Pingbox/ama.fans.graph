@@ -6,9 +6,9 @@ dataSources:
     name: MessageFacet
     network: celo-alfajores
     source:
-      address: "0xEE227558924b256e2C6798eD7aBf488431D7678a"
+      address: "0x05c38Bc003f2f2D025Eee55987d59A6C387e26B8"
       abi: MessageFacet
-      startBlock: 11778181
+      startBlock: 11797731
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -30,8 +30,8 @@ dataSources:
           handler: handleMessageCreated
         - event: MessageValueClaimed(indexed bytes32,indexed address,uint256)
           handler: handleMessageValueClaimed
-        - event: ResponseCreated(indexed bytes32,indexed address,indexed
-            address,string,uint256,uint256)
+        - event: ResponseCreated(indexed address,indexed address,indexed
+            bytes32,bytes32,string,uint256,uint256)
           handler: handleResponseCreated
         - event: TipCreated(indexed bytes32,indexed bytes32,indexed address,uint256)
           handler: handleTipCreated
@@ -46,9 +46,9 @@ dataSources:
     name: PostFacet
     network: celo-alfajores
     source:
-      address: "0xEE227558924b256e2C6798eD7aBf488431D7678a"
+      address: "0x05c38Bc003f2f2D025Eee55987d59A6C387e26B8"
       abi: PostFacet
-      startBlock: 11778181
+      startBlock: 11797731
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -72,9 +72,9 @@ dataSources:
     name: SessionFacet
     network: celo-alfajores
     source:
-      address: "0xEE227558924b256e2C6798eD7aBf488431D7678a"
+      address: "0x05c38Bc003f2f2D025Eee55987d59A6C387e26B8"
       abi: SessionFacet
-      startBlock: 11778181
+      startBlock: 11797731
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -114,9 +114,9 @@ dataSources:
     name: UserFacet
     network: celo-alfajores
     source:
-      address: "0xEE227558924b256e2C6798eD7aBf488431D7678a"
+      address: "0x05c38Bc003f2f2D025Eee55987d59A6C387e26B8"
       abi: UserFacet
-      startBlock: 11778181
+      startBlock: 11797731
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -130,15 +130,10 @@ dataSources:
         - UnWhitelisted
         - Follow
         - UnFollow
-        - Transfer
       abis:
         - name: UserFacet
           file: UserFacet/abis/UserFacet.json
       eventHandlers:
-        - event: AmountReceived(indexed address,uint256)
-          handler: handleAmountReceived
-        - event: Withdraw(indexed address,uint256)
-          handler: handleWithdraw
         - event: Blocked(indexed address,indexed address)
           handler: handleBlocked
         - event: UnBlock(indexed address,indexed address)
@@ -151,16 +146,14 @@ dataSources:
           handler: handleFollow
         - event: UnFollow(indexed address,indexed address)
           handler: handleUnFollow
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
       file: UserFacet/UserFacet.wasm
   - kind: ethereum
     name: OwnershipFacet
     network: celo-alfajores
     source:
-      address: "0xEE227558924b256e2C6798eD7aBf488431D7678a"
+      address: "0x05c38Bc003f2f2D025Eee55987d59A6C387e26B8"
       abi: OwnershipFacet
-      startBlock: 11778181
+      startBlock: 11797731
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -183,3 +176,26 @@ dataSources:
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
       file: OwnershipFacet/OwnershipFacet.wasm
+  - kind: ethereum
+    name: CommonFacet
+    network: celo-alfajores
+    source:
+      address: "0x05c38Bc003f2f2D025Eee55987d59A6C387e26B8"
+      abi: CommonFacet
+      startBlock: 11797731
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Transfer
+        - withdraw
+      abis:
+        - name: CommonFacet
+          file: CommonFacet/abis/CommonFacet.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: Withdraw(indexed address,uint256)
+          handler: handleWithdraw
+      file: CommonFacet/CommonFacet.wasm

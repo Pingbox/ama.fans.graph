@@ -513,10 +513,6 @@ export class TopUpSessionCall__Inputs {
   get sessionId_(): Bytes {
     return this._call.inputValues[0].value.toBytes();
   }
-
-  get additionalFund_(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
 }
 
 export class TopUpSessionCall__Outputs {

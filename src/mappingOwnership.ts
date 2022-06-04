@@ -28,10 +28,10 @@ export function handleRoleAdminChanged(event: RoleAdminChanged): void {
     let entity = new RoleAdminChangedEntity(id)
 
 
-    entity.role = event.params.role
+    entity.role = event.params.role.toHexString()
     entity.sender = event.transaction.from.toHexString()
-    entity.previousAdminRole = event.params.previousAdminRole
-    entity.newAdminRole = event.params.newAdminRole
+    entity.previousAdminRole = event.params.previousAdminRole.toHexString()
+    entity.newAdminRole = event.params.newAdminRole.toHexString()
     entity.createdAt = event.block.timestamp
     entity.txHash =  event.transaction.hash.toHex()
     entity.gasPrice =  event.transaction.gasPrice
@@ -48,7 +48,7 @@ export function handleRoleAdminChanged(event: RoleAdminChanged): void {
     let entity = new RoleRevokedEntity(id)
 
 
-    entity.role = event.params.role
+    entity.role = event.params.role.toHexString()
     entity.sender = event.transaction.from.toHexString()
     entity.account = event.params.account.toHexString()
     entity.createdAt = event.block.timestamp
@@ -87,7 +87,7 @@ export function handleRoleAdminChanged(event: RoleAdminChanged): void {
     let entity = new RoleGrantedEntity(id)
 
 
-    entity.role = event.params.role
+    entity.role = event.params.role.toHexString()
     entity.sender = event.transaction.from.toHexString()
     entity.account = event.params.account.toHexString()
     entity.createdAt = event.block.timestamp

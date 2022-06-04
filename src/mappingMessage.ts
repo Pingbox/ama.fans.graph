@@ -34,8 +34,8 @@ export function handleMessageCreated(event: MessageCreated): void {
         }
     }
 
-    let senderId = event.params.sender.toHexString()
-    let recipientId = event.params.recipient.toHexString()
+    let senderId = event.params.createdBy.toHexString()
+    let recipientId = event.params.respondedBy.toHexString()
 
     let sender = AmaUserEntity.load(senderId)
     let recipient = AmaUserEntity.load(recipientId)
@@ -82,9 +82,9 @@ export function handleMessageCreated(event: MessageCreated): void {
 
     let newMessage = new MessageCreatedEntity(event.params.messageId.toHexString())
 
-    newMessage.recipient = event.params.recipient.toString()
-    newMessage.messageId = event.params.messageId
-    newMessage.createdBy = event.params.sender.toHexString()
+    newMessage.respondedBy = event.params.createdBy.toHexString()
+    newMessage.messageId = event.params.messageId.toHexString()
+    newMessage.createdBy = event.params.respondedBy.toHexString()
     newMessage.value = event.params.msgValue
     newMessage.expiryTime = event.params.timelock.plus( event.block.timestamp)
     newMessage.messageLink = event.params.messageLink
@@ -98,7 +98,7 @@ export function handleMessageCreated(event: MessageCreated): void {
     newMessage.txHash =  event.transaction.hash.toHex()
     newMessage.gasLimit =  event.transaction.gasLimit
     newMessage.gasPrice =  event.transaction.gasPrice
-    newMessage.activeSessionId = event.params.activeSessionId
+    newMessage.activeSessionId = event.params.activeSessionId.toHexString()
 
 
     newMessage.save()
@@ -114,7 +114,7 @@ export function handleMessageValueClaimed(event: MessageValueClaimed): void {
     ])
 
     let question = new MessageValueClaimedEntity(event.params.messageId.toHexString())
-    question.messageId = event.params.messageId
+    question.messageId = event.params.messageId.toHexString()
     question.createdBy = event.params.createdBy.toHexString() 
     question.value = event.params.value
     question.createdAt = event.block.timestamp
@@ -150,11 +150,6 @@ export function handleMessageValueClaimed(event: MessageValueClaimed): void {
       
 export function handleTipCreated(event: TipCreated): void {
 
-    log.debug('TipCreated: Block number: {}, block hash: {}, transaction hash: {}', [
-        event.block.number.toString(), // "47596000"
-        event.block.hash.toHexString(), // "0x..."
-        event.transaction.hash.toHexString(), // "0x..."
-    ])
     let senderId = event.params.createdBy.toHexString()
 
     let sender = AmaUserEntity.load(senderId)
@@ -181,8 +176,8 @@ export function handleTipCreated(event: TipCreated): void {
 
 
     let tip  = new TipCreatedEntity(event.params.tipId.toHex())
-    tip.messageId = event.params.messageId
-    tip.tipId = event.params.tipId
+    tip.messageId = event.params.messageId.toHexString()
+    tip.tipId = event.params.tipId.toHexString()
     tip.createdBy = event.params.createdBy.toHexString()
     tip.value = event.params.value
     tip.claimed = false
@@ -196,21 +191,15 @@ export function handleTipCreated(event: TipCreated): void {
         question.tips  =  question.tips.plus(BigInt.fromI32(1))
         question.tipsTotalValue = question.tipsTotalValue.plus(event.params.value)
         question.save()
-
         let user = AmaUserEntity.load(question.createdBy)
         if(user){
         if (!user.valueReceivedOnTips) {
             user.valueReceivedOnTips = BigInt.fromI32(0)  
         }
-
-
         user.valueReceivedOnTips = user.valueReceivedOnTips.plus(event.params.value)
         user.save()
-
         }
-        
     }
-
 }
 
       
@@ -223,8 +212,8 @@ export function handleTipValueClaimed(event: TipValueClaimed): void {
         event.transaction.hash.toHexString(), // "0x..."
     ])
     let tip  = new TipValueClaimedEntity(event.params.tipId.toHex())
-    tip.messageId = event.params.messageId
-    tip.tipId = event.params.tipId
+    tip.messageId = event.params.messageId.toHexString()
+    tip.tipId = event.params.tipId.toHexString()
     tip.createdBy = event.params.createdBy.toHexString()
     tip.value = event.params.value
     tip.createdAt = event.block.timestamp
@@ -277,103 +266,111 @@ export function handleAmountReceived(event: AmountReceived): void {
 
 
 export function handleResponseMarked(event: ResponseMarked): void {
-    let _responseType = new ResponseMarkedEntity(event.params.messageId.toHexString())
-    _responseType.messageId = event.params.messageId
-    _responseType.owner = event.params.owner.toHexString() 
-    _responseType.answerer = event.params.answerer.toHexString() 
-    _responseType.createdAt = event.block.timestamp
-    _responseType.txHash =  event.transaction.hash.toHex()
-    _responseType.responseType =  event.params.responseType
+    // let _responseType = new ResponseMarkedEntity(event.params.messageId.toHexString())
+    // _responseType.messageId = event.params.messageId
+    // _responseType.owner = event.params.owner.toHexString() 
+    // _responseType.answerer = event.params.answerer.toHexString() 
+    // _responseType.createdAt = event.block.timestamp
+    // _responseType.txHash =  event.transaction.hash.toHex()
+    // _responseType.responseType =  event.params.responseType
 
-    _responseType.save()
+    // _responseType.save()
 
 
-    let owner = AmaUserEntity.load(event.params.owner.toHexString())
-    if(owner == null){
-      owner = insertUser(event.params.owner.toHexString(), event.block.timestamp)
-    }
-    let answerer = AmaUserEntity.load(event.params.answerer.toHexString())
-    if(answerer == null){
-      answerer = insertUser(event.params.answerer.toHexString(), event.block.timestamp)
-    }
+    // let owner = AmaUserEntity.load(event.params.createdBy.toHexString())
+    // if(createdBy == null){
+    //   createdBy = insertUser(event.params.createdBy.toHexString(), event.block.timestamp)
+    // }
+    // let answerer = AmaUserEntity.load(event.params.answerer.toHexString())
+    // if(answerer == null){
+    //   answerer = insertUser(event.params.answerer.toHexString(), event.block.timestamp)
+    // }
 
     
-    if (event.params.responseType == BigInt.fromI32(1)){
-      //Good response Marked
-      if (owner.goodResponseCreated !== null){
-        owner.goodResponseCreated = owner.goodResponseCreated.abs().plus(BigInt.fromI32(1))
-          }else{
-        owner.goodResponseCreated = BigInt.fromI32(1)
-        }
-      owner.save()
+    // if (event.params.responseType == BigInt.fromI32(1)){
+    //   //Good response Marked
+    //   if (owner.goodResponseCreated !== null){
+    //     owner.goodResponseCreated = owner.goodResponseCreated.abs().plus(BigInt.fromI32(1))
+    //       }else{
+    //     owner.goodResponseCreated = BigInt.fromI32(1)
+    //     }
+    //   owner.save()
 
-      if (answerer.goodResponseReceived !== null){
-        answerer.goodResponseReceived = answerer.goodResponseReceived.abs().plus(BigInt.fromI32(1))        
-        }else{
-          answerer.goodResponseReceived = BigInt.fromI32(1)
-        }
-      answerer.save()
+    //   if (answerer.goodResponseReceived !== null){
+    //     answerer.goodResponseReceived = answerer.goodResponseReceived.abs().plus(BigInt.fromI32(1))        
+    //     }else{
+    //       answerer.goodResponseReceived = BigInt.fromI32(1)
+    //     }
+    //   answerer.save()
   
-    }
+    // }
 
-    if (event.params.responseType == BigInt.fromI32(2)){
-      if (owner.badResponseCreated !== null){
-        owner.badResponseCreated = owner.badResponseCreated.abs().plus(BigInt.fromI32(1))
-          }else{
-        owner.badResponseCreated = BigInt.fromI32(1)
-        }
-      owner.save()
+    // if (event.params.responseType == BigInt.fromI32(2)){
+    //   if (owner.badResponseCreated !== null){
+    //     owner.badResponseCreated = owner.badResponseCreated.abs().plus(BigInt.fromI32(1))
+    //       }else{
+    //     owner.badResponseCreated = BigInt.fromI32(1)
+    //     }
+    //   owner.save()
 
-      if (answerer.badResponseReceived !== null){
-        answerer.badResponseReceived = answerer.badResponseReceived.abs().plus(BigInt.fromI32(1))        
-        }else{
-          answerer.badResponseReceived = BigInt.fromI32(1)
-        }
-      answerer.save()
-    }
+    //   if (answerer.badResponseReceived !== null){
+    //     answerer.badResponseReceived = answerer.badResponseReceived.abs().plus(BigInt.fromI32(1))        
+    //     }else{
+    //       answerer.badResponseReceived = BigInt.fromI32(1)
+    //     }
+    //   answerer.save()
+    // }
 
-    let message = MessageCreatedEntity.load(event.params.messageId.toHexString())
-    if (message){
-      message.responseType = event.params.responseType
-      message.save()
-    }
+    // let message = MessageCreatedEntity.load(event.params.messageId.toHexString())
+    // if (message){
+    //   message.responseType = event.params.responseType
+    //   message.save()
+    // }
   
 }
 
 
 export function handleResponseCreated(event: ResponseCreated): void {
+    // event ResponseCreated(bytes32 indexed messageId,address indexed owner,address indexed creator, string answerLink,uint256 responseValue,uint256 value);
+    // event ResponseCreated(
+    //     address indexed createdBy, 
+    //     address indexed respondedBy,
+    //     bytes32 indexed messageId,
+    //     bytes32 sessionId,
+    //     string answerLink,
+    //     uint256 responseValue,
+    //     uint256 msgValueAfterDeduction);
+  
+    let message = MessageCreatedEntity.load(event.params.messageId.toHexString())
+    if (message){
+  
+      message.answered = true
+      message.answerLink = event.params.answerLink
+      message.responseValue = event.params.responseValue;
+      message.respondedAt = event.block.timestamp;
+      message.valueAfterDeduction = event.params.msgValueAfterDeduction;
+      message.save()
 
-  log.debug('QuestionAnswered: Block number: {}, block hash: {}, transaction hash: {}', [
-    event.block.number.toString(), // "47596000"
-    event.block.hash.toHexString(), // "0x..."
-    event.transaction.hash.toHexString(), // "0x..."
-  ])
-
-  let response = new ResponseCreatedEntity(event.params.messageId.toHexString())
-  response.messageId = event.params.messageId
-
-  response.owner = event.params.owner.toHexString() 
-  response.creator = event.params.creator.toHexString()
-  response.responseValue = event.params.responseValue
-  response.answerLink = event.params.answerLink
-  response.value = event.params.value
-  response.createdAt = event.block.timestamp
-  response.txHash =  event.transaction.hash.toHex()
+    }
+  
+    let response = new ResponseCreatedEntity(event.params.messageId.toHexString())
+    response.createdBy = event.params.createdBy.toHexString()
+    response.respondedBy = event.params.respondedBy.toHexString()
+    response.responseValue = event.params.responseValue
+    response.answerLink = event.params.answerLink
+    response.createdAt = event.block.timestamp
+    response.txHash =  event.transaction.hash.toHex()
+    response.respondedAt = event.block.timestamp
+    response.sessionId =  event.params.sessionId.toHexString()
+    response.valueAfterDeduction = event.params.msgValueAfterDeduction
 
   response.save()
 
   //Updating QuestionCreatedEntity
-  let message = MessageCreatedEntity.load(event.params.messageId.toHexString())
-  if (message){
-
-    message.answered = true
-    message.answerLink = event.params.answerLink
-    message.responseValue = event.params.responseValue;
-    message.save()
-  }
+  
 
   //Update creator on question Answered
-  let owner = AmaUserEntity.load(event.params.owner.toHexString())
+  let owner = AmaUserEntity.load(event.params.createdBy.toHexString())
   if (owner){
     if (!owner.responsesReceived) {
       owner.responsesReceived = BigInt.fromI32(0)  
@@ -384,7 +381,7 @@ export function handleResponseCreated(event: ResponseCreated): void {
   }
 
   //Update answerer on question Answered
-  let creator = AmaUserEntity.load(event.params.creator.toHexString())
+  let creator = AmaUserEntity.load(event.params.respondedBy.toHexString())
   if (creator){
       if (!creator.responsesCreated) {
         creator.responsesCreated = BigInt.fromI32(0)  
@@ -395,8 +392,7 @@ export function handleResponseCreated(event: ResponseCreated): void {
       }
 
       creator.responsesCreated = creator.responsesCreated.plus(BigInt.fromI32(1))
-      creator.valueReceivedOnResponses = creator.valueReceivedOnResponses.plus(event.params.value)
+      creator.valueReceivedOnResponses = creator.valueReceivedOnResponses.plus(event.params.msgValueAfterDeduction)
       creator.save()
     }
 }
-

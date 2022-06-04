@@ -24,13 +24,13 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "sender",
+        "name": "createdBy",
         "type": "address"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "recipient",
+        "name": "respondedBy",
         "type": "address"
       },
       {
@@ -103,21 +103,27 @@
     "inputs": [
       {
         "indexed": true,
+        "internalType": "address",
+        "name": "createdBy",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "respondedBy",
+        "type": "address"
+      },
+      {
+        "indexed": true,
         "internalType": "bytes32",
         "name": "messageId",
         "type": "bytes32"
       },
       {
-        "indexed": true,
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "creator",
-        "type": "address"
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "sessionId",
+        "type": "bytes32"
       },
       {
         "indexed": false,
@@ -134,7 +140,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "value",
+        "name": "msgValueAfterDeduction",
         "type": "uint256"
       }
     ],
@@ -153,13 +159,13 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "owner",
+        "name": "createdBy",
         "type": "address"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "answerer",
+        "name": "respondedBy",
         "type": "address"
       },
       {

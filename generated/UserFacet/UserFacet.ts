@@ -10,28 +10,6 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
-export class AmountReceived extends ethereum.Event {
-  get params(): AmountReceived__Params {
-    return new AmountReceived__Params(this);
-  }
-}
-
-export class AmountReceived__Params {
-  _event: AmountReceived;
-
-  constructor(event: AmountReceived) {
-    this._event = event;
-  }
-
-  get receiver(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get value(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
-  }
-}
-
 export class Blocked extends ethereum.Event {
   get params(): Blocked__Params {
     return new Blocked__Params(this);
@@ -73,32 +51,6 @@ export class Follow__Params {
 
   get follower(): Address {
     return this._event.parameters[1].value.toAddress();
-  }
-}
-
-export class Transfer extends ethereum.Event {
-  get params(): Transfer__Params {
-    return new Transfer__Params(this);
-  }
-}
-
-export class Transfer__Params {
-  _event: Transfer;
-
-  constructor(event: Transfer) {
-    this._event = event;
-  }
-
-  get sender(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get recipient(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get value(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
   }
 }
 
@@ -351,21 +303,6 @@ export class UserFacet extends ethereum.SmartContract {
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
-
-  userBalance(): BigInt {
-    let result = super.call("userBalance", "userBalance():(uint256)", []);
-
-    return result[0].toBigInt();
-  }
-
-  try_userBalance(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("userBalance", "userBalance():(uint256)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
 }
 
 export class BlockUserCall extends ethereum.Call {
@@ -458,40 +395,6 @@ export class SetUserMinimumBidCall__Outputs {
   _call: SetUserMinimumBidCall;
 
   constructor(call: SetUserMinimumBidCall) {
-    this._call = call;
-  }
-}
-
-export class TransferCall extends ethereum.Call {
-  get inputs(): TransferCall__Inputs {
-    return new TransferCall__Inputs(this);
-  }
-
-  get outputs(): TransferCall__Outputs {
-    return new TransferCall__Outputs(this);
-  }
-}
-
-export class TransferCall__Inputs {
-  _call: TransferCall;
-
-  constructor(call: TransferCall) {
-    this._call = call;
-  }
-
-  get amount_(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-
-  get recipient_(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-}
-
-export class TransferCall__Outputs {
-  _call: TransferCall;
-
-  constructor(call: TransferCall) {
     this._call = call;
   }
 }
@@ -612,36 +515,6 @@ export class WhitelistUserCall__Outputs {
   _call: WhitelistUserCall;
 
   constructor(call: WhitelistUserCall) {
-    this._call = call;
-  }
-}
-
-export class WithdrawCall extends ethereum.Call {
-  get inputs(): WithdrawCall__Inputs {
-    return new WithdrawCall__Inputs(this);
-  }
-
-  get outputs(): WithdrawCall__Outputs {
-    return new WithdrawCall__Outputs(this);
-  }
-}
-
-export class WithdrawCall__Inputs {
-  _call: WithdrawCall;
-
-  constructor(call: WithdrawCall) {
-    this._call = call;
-  }
-
-  get _amount(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-}
-
-export class WithdrawCall__Outputs {
-  _call: WithdrawCall;
-
-  constructor(call: WithdrawCall) {
     this._call = call;
   }
 }

@@ -1,7 +1,7 @@
 type ExampleEntity @entity {
   id: ID!
   count: BigInt!
-  sender: Bytes! 
+  sender: String! 
   value: BigInt! 
 }
 
@@ -89,8 +89,8 @@ type AmaUserEntity @entity {
 type MessageCreatedEntity @entity {
   id: ID!
   txHash: String!
-  recipient: String!
-  messageId: Bytes! 
+  respondedBy: String!
+  messageId: String! 
   createdBy: String!
   answerLink: String!
   value: BigInt!
@@ -105,8 +105,9 @@ type MessageCreatedEntity @entity {
   messageType: BigInt!
   responseType: BigInt!
   responseValue: BigInt!
-  activeSessionId: Bytes!
-  data: Bytes!
+  valueAfterDeduction: BigInt!
+  respondedAt: BigInt!
+  activeSessionId: String!
   gasLimit: BigInt!
   gasPrice: BigInt!
 }
@@ -115,20 +116,22 @@ type MessageCreatedEntity @entity {
 type ResponseCreatedEntity @entity {
   id: ID!
   txHash: String!
-  messageId: Bytes! 
-  owner: String! 
-  creator: String! 
+  messageId: String!
+  sessionId: String!
+  createdBy: String! 
+  respondedBy: String! 
   responseValue: BigInt! 
   answerLink: String! 
-  value: BigInt! 
+  valueAfterDeduction: BigInt! 
   createdAt: BigInt!
+  respondedAt: BigInt!
 }
 
 
 type MessageValueClaimedEntity @entity {
   id: ID!
   txHash: String!
-  messageId: Bytes! 
+  messageId: String! 
   createdBy: String! 
   value: BigInt! 
   createdAt: BigInt!
@@ -138,8 +141,8 @@ type MessageValueClaimedEntity @entity {
 type TipCreatedEntity @entity {
   id: ID!
   txHash: String!
-  messageId: Bytes! 
-  tipId: Bytes! 
+  messageId: String! 
+  tipId: String! 
   createdBy: String! 
   value: BigInt! 
   claimed: Boolean
@@ -150,8 +153,8 @@ type TipCreatedEntity @entity {
 type TipValueClaimedEntity @entity {
   id: ID!
   txHash: String!
-  messageId: Bytes! # bytes32
-  tipId: Bytes! # bytes32
+  messageId: String! # bytes32
+  tipId: String! # bytes32
   createdBy: String! 
   value: BigInt! 
   createdAt: BigInt!
@@ -240,7 +243,7 @@ type WithdrawEntity @entity {
 type ResponseMarkedEntity @entity {
   id: ID!
   txHash: String!
-  messageId: Bytes!
+  messageId: String!
   owner: String!
   answerer: String!
   createdAt: BigInt!
@@ -251,7 +254,7 @@ type ResponseMarkedEntity @entity {
 type PostEntity @entity {
   id: ID!
   txHash: String!
-  postId: Bytes! 
+  postId: String! 
   createdBy: String!
   value: BigInt!
   link: String! 
@@ -265,8 +268,8 @@ type PostEntity @entity {
 type PostTipEntity @entity {
   id: ID!
   txHash: String!
-  postId: Bytes! 
-  postTipId: Bytes! 
+  postId: String! 
+  postTipId: String! 
   createdBy: String! 
   value: BigInt! 
   createdAt: BigInt!
@@ -276,7 +279,7 @@ type PostTipEntity @entity {
 
 type SessionCreatedEntity @entity {
   id: ID!
-  sessionId: Bytes!
+  sessionId: String!
   txHash: String!
   owner: String!
   startTime: BigInt!
@@ -286,7 +289,7 @@ type SessionCreatedEntity @entity {
   rewardPool: BigInt!
   link: String!
   rewardPoolLeft: BigInt!
-  valueRefunnded: BigInt!
+  valueRefunded: BigInt!
   messagesSent: BigInt!
   createdAt: BigInt!
   gasLimit: BigInt!
@@ -296,7 +299,7 @@ type SessionCreatedEntity @entity {
 type SessionLinkUpdatedEntity @entity {
   id: ID!
   txHash: String!
-  sessionId: Bytes!
+  sessionId: String!
   createdAt: BigInt!
   link: String!  
   gasLimit: BigInt!
@@ -307,7 +310,7 @@ type SessionLinkUpdatedEntity @entity {
 type SessionTopUpEntity @entity {
   id: ID!
   txHash: String!
-  sessionId: Bytes!
+  sessionId: String!
   createdAt: BigInt!
   newRewardPool: BigInt!
   additionalFund: BigInt!
@@ -320,7 +323,7 @@ type SessionTopUpEntity @entity {
 type SessionEndTimeUpdateEntity @entity{
   id: ID!
   txHash: String!
-  sessionId: Bytes!
+  sessionId: String!
   createdAt: BigInt!
   newEndTime: BigInt!
   additionalTime: BigInt!
@@ -332,8 +335,8 @@ type SessionEndTimeUpdateEntity @entity{
 type RewardDistributedOnAmaEntity @entity {
   id: ID!
   txHash: String!
-  sessionId: Bytes!
-  messageId: Bytes!
+  sessionId: String!
+  messageId: String!
   rewardPerAMA: BigInt!
   createdAt: BigInt!
   rewardsLeft: BigInt!
@@ -345,7 +348,7 @@ type RewardDistributedOnAmaEntity @entity {
 type SessionEndedBeforeTimeEntity @entity {
   id: ID!
   txHash: String!
-  sessionId: Bytes!
+  sessionId: String!
   oldEndTime: BigInt!
   createdAt: BigInt!
   newTime: BigInt!
@@ -357,7 +360,7 @@ type SessionEndedBeforeTimeEntity @entity {
 type SessionRewardLeftClaimedEntity @entity {
   id: ID!
   txHash: String!
-  sessionId: Bytes!
+  sessionId: String!
   createdAt: BigInt!
   rewardLeft: BigInt!
   gasLimit: BigInt!
@@ -368,7 +371,7 @@ type SessionRewardLeftClaimedEntity @entity {
 
 type OwnershipTransferredEntity @entity{
   id: ID!
-  role: Bytes!
+  role: String!
   sender: String!
   previousOwner: String!
   newOwner: String!
@@ -380,10 +383,10 @@ type OwnershipTransferredEntity @entity{
 
 type RoleAdminChangedEntity @entity {
   id: ID!
-  role: Bytes!
+  role: String!
   sender: String!
-  previousAdminRole: Bytes!
-  newAdminRole: Bytes!
+  previousAdminRole: String!
+  newAdminRole: String!
   txHash: String!
   createdAt: BigInt!
   gasLimit: BigInt!
@@ -392,7 +395,7 @@ type RoleAdminChangedEntity @entity {
 
 type RoleGrantedEntity @entity {
   id: ID!
-  role: Bytes!
+  role: String!
   sender: String!
   account: String!
   txHash: String!
@@ -403,7 +406,7 @@ type RoleGrantedEntity @entity {
 
 type RoleRevokedEntity @entity {
   id: ID!
-  role: Bytes!
+  role: String!
   sender: String!
   account: String!
   txHash: String!

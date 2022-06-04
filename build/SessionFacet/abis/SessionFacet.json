@@ -363,16 +363,11 @@
         "internalType": "bytes32",
         "name": "sessionId_",
         "type": "bytes32"
-      },
-      {
-        "internalType": "uint256",
-        "name": "additionalFund_",
-        "type": "uint256"
       }
     ],
     "name": "topUpSession",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {

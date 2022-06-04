@@ -45,11 +45,11 @@ export class MessageCreated__Params {
     this._event = event;
   }
 
-  get sender(): Address {
+  get createdBy(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get recipient(): Address {
+  get respondedBy(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
@@ -117,28 +117,32 @@ export class ResponseCreated__Params {
     this._event = event;
   }
 
-  get messageId(): Bytes {
-    return this._event.parameters[0].value.toBytes();
+  get createdBy(): Address {
+    return this._event.parameters[0].value.toAddress();
   }
 
-  get owner(): Address {
+  get respondedBy(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
-  get creator(): Address {
-    return this._event.parameters[2].value.toAddress();
+  get messageId(): Bytes {
+    return this._event.parameters[2].value.toBytes();
+  }
+
+  get sessionId(): Bytes {
+    return this._event.parameters[3].value.toBytes();
   }
 
   get answerLink(): string {
-    return this._event.parameters[3].value.toString();
+    return this._event.parameters[4].value.toString();
   }
 
   get responseValue(): BigInt {
-    return this._event.parameters[4].value.toBigInt();
+    return this._event.parameters[5].value.toBigInt();
   }
 
-  get value(): BigInt {
-    return this._event.parameters[5].value.toBigInt();
+  get msgValueAfterDeduction(): BigInt {
+    return this._event.parameters[6].value.toBigInt();
   }
 }
 
@@ -159,11 +163,11 @@ export class ResponseMarked__Params {
     return this._event.parameters[0].value.toBytes();
   }
 
-  get owner(): Address {
+  get createdBy(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
-  get answerer(): Address {
+  get respondedBy(): Address {
     return this._event.parameters[2].value.toAddress();
   }
 

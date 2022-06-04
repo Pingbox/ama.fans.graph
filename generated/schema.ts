@@ -17,7 +17,7 @@ export class ExampleEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("count", Value.fromBigInt(BigInt.zero()));
-    this.set("sender", Value.fromBytes(Bytes.empty()));
+    this.set("sender", Value.fromString(""));
     this.set("value", Value.fromBigInt(BigInt.zero()));
   }
 
@@ -55,13 +55,13 @@ export class ExampleEntity extends Entity {
     this.set("count", Value.fromBigInt(value));
   }
 
-  get sender(): Bytes {
+  get sender(): string {
     let value = this.get("sender");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set sender(value: Bytes) {
-    this.set("sender", Value.fromBytes(value));
+  set sender(value: string) {
+    this.set("sender", Value.fromString(value));
   }
 
   get value(): BigInt {
@@ -527,8 +527,8 @@ export class MessageCreatedEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
-    this.set("recipient", Value.fromString(""));
-    this.set("messageId", Value.fromBytes(Bytes.empty()));
+    this.set("respondedBy", Value.fromString(""));
+    this.set("messageId", Value.fromString(""));
     this.set("createdBy", Value.fromString(""));
     this.set("answerLink", Value.fromString(""));
     this.set("value", Value.fromBigInt(BigInt.zero()));
@@ -541,8 +541,9 @@ export class MessageCreatedEntity extends Entity {
     this.set("messageType", Value.fromBigInt(BigInt.zero()));
     this.set("responseType", Value.fromBigInt(BigInt.zero()));
     this.set("responseValue", Value.fromBigInt(BigInt.zero()));
-    this.set("activeSessionId", Value.fromBytes(Bytes.empty()));
-    this.set("data", Value.fromBytes(Bytes.empty()));
+    this.set("valueAfterDeduction", Value.fromBigInt(BigInt.zero()));
+    this.set("respondedAt", Value.fromBigInt(BigInt.zero()));
+    this.set("activeSessionId", Value.fromString(""));
     this.set("gasLimit", Value.fromBigInt(BigInt.zero()));
     this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
   }
@@ -583,22 +584,22 @@ export class MessageCreatedEntity extends Entity {
     this.set("txHash", Value.fromString(value));
   }
 
-  get recipient(): string {
-    let value = this.get("recipient");
+  get respondedBy(): string {
+    let value = this.get("respondedBy");
     return value!.toString();
   }
 
-  set recipient(value: string) {
-    this.set("recipient", Value.fromString(value));
+  set respondedBy(value: string) {
+    this.set("respondedBy", Value.fromString(value));
   }
 
-  get messageId(): Bytes {
+  get messageId(): string {
     let value = this.get("messageId");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set messageId(value: Bytes) {
-    this.set("messageId", Value.fromBytes(value));
+  set messageId(value: string) {
+    this.set("messageId", Value.fromString(value));
   }
 
   get createdBy(): string {
@@ -727,22 +728,31 @@ export class MessageCreatedEntity extends Entity {
     this.set("responseValue", Value.fromBigInt(value));
   }
 
-  get activeSessionId(): Bytes {
+  get valueAfterDeduction(): BigInt {
+    let value = this.get("valueAfterDeduction");
+    return value!.toBigInt();
+  }
+
+  set valueAfterDeduction(value: BigInt) {
+    this.set("valueAfterDeduction", Value.fromBigInt(value));
+  }
+
+  get respondedAt(): BigInt {
+    let value = this.get("respondedAt");
+    return value!.toBigInt();
+  }
+
+  set respondedAt(value: BigInt) {
+    this.set("respondedAt", Value.fromBigInt(value));
+  }
+
+  get activeSessionId(): string {
     let value = this.get("activeSessionId");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set activeSessionId(value: Bytes) {
-    this.set("activeSessionId", Value.fromBytes(value));
-  }
-
-  get data(): Bytes {
-    let value = this.get("data");
-    return value!.toBytes();
-  }
-
-  set data(value: Bytes) {
-    this.set("data", Value.fromBytes(value));
+  set activeSessionId(value: string) {
+    this.set("activeSessionId", Value.fromString(value));
   }
 
   get gasLimit(): BigInt {
@@ -770,13 +780,15 @@ export class ResponseCreatedEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
-    this.set("messageId", Value.fromBytes(Bytes.empty()));
-    this.set("owner", Value.fromString(""));
-    this.set("creator", Value.fromString(""));
+    this.set("messageId", Value.fromString(""));
+    this.set("sessionId", Value.fromString(""));
+    this.set("createdBy", Value.fromString(""));
+    this.set("respondedBy", Value.fromString(""));
     this.set("responseValue", Value.fromBigInt(BigInt.zero()));
     this.set("answerLink", Value.fromString(""));
-    this.set("value", Value.fromBigInt(BigInt.zero()));
+    this.set("valueAfterDeduction", Value.fromBigInt(BigInt.zero()));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
+    this.set("respondedAt", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -818,31 +830,40 @@ export class ResponseCreatedEntity extends Entity {
     this.set("txHash", Value.fromString(value));
   }
 
-  get messageId(): Bytes {
+  get messageId(): string {
     let value = this.get("messageId");
-    return value!.toBytes();
-  }
-
-  set messageId(value: Bytes) {
-    this.set("messageId", Value.fromBytes(value));
-  }
-
-  get owner(): string {
-    let value = this.get("owner");
     return value!.toString();
   }
 
-  set owner(value: string) {
-    this.set("owner", Value.fromString(value));
+  set messageId(value: string) {
+    this.set("messageId", Value.fromString(value));
   }
 
-  get creator(): string {
-    let value = this.get("creator");
+  get sessionId(): string {
+    let value = this.get("sessionId");
     return value!.toString();
   }
 
-  set creator(value: string) {
-    this.set("creator", Value.fromString(value));
+  set sessionId(value: string) {
+    this.set("sessionId", Value.fromString(value));
+  }
+
+  get createdBy(): string {
+    let value = this.get("createdBy");
+    return value!.toString();
+  }
+
+  set createdBy(value: string) {
+    this.set("createdBy", Value.fromString(value));
+  }
+
+  get respondedBy(): string {
+    let value = this.get("respondedBy");
+    return value!.toString();
+  }
+
+  set respondedBy(value: string) {
+    this.set("respondedBy", Value.fromString(value));
   }
 
   get responseValue(): BigInt {
@@ -863,13 +884,13 @@ export class ResponseCreatedEntity extends Entity {
     this.set("answerLink", Value.fromString(value));
   }
 
-  get value(): BigInt {
-    let value = this.get("value");
+  get valueAfterDeduction(): BigInt {
+    let value = this.get("valueAfterDeduction");
     return value!.toBigInt();
   }
 
-  set value(value: BigInt) {
-    this.set("value", Value.fromBigInt(value));
+  set valueAfterDeduction(value: BigInt) {
+    this.set("valueAfterDeduction", Value.fromBigInt(value));
   }
 
   get createdAt(): BigInt {
@@ -880,6 +901,15 @@ export class ResponseCreatedEntity extends Entity {
   set createdAt(value: BigInt) {
     this.set("createdAt", Value.fromBigInt(value));
   }
+
+  get respondedAt(): BigInt {
+    let value = this.get("respondedAt");
+    return value!.toBigInt();
+  }
+
+  set respondedAt(value: BigInt) {
+    this.set("respondedAt", Value.fromBigInt(value));
+  }
 }
 
 export class MessageValueClaimedEntity extends Entity {
@@ -888,7 +918,7 @@ export class MessageValueClaimedEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
-    this.set("messageId", Value.fromBytes(Bytes.empty()));
+    this.set("messageId", Value.fromString(""));
     this.set("createdBy", Value.fromString(""));
     this.set("value", Value.fromBigInt(BigInt.zero()));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
@@ -933,13 +963,13 @@ export class MessageValueClaimedEntity extends Entity {
     this.set("txHash", Value.fromString(value));
   }
 
-  get messageId(): Bytes {
+  get messageId(): string {
     let value = this.get("messageId");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set messageId(value: Bytes) {
-    this.set("messageId", Value.fromBytes(value));
+  set messageId(value: string) {
+    this.set("messageId", Value.fromString(value));
   }
 
   get createdBy(): string {
@@ -976,8 +1006,8 @@ export class TipCreatedEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
-    this.set("messageId", Value.fromBytes(Bytes.empty()));
-    this.set("tipId", Value.fromBytes(Bytes.empty()));
+    this.set("messageId", Value.fromString(""));
+    this.set("tipId", Value.fromString(""));
     this.set("createdBy", Value.fromString(""));
     this.set("value", Value.fromBigInt(BigInt.zero()));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
@@ -1019,22 +1049,22 @@ export class TipCreatedEntity extends Entity {
     this.set("txHash", Value.fromString(value));
   }
 
-  get messageId(): Bytes {
+  get messageId(): string {
     let value = this.get("messageId");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set messageId(value: Bytes) {
-    this.set("messageId", Value.fromBytes(value));
+  set messageId(value: string) {
+    this.set("messageId", Value.fromString(value));
   }
 
-  get tipId(): Bytes {
+  get tipId(): string {
     let value = this.get("tipId");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set tipId(value: Bytes) {
-    this.set("tipId", Value.fromBytes(value));
+  set tipId(value: string) {
+    this.set("tipId", Value.fromString(value));
   }
 
   get createdBy(): string {
@@ -1080,8 +1110,8 @@ export class TipValueClaimedEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
-    this.set("messageId", Value.fromBytes(Bytes.empty()));
-    this.set("tipId", Value.fromBytes(Bytes.empty()));
+    this.set("messageId", Value.fromString(""));
+    this.set("tipId", Value.fromString(""));
     this.set("createdBy", Value.fromString(""));
     this.set("value", Value.fromBigInt(BigInt.zero()));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
@@ -1126,22 +1156,22 @@ export class TipValueClaimedEntity extends Entity {
     this.set("txHash", Value.fromString(value));
   }
 
-  get messageId(): Bytes {
+  get messageId(): string {
     let value = this.get("messageId");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set messageId(value: Bytes) {
-    this.set("messageId", Value.fromBytes(value));
+  set messageId(value: string) {
+    this.set("messageId", Value.fromString(value));
   }
 
-  get tipId(): Bytes {
+  get tipId(): string {
     let value = this.get("tipId");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set tipId(value: Bytes) {
-    this.set("tipId", Value.fromBytes(value));
+  set tipId(value: string) {
+    this.set("tipId", Value.fromString(value));
   }
 
   get createdBy(): string {
@@ -1861,7 +1891,7 @@ export class ResponseMarkedEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
-    this.set("messageId", Value.fromBytes(Bytes.empty()));
+    this.set("messageId", Value.fromString(""));
     this.set("owner", Value.fromString(""));
     this.set("answerer", Value.fromString(""));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
@@ -1904,13 +1934,13 @@ export class ResponseMarkedEntity extends Entity {
     this.set("txHash", Value.fromString(value));
   }
 
-  get messageId(): Bytes {
+  get messageId(): string {
     let value = this.get("messageId");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set messageId(value: Bytes) {
-    this.set("messageId", Value.fromBytes(value));
+  set messageId(value: string) {
+    this.set("messageId", Value.fromString(value));
   }
 
   get owner(): string {
@@ -1956,7 +1986,7 @@ export class PostEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
-    this.set("postId", Value.fromBytes(Bytes.empty()));
+    this.set("postId", Value.fromString(""));
     this.set("createdBy", Value.fromString(""));
     this.set("value", Value.fromBigInt(BigInt.zero()));
     this.set("link", Value.fromString(""));
@@ -2001,13 +2031,13 @@ export class PostEntity extends Entity {
     this.set("txHash", Value.fromString(value));
   }
 
-  get postId(): Bytes {
+  get postId(): string {
     let value = this.get("postId");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set postId(value: Bytes) {
-    this.set("postId", Value.fromBytes(value));
+  set postId(value: string) {
+    this.set("postId", Value.fromString(value));
   }
 
   get createdBy(): string {
@@ -2089,8 +2119,8 @@ export class PostTipEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
-    this.set("postId", Value.fromBytes(Bytes.empty()));
-    this.set("postTipId", Value.fromBytes(Bytes.empty()));
+    this.set("postId", Value.fromString(""));
+    this.set("postTipId", Value.fromString(""));
     this.set("createdBy", Value.fromString(""));
     this.set("value", Value.fromBigInt(BigInt.zero()));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
@@ -2132,22 +2162,22 @@ export class PostTipEntity extends Entity {
     this.set("txHash", Value.fromString(value));
   }
 
-  get postId(): Bytes {
+  get postId(): string {
     let value = this.get("postId");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set postId(value: Bytes) {
-    this.set("postId", Value.fromBytes(value));
+  set postId(value: string) {
+    this.set("postId", Value.fromString(value));
   }
 
-  get postTipId(): Bytes {
+  get postTipId(): string {
     let value = this.get("postTipId");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set postTipId(value: Bytes) {
-    this.set("postTipId", Value.fromBytes(value));
+  set postTipId(value: string) {
+    this.set("postTipId", Value.fromString(value));
   }
 
   get createdBy(): string {
@@ -2201,7 +2231,7 @@ export class SessionCreatedEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("sessionId", Value.fromBytes(Bytes.empty()));
+    this.set("sessionId", Value.fromString(""));
     this.set("txHash", Value.fromString(""));
     this.set("owner", Value.fromString(""));
     this.set("startTime", Value.fromBigInt(BigInt.zero()));
@@ -2211,7 +2241,7 @@ export class SessionCreatedEntity extends Entity {
     this.set("rewardPool", Value.fromBigInt(BigInt.zero()));
     this.set("link", Value.fromString(""));
     this.set("rewardPoolLeft", Value.fromBigInt(BigInt.zero()));
-    this.set("valueRefunnded", Value.fromBigInt(BigInt.zero()));
+    this.set("valueRefunded", Value.fromBigInt(BigInt.zero()));
     this.set("messagesSent", Value.fromBigInt(BigInt.zero()));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
     this.set("gasLimit", Value.fromBigInt(BigInt.zero()));
@@ -2245,13 +2275,13 @@ export class SessionCreatedEntity extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get sessionId(): Bytes {
+  get sessionId(): string {
     let value = this.get("sessionId");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set sessionId(value: Bytes) {
-    this.set("sessionId", Value.fromBytes(value));
+  set sessionId(value: string) {
+    this.set("sessionId", Value.fromString(value));
   }
 
   get txHash(): string {
@@ -2335,13 +2365,13 @@ export class SessionCreatedEntity extends Entity {
     this.set("rewardPoolLeft", Value.fromBigInt(value));
   }
 
-  get valueRefunnded(): BigInt {
-    let value = this.get("valueRefunnded");
+  get valueRefunded(): BigInt {
+    let value = this.get("valueRefunded");
     return value!.toBigInt();
   }
 
-  set valueRefunnded(value: BigInt) {
-    this.set("valueRefunnded", Value.fromBigInt(value));
+  set valueRefunded(value: BigInt) {
+    this.set("valueRefunded", Value.fromBigInt(value));
   }
 
   get messagesSent(): BigInt {
@@ -2387,7 +2417,7 @@ export class SessionLinkUpdatedEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
-    this.set("sessionId", Value.fromBytes(Bytes.empty()));
+    this.set("sessionId", Value.fromString(""));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
     this.set("link", Value.fromString(""));
     this.set("gasLimit", Value.fromBigInt(BigInt.zero()));
@@ -2433,13 +2463,13 @@ export class SessionLinkUpdatedEntity extends Entity {
     this.set("txHash", Value.fromString(value));
   }
 
-  get sessionId(): Bytes {
+  get sessionId(): string {
     let value = this.get("sessionId");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set sessionId(value: Bytes) {
-    this.set("sessionId", Value.fromBytes(value));
+  set sessionId(value: string) {
+    this.set("sessionId", Value.fromString(value));
   }
 
   get createdAt(): BigInt {
@@ -2485,7 +2515,7 @@ export class SessionTopUpEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
-    this.set("sessionId", Value.fromBytes(Bytes.empty()));
+    this.set("sessionId", Value.fromString(""));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
     this.set("newRewardPool", Value.fromBigInt(BigInt.zero()));
     this.set("additionalFund", Value.fromBigInt(BigInt.zero()));
@@ -2529,13 +2559,13 @@ export class SessionTopUpEntity extends Entity {
     this.set("txHash", Value.fromString(value));
   }
 
-  get sessionId(): Bytes {
+  get sessionId(): string {
     let value = this.get("sessionId");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set sessionId(value: Bytes) {
-    this.set("sessionId", Value.fromBytes(value));
+  set sessionId(value: string) {
+    this.set("sessionId", Value.fromString(value));
   }
 
   get createdAt(): BigInt {
@@ -2590,7 +2620,7 @@ export class SessionEndTimeUpdateEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
-    this.set("sessionId", Value.fromBytes(Bytes.empty()));
+    this.set("sessionId", Value.fromString(""));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
     this.set("newEndTime", Value.fromBigInt(BigInt.zero()));
     this.set("additionalTime", Value.fromBigInt(BigInt.zero()));
@@ -2637,13 +2667,13 @@ export class SessionEndTimeUpdateEntity extends Entity {
     this.set("txHash", Value.fromString(value));
   }
 
-  get sessionId(): Bytes {
+  get sessionId(): string {
     let value = this.get("sessionId");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set sessionId(value: Bytes) {
-    this.set("sessionId", Value.fromBytes(value));
+  set sessionId(value: string) {
+    this.set("sessionId", Value.fromString(value));
   }
 
   get createdAt(): BigInt {
@@ -2698,8 +2728,8 @@ export class RewardDistributedOnAmaEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
-    this.set("sessionId", Value.fromBytes(Bytes.empty()));
-    this.set("messageId", Value.fromBytes(Bytes.empty()));
+    this.set("sessionId", Value.fromString(""));
+    this.set("messageId", Value.fromString(""));
     this.set("rewardPerAMA", Value.fromBigInt(BigInt.zero()));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
     this.set("rewardsLeft", Value.fromBigInt(BigInt.zero()));
@@ -2746,22 +2776,22 @@ export class RewardDistributedOnAmaEntity extends Entity {
     this.set("txHash", Value.fromString(value));
   }
 
-  get sessionId(): Bytes {
+  get sessionId(): string {
     let value = this.get("sessionId");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set sessionId(value: Bytes) {
-    this.set("sessionId", Value.fromBytes(value));
+  set sessionId(value: string) {
+    this.set("sessionId", Value.fromString(value));
   }
 
-  get messageId(): Bytes {
+  get messageId(): string {
     let value = this.get("messageId");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set messageId(value: Bytes) {
-    this.set("messageId", Value.fromBytes(value));
+  set messageId(value: string) {
+    this.set("messageId", Value.fromString(value));
   }
 
   get rewardPerAMA(): BigInt {
@@ -2816,7 +2846,7 @@ export class SessionEndedBeforeTimeEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
-    this.set("sessionId", Value.fromBytes(Bytes.empty()));
+    this.set("sessionId", Value.fromString(""));
     this.set("oldEndTime", Value.fromBigInt(BigInt.zero()));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
     this.set("newTime", Value.fromBigInt(BigInt.zero()));
@@ -2863,13 +2893,13 @@ export class SessionEndedBeforeTimeEntity extends Entity {
     this.set("txHash", Value.fromString(value));
   }
 
-  get sessionId(): Bytes {
+  get sessionId(): string {
     let value = this.get("sessionId");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set sessionId(value: Bytes) {
-    this.set("sessionId", Value.fromBytes(value));
+  set sessionId(value: string) {
+    this.set("sessionId", Value.fromString(value));
   }
 
   get oldEndTime(): BigInt {
@@ -2924,7 +2954,7 @@ export class SessionRewardLeftClaimedEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("txHash", Value.fromString(""));
-    this.set("sessionId", Value.fromBytes(Bytes.empty()));
+    this.set("sessionId", Value.fromString(""));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
     this.set("rewardLeft", Value.fromBigInt(BigInt.zero()));
     this.set("gasLimit", Value.fromBigInt(BigInt.zero()));
@@ -2970,13 +3000,13 @@ export class SessionRewardLeftClaimedEntity extends Entity {
     this.set("txHash", Value.fromString(value));
   }
 
-  get sessionId(): Bytes {
+  get sessionId(): string {
     let value = this.get("sessionId");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set sessionId(value: Bytes) {
-    this.set("sessionId", Value.fromBytes(value));
+  set sessionId(value: string) {
+    this.set("sessionId", Value.fromString(value));
   }
 
   get createdAt(): BigInt {
@@ -3021,7 +3051,7 @@ export class OwnershipTransferredEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("role", Value.fromBytes(Bytes.empty()));
+    this.set("role", Value.fromString(""));
     this.set("sender", Value.fromString(""));
     this.set("previousOwner", Value.fromString(""));
     this.set("newOwner", Value.fromString(""));
@@ -3061,13 +3091,13 @@ export class OwnershipTransferredEntity extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get role(): Bytes {
+  get role(): string {
     let value = this.get("role");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set role(value: Bytes) {
-    this.set("role", Value.fromBytes(value));
+  set role(value: string) {
+    this.set("role", Value.fromString(value));
   }
 
   get sender(): string {
@@ -3139,10 +3169,10 @@ export class RoleAdminChangedEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("role", Value.fromBytes(Bytes.empty()));
+    this.set("role", Value.fromString(""));
     this.set("sender", Value.fromString(""));
-    this.set("previousAdminRole", Value.fromBytes(Bytes.empty()));
-    this.set("newAdminRole", Value.fromBytes(Bytes.empty()));
+    this.set("previousAdminRole", Value.fromString(""));
+    this.set("newAdminRole", Value.fromString(""));
     this.set("txHash", Value.fromString(""));
     this.set("createdAt", Value.fromBigInt(BigInt.zero()));
     this.set("gasLimit", Value.fromBigInt(BigInt.zero()));
@@ -3179,13 +3209,13 @@ export class RoleAdminChangedEntity extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get role(): Bytes {
+  get role(): string {
     let value = this.get("role");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set role(value: Bytes) {
-    this.set("role", Value.fromBytes(value));
+  set role(value: string) {
+    this.set("role", Value.fromString(value));
   }
 
   get sender(): string {
@@ -3197,22 +3227,22 @@ export class RoleAdminChangedEntity extends Entity {
     this.set("sender", Value.fromString(value));
   }
 
-  get previousAdminRole(): Bytes {
+  get previousAdminRole(): string {
     let value = this.get("previousAdminRole");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set previousAdminRole(value: Bytes) {
-    this.set("previousAdminRole", Value.fromBytes(value));
+  set previousAdminRole(value: string) {
+    this.set("previousAdminRole", Value.fromString(value));
   }
 
-  get newAdminRole(): Bytes {
+  get newAdminRole(): string {
     let value = this.get("newAdminRole");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set newAdminRole(value: Bytes) {
-    this.set("newAdminRole", Value.fromBytes(value));
+  set newAdminRole(value: string) {
+    this.set("newAdminRole", Value.fromString(value));
   }
 
   get txHash(): string {
@@ -3257,7 +3287,7 @@ export class RoleGrantedEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("role", Value.fromBytes(Bytes.empty()));
+    this.set("role", Value.fromString(""));
     this.set("sender", Value.fromString(""));
     this.set("account", Value.fromString(""));
     this.set("txHash", Value.fromString(""));
@@ -3293,13 +3323,13 @@ export class RoleGrantedEntity extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get role(): Bytes {
+  get role(): string {
     let value = this.get("role");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set role(value: Bytes) {
-    this.set("role", Value.fromBytes(value));
+  set role(value: string) {
+    this.set("role", Value.fromString(value));
   }
 
   get sender(): string {
@@ -3362,7 +3392,7 @@ export class RoleRevokedEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("role", Value.fromBytes(Bytes.empty()));
+    this.set("role", Value.fromString(""));
     this.set("sender", Value.fromString(""));
     this.set("account", Value.fromString(""));
     this.set("txHash", Value.fromString(""));
@@ -3398,13 +3428,13 @@ export class RoleRevokedEntity extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get role(): Bytes {
+  get role(): string {
     let value = this.get("role");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set role(value: Bytes) {
-    this.set("role", Value.fromBytes(value));
+  set role(value: string) {
+    this.set("role", Value.fromString(value));
   }
 
   get sender(): string {

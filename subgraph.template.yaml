@@ -34,7 +34,7 @@ dataSources:
         - event: MessageValueClaimed(indexed bytes32,indexed address,uint256)
           handler: handleMessageValueClaimed
 
-        - event: ResponseCreated(indexed bytes32,indexed address,indexed address,string,uint256,uint256)
+        - event: ResponseCreated(indexed address,indexed address,indexed bytes32,bytes32,string,uint256,uint256)
           handler: handleResponseCreated
         
         - event: TipCreated(indexed bytes32,indexed bytes32,indexed address,uint256)
@@ -160,17 +160,12 @@ dataSources:
         - UnWhitelisted
         - Follow
         - UnFollow
-        - Transfer
       abis:
         - name: UserFacet
           file: ./abis/UserFacet.json
       eventHandlers:
-        - event: AmountReceived(indexed address,uint256)
-          handler: handleAmountReceived
 
-        - event: Withdraw(indexed address,uint256)
-          handler: handleWithdraw
-        
+
         - event: Blocked(indexed address,indexed address)
           handler: handleBlocked
 
@@ -189,8 +184,6 @@ dataSources:
         - event: UnFollow(indexed address,indexed address)
           handler: handleUnFollow
 
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
 
 
       file: ./src/mappingUser.ts
@@ -232,6 +225,32 @@ dataSources:
 
       file: ./src/mappingOwnership.ts
 
+  - kind: ethereum
+    name: CommonFacet
+    network: '{{network}}'
+    source:
+      address: '{{mainAddress}}'
+      abi: CommonFacet   
+      startBlock: {{startBlock}}
+
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Transfer
+        - withdraw
+      abis:
+        - name: CommonFacet
+          file: ./abis/CommonFacet.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+
+        - event: Withdraw(indexed address,uint256)
+          handler: handleWithdraw
+
+      file: ./src/mappingCommon.ts
 
   # - kind: ethereum
   #   name: DiamondCutFacet
