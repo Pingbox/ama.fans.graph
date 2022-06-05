@@ -96,11 +96,10 @@ export function handleSessionCreated(event: SessionCreated): void {
   
 
 export function handleSessionLinkUpdated(event: SessionLinkUpdated): void {
-    let session = SessionCreatedEntity.load(event.params.sessionId.toString())
+    let session = SessionCreatedEntity.load(event.params.sessionId.toHexString())
     if(session){
         session.link  = event.params.link
         session.save()
-
     }
     
     let sessionLinkUpdate = new SessionLinkUpdatedEntity(event.params.sessionId.toHexString())
