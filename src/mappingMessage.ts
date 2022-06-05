@@ -403,6 +403,7 @@ export function handleRewardDistributedOnAma(event: RewardDistributedOnAma): voi
     let session = SessionCreatedEntity.load(event.params.sessionId.toHexString())
     if(session){
         session.rewardPoolLeft  = event.params.rewardLeft
+        session.messagesSent = session.messagesSent.plus( BigInt.fromI32(1))
         session.save()
     }
     

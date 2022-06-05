@@ -293,7 +293,7 @@ type SessionCreatedEntity @entity {
   messagesSent: BigInt!
   createdAt: BigInt!
   gasLimit: BigInt!
-  gasPrice: BigInt! 
+  gasPrice: BigInt!
 }
 
 type SessionLinkUpdatedEntity @entity {

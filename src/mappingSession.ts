@@ -89,6 +89,7 @@ export function handleSessionCreated(event: SessionCreated): void {
     session.txHash =  event.transaction.hash.toHex()
     session.gasPrice =  event.transaction.gasPrice
     session.gasLimit =  event.transaction.gasLimit
+    
     session.save()
     
   }
@@ -117,6 +118,7 @@ export function handleSessionTopUp(event: SessionTopUp): void {
     let session = SessionCreatedEntity.load(event.params.sessionId.toHexString())
     if(session){
         session.rewardPool  = event.params.newRewardPool
+        session.rewardPoolLeft = session.rewardPoolLeft.plus(event.params.additionalFund)
         session.save()
 
     }
@@ -138,6 +140,7 @@ export function handleSessionTopUp(event: SessionTopUp): void {
 export function handleSessionEndTimeUpdated(event: SessionEndTimeUpdated): void {
     let session = SessionCreatedEntity.load(event.params.sessionId.toHexString())
     if(session){
+        session.oldEndTime = session.endTime
         session.endTime  = event.params.newEndTime
         session.save()
     }
@@ -161,7 +164,6 @@ export function handleSessionEndedBeforeTime(event: SessionEndedBeforeTime): voi
         session.oldEndTime = session.endTime
         session.endTime  = event.block.timestamp
         session.save()
-
     }
 
     let sessionUpdatedObject = new SessionEndedBeforeTimeEntity(event.params.sessionId.toHexString())
