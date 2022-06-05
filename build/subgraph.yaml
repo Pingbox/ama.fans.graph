@@ -6,7 +6,7 @@ dataSources:
     name: MessageFacet
     network: celo-alfajores
     source:
-      address: "0x05c38Bc003f2f2D025Eee55987d59A6C387e26B8"
+      address: "0x7A69E10EE5A0B6a39621e121EB61041f7b2727f3"
       abi: MessageFacet
       startBlock: 11797731
     mapping:
@@ -21,6 +21,7 @@ dataSources:
         - TipValueClaimed
         - ResponseMarked
         - AmountReceived
+        - RewardDistributedOnAma
       abis:
         - name: MessageFacet
           file: MessageFacet/abis/MessageFacet.json
@@ -41,12 +42,14 @@ dataSources:
           handler: handleResponseMarked
         - event: AmountReceived(indexed address,uint256)
           handler: handleAmountReceived
+        - event: RewardDistributedOnAma(indexed bytes32,indexed bytes32,uint256,uint256)
+          handler: handleRewardDistributedOnAma
       file: MessageFacet/MessageFacet.wasm
   - kind: ethereum
     name: PostFacet
     network: celo-alfajores
     source:
-      address: "0x05c38Bc003f2f2D025Eee55987d59A6C387e26B8"
+      address: "0x7A69E10EE5A0B6a39621e121EB61041f7b2727f3"
       abi: PostFacet
       startBlock: 11797731
     mapping:
@@ -72,7 +75,7 @@ dataSources:
     name: SessionFacet
     network: celo-alfajores
     source:
-      address: "0x05c38Bc003f2f2D025Eee55987d59A6C387e26B8"
+      address: "0x7A69E10EE5A0B6a39621e121EB61041f7b2727f3"
       abi: SessionFacet
       startBlock: 11797731
     mapping:
@@ -84,7 +87,6 @@ dataSources:
         - SessionLinkUpdated
         - SessionTopUp
         - SessionEndTimeUpdated
-        - RewardDistributedOnAma
         - SessionEndedBeforeTime
         - SessionRewardLeftClaimed
         - AmountReceived
@@ -101,8 +103,6 @@ dataSources:
           handler: handleSessionTopUp
         - event: SessionEndTimeUpdated(indexed bytes32,uint256,uint256)
           handler: handleSessionEndTimeUpdated
-        - event: RewardDistributedOnAma(indexed bytes32,indexed bytes32,uint256,uint256)
-          handler: handleRewardDistributedOnAma
         - event: SessionEndedBeforeTime(indexed bytes32,uint256,uint256)
           handler: handleSessionEndedBeforeTime
         - event: SessionRewardLeftClaimed(indexed bytes32,uint256)
@@ -114,7 +114,7 @@ dataSources:
     name: UserFacet
     network: celo-alfajores
     source:
-      address: "0x05c38Bc003f2f2D025Eee55987d59A6C387e26B8"
+      address: "0x7A69E10EE5A0B6a39621e121EB61041f7b2727f3"
       abi: UserFacet
       startBlock: 11797731
     mapping:
@@ -151,7 +151,7 @@ dataSources:
     name: OwnershipFacet
     network: celo-alfajores
     source:
-      address: "0x05c38Bc003f2f2D025Eee55987d59A6C387e26B8"
+      address: "0x7A69E10EE5A0B6a39621e121EB61041f7b2727f3"
       abi: OwnershipFacet
       startBlock: 11797731
     mapping:
@@ -180,7 +180,7 @@ dataSources:
     name: CommonFacet
     network: celo-alfajores
     source:
-      address: "0x05c38Bc003f2f2D025Eee55987d59A6C387e26B8"
+      address: "0x7A69E10EE5A0B6a39621e121EB61041f7b2727f3"
       abi: CommonFacet
       startBlock: 11797731
     mapping:

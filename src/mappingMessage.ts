@@ -11,13 +11,14 @@ import {
     ResponseCreated,
     ResponseMarked,
     AmountReceived,
+    RewardDistributedOnAma
 } from "../generated/MessageFacet/MessageFacet"
 
 
 
 import { AmountReceivedEntity, ResponseCreatedEntity, MessageCreatedEntity, MessageValueClaimedEntity,
   TipCreatedEntity, TipValueClaimedEntity, AmaUserEntity,
-    ResponseMarkedEntity, SessionCreatedEntity} from "../generated/schema"
+    RewardDistributedOnAmaEntity, SessionCreatedEntity} from "../generated/schema"
 
 
 export function handleMessageCreated(event: MessageCreated): void {
@@ -82,9 +83,9 @@ export function handleMessageCreated(event: MessageCreated): void {
 
     let newMessage = new MessageCreatedEntity(event.params.messageId.toHexString())
 
-    newMessage.respondedBy = event.params.createdBy.toHexString()
+    newMessage.respondedBy = event.params.respondedBy.toHexString()
     newMessage.messageId = event.params.messageId.toHexString()
-    newMessage.createdBy = event.params.respondedBy.toHexString()
+    newMessage.createdBy = event.params.createdBy.toHexString()
     newMessage.value = event.params.msgValue
     newMessage.expiryTime = event.params.timelock.plus( event.block.timestamp)
     newMessage.messageLink = event.params.messageLink
@@ -395,4 +396,24 @@ export function handleResponseCreated(event: ResponseCreated): void {
       creator.valueReceivedOnResponses = creator.valueReceivedOnResponses.plus(event.params.msgValueAfterDeduction)
       creator.save()
     }
+}
+
+export function handleRewardDistributedOnAma(event: RewardDistributedOnAma): void {
+
+    let session = SessionCreatedEntity.load(event.params.sessionId.toHexString())
+    if(session){
+        session.rewardPoolLeft  = event.params.rewardLeft
+        session.save()
+    }
+    
+    let rewardDistributed = new RewardDistributedOnAmaEntity(event.params.sessionId.toHexString())
+    rewardDistributed.txHash =  event.transaction.hash.toHex()
+    rewardDistributed.gasPrice =  event.transaction.gasPrice
+    rewardDistributed.gasLimit =  event.transaction.gasLimit
+    rewardDistributed.createdAt = event.block.timestamp
+    rewardDistributed.sessionId = event.params.sessionId.toHexString()
+    rewardDistributed.rewardsLeft = event.params.rewardLeft
+    rewardDistributed.rewardPerAMA = event.params.rewardPerAMA
+    rewardDistributed.messageId = event.params.messageId.toHexString()
+    rewardDistributed.save()
 }

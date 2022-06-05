@@ -176,6 +176,36 @@ export class ResponseMarked__Params {
   }
 }
 
+export class RewardDistributedOnAma extends ethereum.Event {
+  get params(): RewardDistributedOnAma__Params {
+    return new RewardDistributedOnAma__Params(this);
+  }
+}
+
+export class RewardDistributedOnAma__Params {
+  _event: RewardDistributedOnAma;
+
+  constructor(event: RewardDistributedOnAma) {
+    this._event = event;
+  }
+
+  get sessionId(): Bytes {
+    return this._event.parameters[0].value.toBytes();
+  }
+
+  get messageId(): Bytes {
+    return this._event.parameters[1].value.toBytes();
+  }
+
+  get rewardPerAMA(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+
+  get rewardLeft(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+}
+
 export class TipCreated extends ethereum.Event {
   get params(): TipCreated__Params {
     return new TipCreated__Params(this);
@@ -690,7 +720,7 @@ export class CreateMessageCall__Inputs {
     this._call = call;
   }
 
-  get recipient_(): Address {
+  get respondedBy(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 

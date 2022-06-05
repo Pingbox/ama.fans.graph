@@ -29,37 +29,6 @@
       },
       {
         "indexed": true,
-        "internalType": "bytes32",
-        "name": "messageId",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "rewardPerAMA",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "rewardsLeft",
-        "type": "uint256"
-      }
-    ],
-    "name": "RewardDistributedOnAma",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "sessionId",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
         "internalType": "address",
         "name": "owner",
         "type": "address"
@@ -264,24 +233,6 @@
         "internalType": "bytes32",
         "name": "sessionId_",
         "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "messageId_",
-        "type": "bytes32"
-      }
-    ],
-    "name": "deductRewardOnReply",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "sessionId_",
-        "type": "bytes32"
       }
     ],
     "name": "endSession",
@@ -323,6 +274,19 @@
     "name": "initSession",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "isSessionLive",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {

@@ -22,6 +22,7 @@ dataSources:
         - TipValueClaimed
         - ResponseMarked
         - AmountReceived
+        - RewardDistributedOnAma
  
       abis:
         - name: MessageFacet
@@ -48,6 +49,9 @@ dataSources:
         
         - event: AmountReceived(indexed address,uint256)
           handler: handleAmountReceived
+
+        - event: RewardDistributedOnAma(indexed bytes32,indexed bytes32,uint256,uint256)
+          handler: handleRewardDistributedOnAma
 
       file: ./src/mappingMessage.ts
 
@@ -101,7 +105,6 @@ dataSources:
         - SessionLinkUpdated
         - SessionTopUp
         - SessionEndTimeUpdated
-        - RewardDistributedOnAma
         - SessionEndedBeforeTime
         - SessionRewardLeftClaimed
         - AmountReceived
@@ -123,8 +126,7 @@ dataSources:
         - event: SessionEndTimeUpdated(indexed bytes32,uint256,uint256)
           handler: handleSessionEndTimeUpdated
 
-        - event: RewardDistributedOnAma(indexed bytes32,indexed bytes32,uint256,uint256)
-          handler: handleRewardDistributedOnAma
+
 
         - event: SessionEndedBeforeTime(indexed bytes32,uint256,uint256)
           handler: handleSessionEndedBeforeTime

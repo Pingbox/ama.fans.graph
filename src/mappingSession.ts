@@ -9,7 +9,6 @@ import {
     SessionLinkUpdated,
     SessionTopUp,
     SessionEndTimeUpdated, 
-    RewardDistributedOnAma,
     SessionEndedBeforeTime,
     SessionRewardLeftClaimed
 
@@ -17,7 +16,7 @@ import {
 
 
 import { AmountReceivedEntity, SessionCreatedEntity, SessionLinkUpdatedEntity, SessionTopUpEntity,
-    SessionEndTimeUpdateEntity, RewardDistributedOnAmaEntity, SessionEndedBeforeTimeEntity,
+    SessionEndTimeUpdateEntity, SessionEndedBeforeTimeEntity,
     SessionRewardLeftClaimedEntity, AmaUserEntity} from "../generated/schema"
 
 /*
@@ -153,28 +152,6 @@ export function handleSessionEndTimeUpdated(event: SessionEndTimeUpdated): void 
     sessionUpdated.newEndTime = event.params.newEndTime
     sessionUpdated.additionalTime = event.params.additionalTime
     sessionUpdated.save()
-}
-
-
-
-export function handleRewardDistributedOnAma(event: RewardDistributedOnAma): void {
-
-    let session = SessionCreatedEntity.load(event.params.sessionId.toHexString())
-    if(session){
-        session.rewardPoolLeft  = event.params.rewardsLeft
-        session.save()
-    }
-    
-    let rewardDistributed = new RewardDistributedOnAmaEntity(event.params.sessionId.toHexString())
-    rewardDistributed.txHash =  event.transaction.hash.toHex()
-    rewardDistributed.gasPrice =  event.transaction.gasPrice
-    rewardDistributed.gasLimit =  event.transaction.gasLimit
-    rewardDistributed.createdAt = event.block.timestamp
-    rewardDistributed.sessionId = event.params.sessionId.toHexString()
-    rewardDistributed.rewardsLeft = event.params.rewardsLeft
-    rewardDistributed.rewardPerAMA = event.params.rewardPerAMA
-    rewardDistributed.messageId = event.params.messageId.toHexString()
-    rewardDistributed.save()
 }
 
 

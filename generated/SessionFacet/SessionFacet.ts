@@ -32,36 +32,6 @@ export class AmountReceived__Params {
   }
 }
 
-export class RewardDistributedOnAma extends ethereum.Event {
-  get params(): RewardDistributedOnAma__Params {
-    return new RewardDistributedOnAma__Params(this);
-  }
-}
-
-export class RewardDistributedOnAma__Params {
-  _event: RewardDistributedOnAma;
-
-  constructor(event: RewardDistributedOnAma) {
-    this._event = event;
-  }
-
-  get sessionId(): Bytes {
-    return this._event.parameters[0].value.toBytes();
-  }
-
-  get messageId(): Bytes {
-    return this._event.parameters[1].value.toBytes();
-  }
-
-  get rewardPerAMA(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
-  }
-
-  get rewardsLeft(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
-  }
-}
-
 export class SessionCreated extends ethereum.Event {
   get params(): SessionCreated__Params {
     return new SessionCreated__Params(this);
@@ -231,6 +201,21 @@ export class SessionFacet extends ethereum.SmartContract {
     return new SessionFacet("SessionFacet", address);
   }
 
+  isSessionLive(): boolean {
+    let result = super.call("isSessionLive", "isSessionLive():(bool)", []);
+
+    return result[0].toBoolean();
+  }
+
+  try_isSessionLive(): ethereum.CallResult<boolean> {
+    let result = super.tryCall("isSessionLive", "isSessionLive():(bool)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
   sessionRewardPerAma(sessionId_: Bytes): BigInt {
     let result = super.call(
       "sessionRewardPerAma",
@@ -328,40 +313,6 @@ export class CreateSessionCall__Outputs {
 
   get value0(): Bytes {
     return this._call.outputValues[0].value.toBytes();
-  }
-}
-
-export class DeductRewardOnReplyCall extends ethereum.Call {
-  get inputs(): DeductRewardOnReplyCall__Inputs {
-    return new DeductRewardOnReplyCall__Inputs(this);
-  }
-
-  get outputs(): DeductRewardOnReplyCall__Outputs {
-    return new DeductRewardOnReplyCall__Outputs(this);
-  }
-}
-
-export class DeductRewardOnReplyCall__Inputs {
-  _call: DeductRewardOnReplyCall;
-
-  constructor(call: DeductRewardOnReplyCall) {
-    this._call = call;
-  }
-
-  get sessionId_(): Bytes {
-    return this._call.inputValues[0].value.toBytes();
-  }
-
-  get messageId_(): Bytes {
-    return this._call.inputValues[1].value.toBytes();
-  }
-}
-
-export class DeductRewardOnReplyCall__Outputs {
-  _call: DeductRewardOnReplyCall;
-
-  constructor(call: DeductRewardOnReplyCall) {
-    this._call = call;
   }
 }
 

@@ -269,6 +269,29 @@ export class PostFacet extends ethereum.SmartContract {
     );
   }
 
+  getPostMinimumBid(): BigInt {
+    let result = super.call(
+      "getPostMinimumBid",
+      "getPostMinimumBid():(uint256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_getPostMinimumBid(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "getPostMinimumBid",
+      "getPostMinimumBid():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   getPostTip(postTipId_: Bytes): PostFacet__getPostTipResult {
     let result = super.call(
       "getPostTip",
