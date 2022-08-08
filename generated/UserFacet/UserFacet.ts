@@ -10,6 +10,28 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
+export class AmountReceived extends ethereum.Event {
+  get params(): AmountReceived__Params {
+    return new AmountReceived__Params(this);
+  }
+}
+
+export class AmountReceived__Params {
+  _event: AmountReceived;
+
+  constructor(event: AmountReceived) {
+    this._event = event;
+  }
+
+  get receiver(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get amount(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+}
+
 export class Blocked extends ethereum.Event {
   get params(): Blocked__Params {
     return new Blocked__Params(this);
@@ -28,6 +50,28 @@ export class Blocked__Params {
   }
 
   get blocked(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
+export class DonationAddressChanged extends ethereum.Event {
+  get params(): DonationAddressChanged__Params {
+    return new DonationAddressChanged__Params(this);
+  }
+}
+
+export class DonationAddressChanged__Params {
+  _event: DonationAddressChanged;
+
+  constructor(event: DonationAddressChanged) {
+    this._event = event;
+  }
+
+  get sender(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get donationAddress(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 }
@@ -51,6 +95,24 @@ export class Follow__Params {
 
   get follower(): Address {
     return this._event.parameters[1].value.toAddress();
+  }
+}
+
+export class RegisterFiatUser extends ethereum.Event {
+  get params(): RegisterFiatUser__Params {
+    return new RegisterFiatUser__Params(this);
+  }
+}
+
+export class RegisterFiatUser__Params {
+  _event: RegisterFiatUser;
+
+  constructor(event: RegisterFiatUser) {
+    this._event = event;
+  }
+
+  get user(): Address {
+    return this._event.parameters[0].value.toAddress();
   }
 }
 
@@ -117,6 +179,32 @@ export class UnWhitelisted__Params {
 
   get unwhitelisted(): Address {
     return this._event.parameters[1].value.toAddress();
+  }
+}
+
+export class UserValidation extends ethereum.Event {
+  get params(): UserValidation__Params {
+    return new UserValidation__Params(this);
+  }
+}
+
+export class UserValidation__Params {
+  _event: UserValidation;
+
+  constructor(event: UserValidation) {
+    this._event = event;
+  }
+
+  get sender(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get receiver(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get message(): string {
+    return this._event.parameters[2].value.toString();
   }
 }
 
@@ -201,6 +289,27 @@ export class UserFacet extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
+  checkFiatUser(address_: Address): boolean {
+    let result = super.call("checkFiatUser", "checkFiatUser(address):(bool)", [
+      ethereum.Value.fromAddress(address_)
+    ]);
+
+    return result[0].toBoolean();
+  }
+
+  try_checkFiatUser(address_: Address): ethereum.CallResult<boolean> {
+    let result = super.tryCall(
+      "checkFiatUser",
+      "checkFiatUser(address):(bool)",
+      [ethereum.Value.fromAddress(address_)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
   checkFollower(sender_: Address, recipient_: Address): boolean {
     let result = super.call(
       "checkFollower",
@@ -265,18 +374,13 @@ export class UserFacet extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
-  getUserMinimumBid(
-    _sender: Address,
-    _recipient: Address,
-    _messageType: BigInt
-  ): BigInt {
+  getUserMinimumBid(sender_: Address, recipient_: Address): BigInt {
     let result = super.call(
       "getUserMinimumBid",
-      "getUserMinimumBid(address,address,uint256):(uint256)",
+      "getUserMinimumBid(address,address):(uint256)",
       [
-        ethereum.Value.fromAddress(_sender),
-        ethereum.Value.fromAddress(_recipient),
-        ethereum.Value.fromUnsignedBigInt(_messageType)
+        ethereum.Value.fromAddress(sender_),
+        ethereum.Value.fromAddress(recipient_)
       ]
     );
 
@@ -284,17 +388,15 @@ export class UserFacet extends ethereum.SmartContract {
   }
 
   try_getUserMinimumBid(
-    _sender: Address,
-    _recipient: Address,
-    _messageType: BigInt
+    sender_: Address,
+    recipient_: Address
   ): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
       "getUserMinimumBid",
-      "getUserMinimumBid(address,address,uint256):(uint256)",
+      "getUserMinimumBid(address,address):(uint256)",
       [
-        ethereum.Value.fromAddress(_sender),
-        ethereum.Value.fromAddress(_recipient),
-        ethereum.Value.fromUnsignedBigInt(_messageType)
+        ethereum.Value.fromAddress(sender_),
+        ethereum.Value.fromAddress(recipient_)
       ]
     );
     if (result.reverted) {
@@ -322,8 +424,12 @@ export class BlockUserCall__Inputs {
     this._call = call;
   }
 
-  get address_(): Address {
-    return this._call.inputValues[0].value.toAddress();
+  get data_(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
   }
 }
 
@@ -331,6 +437,58 @@ export class BlockUserCall__Outputs {
   _call: BlockUserCall;
 
   constructor(call: BlockUserCall) {
+    this._call = call;
+  }
+}
+
+export class DisableFiatUsersCall extends ethereum.Call {
+  get inputs(): DisableFiatUsersCall__Inputs {
+    return new DisableFiatUsersCall__Inputs(this);
+  }
+
+  get outputs(): DisableFiatUsersCall__Outputs {
+    return new DisableFiatUsersCall__Outputs(this);
+  }
+}
+
+export class DisableFiatUsersCall__Inputs {
+  _call: DisableFiatUsersCall;
+
+  constructor(call: DisableFiatUsersCall) {
+    this._call = call;
+  }
+}
+
+export class DisableFiatUsersCall__Outputs {
+  _call: DisableFiatUsersCall;
+
+  constructor(call: DisableFiatUsersCall) {
+    this._call = call;
+  }
+}
+
+export class EnableFiatUsersCall extends ethereum.Call {
+  get inputs(): EnableFiatUsersCall__Inputs {
+    return new EnableFiatUsersCall__Inputs(this);
+  }
+
+  get outputs(): EnableFiatUsersCall__Outputs {
+    return new EnableFiatUsersCall__Outputs(this);
+  }
+}
+
+export class EnableFiatUsersCall__Inputs {
+  _call: EnableFiatUsersCall;
+
+  constructor(call: EnableFiatUsersCall) {
+    this._call = call;
+  }
+}
+
+export class EnableFiatUsersCall__Outputs {
+  _call: EnableFiatUsersCall;
+
+  constructor(call: EnableFiatUsersCall) {
     this._call = call;
   }
 }
@@ -352,8 +510,12 @@ export class FollowUserCall__Inputs {
     this._call = call;
   }
 
-  get address_(): Address {
-    return this._call.inputValues[0].value.toAddress();
+  get data_(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
   }
 }
 
@@ -361,6 +523,108 @@ export class FollowUserCall__Outputs {
   _call: FollowUserCall;
 
   constructor(call: FollowUserCall) {
+    this._call = call;
+  }
+}
+
+export class ProvideValidationCall extends ethereum.Call {
+  get inputs(): ProvideValidationCall__Inputs {
+    return new ProvideValidationCall__Inputs(this);
+  }
+
+  get outputs(): ProvideValidationCall__Outputs {
+    return new ProvideValidationCall__Outputs(this);
+  }
+}
+
+export class ProvideValidationCall__Inputs {
+  _call: ProvideValidationCall;
+
+  constructor(call: ProvideValidationCall) {
+    this._call = call;
+  }
+
+  get data_(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+}
+
+export class ProvideValidationCall__Outputs {
+  _call: ProvideValidationCall;
+
+  constructor(call: ProvideValidationCall) {
+    this._call = call;
+  }
+}
+
+export class RegisterFiatUserCall extends ethereum.Call {
+  get inputs(): RegisterFiatUserCall__Inputs {
+    return new RegisterFiatUserCall__Inputs(this);
+  }
+
+  get outputs(): RegisterFiatUserCall__Outputs {
+    return new RegisterFiatUserCall__Outputs(this);
+  }
+}
+
+export class RegisterFiatUserCall__Inputs {
+  _call: RegisterFiatUserCall;
+
+  constructor(call: RegisterFiatUserCall) {
+    this._call = call;
+  }
+
+  get data_(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+}
+
+export class RegisterFiatUserCall__Outputs {
+  _call: RegisterFiatUserCall;
+
+  constructor(call: RegisterFiatUserCall) {
+    this._call = call;
+  }
+}
+
+export class SetDonationAddressCall extends ethereum.Call {
+  get inputs(): SetDonationAddressCall__Inputs {
+    return new SetDonationAddressCall__Inputs(this);
+  }
+
+  get outputs(): SetDonationAddressCall__Outputs {
+    return new SetDonationAddressCall__Outputs(this);
+  }
+}
+
+export class SetDonationAddressCall__Inputs {
+  _call: SetDonationAddressCall;
+
+  constructor(call: SetDonationAddressCall) {
+    this._call = call;
+  }
+
+  get data_(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+}
+
+export class SetDonationAddressCall__Outputs {
+  _call: SetDonationAddressCall;
+
+  constructor(call: SetDonationAddressCall) {
     this._call = call;
   }
 }
@@ -382,12 +646,12 @@ export class SetUserMinimumBidCall__Inputs {
     this._call = call;
   }
 
-  get minimumBidByUser(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
+  get data_(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
   }
 
-  get _messageType(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
   }
 }
 
@@ -416,8 +680,12 @@ export class UnBlockUserCall__Inputs {
     this._call = call;
   }
 
-  get address_(): Address {
-    return this._call.inputValues[0].value.toAddress();
+  get data_(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
   }
 }
 
@@ -425,6 +693,40 @@ export class UnBlockUserCall__Outputs {
   _call: UnBlockUserCall;
 
   constructor(call: UnBlockUserCall) {
+    this._call = call;
+  }
+}
+
+export class UnFollowUserCall extends ethereum.Call {
+  get inputs(): UnFollowUserCall__Inputs {
+    return new UnFollowUserCall__Inputs(this);
+  }
+
+  get outputs(): UnFollowUserCall__Outputs {
+    return new UnFollowUserCall__Outputs(this);
+  }
+}
+
+export class UnFollowUserCall__Inputs {
+  _call: UnFollowUserCall;
+
+  constructor(call: UnFollowUserCall) {
+    this._call = call;
+  }
+
+  get data_(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+}
+
+export class UnFollowUserCall__Outputs {
+  _call: UnFollowUserCall;
+
+  constructor(call: UnFollowUserCall) {
     this._call = call;
   }
 }
@@ -446,8 +748,12 @@ export class UnWhitelistUserCall__Inputs {
     this._call = call;
   }
 
-  get address_(): Address {
-    return this._call.inputValues[0].value.toAddress();
+  get data_(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
   }
 }
 
@@ -455,36 +761,6 @@ export class UnWhitelistUserCall__Outputs {
   _call: UnWhitelistUserCall;
 
   constructor(call: UnWhitelistUserCall) {
-    this._call = call;
-  }
-}
-
-export class UnfollowUserCall extends ethereum.Call {
-  get inputs(): UnfollowUserCall__Inputs {
-    return new UnfollowUserCall__Inputs(this);
-  }
-
-  get outputs(): UnfollowUserCall__Outputs {
-    return new UnfollowUserCall__Outputs(this);
-  }
-}
-
-export class UnfollowUserCall__Inputs {
-  _call: UnfollowUserCall;
-
-  constructor(call: UnfollowUserCall) {
-    this._call = call;
-  }
-
-  get address_(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class UnfollowUserCall__Outputs {
-  _call: UnfollowUserCall;
-
-  constructor(call: UnfollowUserCall) {
     this._call = call;
   }
 }
@@ -506,8 +782,12 @@ export class WhitelistUserCall__Inputs {
     this._call = call;
   }
 
-  get address_(): Address {
-    return this._call.inputValues[0].value.toAddress();
+  get data_(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
   }
 }
 

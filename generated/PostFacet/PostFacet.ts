@@ -453,8 +453,12 @@ export class CreatePostCall__Inputs {
     this._call = call;
   }
 
-  get postHash_(): string {
-    return this._call.inputValues[0].value.toString();
+  get data_(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
   }
 }
 
@@ -487,8 +491,12 @@ export class CreatePostTipCall__Inputs {
     this._call = call;
   }
 
-  get postId_(): Bytes {
+  get data_(): Bytes {
     return this._call.inputValues[0].value.toBytes();
+  }
+
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
   }
 }
 

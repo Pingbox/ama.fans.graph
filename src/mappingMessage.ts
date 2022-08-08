@@ -11,29 +11,20 @@ import {
     ResponseCreated,
     ResponseMarked,
     AmountReceived,
-    RewardDistributedOnAma
+    DonationMade
 } from "../generated/MessageFacet/MessageFacet"
 
 
 
 import { AmountReceivedEntity, ResponseCreatedEntity, MessageCreatedEntity, MessageValueClaimedEntity,
-  TipCreatedEntity, TipValueClaimedEntity, AmaUserEntity,
-    RewardDistributedOnAmaEntity, SessionCreatedEntity} from "../generated/schema"
+  TipCreatedEntity, TipValueClaimedEntity, AmaUserEntity, EResponseMarked, EDonationMade} from "../generated/schema"
 
 
 export function handleMessageCreated(event: MessageCreated): void {
-    //event MessageCreated(address indexed createdBy, address indexed recipient, bytes32 indexed messageId, bytes32 activeSessionId, string messageLink, bytes data);
+    //event MessageCreated(address indexed createdBy, address indexed respondedBy, bytes32 indexed messageId, string messageLink, uint256 msgValue, uint256 timelock); 
     //sedner, recipient_,timelock_,messageType_,messageHash_,msg.value,_isWhiteListed
     //(address,address,uint256,uint8,string,uint256,bool)
-    
-    //If activeSEssionId is present i.e the message was sent when the reciever has an session in effect, 
-    //Update the message counter of the session.
-    if(event.params.activeSessionId){
-        let session = SessionCreatedEntity.load(event.params.activeSessionId.toString())
-        if(session){
-            session.messagesSent  = session.messagesSent.plus(BigInt.fromI32(1))
-        }
-    }
+
 
     let senderId = event.params.createdBy.toHexString()
     let recipientId = event.params.respondedBy.toHexString()
@@ -92,16 +83,12 @@ export function handleMessageCreated(event: MessageCreated): void {
     newMessage.answered = false
     newMessage.claimed = false
     newMessage.responseType = BigInt.fromI32(0)
-    newMessage.messageType =  event.params.messageType
     newMessage.createdAt = event.block.timestamp
     newMessage.tips = BigInt.fromI32(0)
     newMessage.tipsTotalValue = BigInt.fromI32(0)
     newMessage.txHash =  event.transaction.hash.toHex()
     newMessage.gasLimit =  event.transaction.gasLimit
     newMessage.gasPrice =  event.transaction.gasPrice
-    newMessage.activeSessionId = event.params.activeSessionId.toHexString()
-
-
     newMessage.save()
 }
 
@@ -248,7 +235,21 @@ export function handleTipValueClaimed(event: TipValueClaimed): void {
     }
 }
       
-      
+export function handleDonationMade(event: DonationMade): void {
+    // Entities can be loaded from the store using a string ID; this ID
+    // needs to be unique across all entities of the same type
+    let id = event.transaction.hash.toHex() + "-" + event.logIndex.toString()
+    let entity = new EDonationMade(id)
+    entity.sender = event.params.sender.toHexString()
+    entity.value = event.params.value
+    entity.createdAt = event.block.timestamp
+    entity.txHash =  event.transaction.hash.toHex()
+    entity.donationAddress =  event.params.donationAddress.toHexString()
+    entity.save()
+  
+  }
+  
+
     
 export function handleAmountReceived(event: AmountReceived): void {
   // Entities can be loaded from the store using a string ID; this ID
@@ -267,66 +268,83 @@ export function handleAmountReceived(event: AmountReceived): void {
 
 
 export function handleResponseMarked(event: ResponseMarked): void {
-    // let _responseType = new ResponseMarkedEntity(event.params.messageId.toHexString())
-    // _responseType.messageId = event.params.messageId
-    // _responseType.owner = event.params.owner.toHexString() 
-    // _responseType.answerer = event.params.answerer.toHexString() 
-    // _responseType.createdAt = event.block.timestamp
-    // _responseType.txHash =  event.transaction.hash.toHex()
-    // _responseType.responseType =  event.params.responseType
+    //event ResponseMarked(bytes32 indexed messageId,  address indexed createdBy, address indexed respondedBy, uint responseType);
+    let _responseType = new EResponseMarked(event.params.messageId.toHexString())
+    _responseType.messageId = event.params.messageId.toHexString()
+    _responseType.createdBy = event.params.createdBy.toHexString() 
+    _responseType.respondedBy = event.params.respondedBy.toHexString() 
+    _responseType.createdAt = event.block.timestamp
+    _responseType.txHash =  event.transaction.hash.toHex()
+    _responseType.responseType =  event.params.responseType
 
-    // _responseType.save()
+    _responseType.save()
 
 
-    // let owner = AmaUserEntity.load(event.params.createdBy.toHexString())
-    // if(createdBy == null){
-    //   createdBy = insertUser(event.params.createdBy.toHexString(), event.block.timestamp)
-    // }
-    // let answerer = AmaUserEntity.load(event.params.answerer.toHexString())
-    // if(answerer == null){
-    //   answerer = insertUser(event.params.answerer.toHexString(), event.block.timestamp)
-    // }
+    let createdBy = AmaUserEntity.load(event.params.createdBy.toHexString())
+    if(createdBy == null){
+        createdBy = insertUser(event.params.createdBy.toHexString(), event.block.timestamp)
+    }
+    let respondedBy = AmaUserEntity.load(event.params.respondedBy.toHexString())
+    if(respondedBy == null){
+        respondedBy = insertUser(event.params.respondedBy.toHexString(), event.block.timestamp)
+    }
 
     
-    // if (event.params.responseType == BigInt.fromI32(1)){
-    //   //Good response Marked
-    //   if (owner.goodResponseCreated !== null){
-    //     owner.goodResponseCreated = owner.goodResponseCreated.abs().plus(BigInt.fromI32(1))
-    //       }else{
-    //     owner.goodResponseCreated = BigInt.fromI32(1)
-    //     }
-    //   owner.save()
+    if (event.params.responseType == BigInt.fromI32(1)){
 
-    //   if (answerer.goodResponseReceived !== null){
-    //     answerer.goodResponseReceived = answerer.goodResponseReceived.abs().plus(BigInt.fromI32(1))        
-    //     }else{
-    //       answerer.goodResponseReceived = BigInt.fromI32(1)
-    //     }
-    //   answerer.save()
+      if (respondedBy.oneStarResponse !== null){
+        respondedBy.oneStarResponse = respondedBy.oneStarResponse.abs().plus(BigInt.fromI32(1))        
+        }else{
+          respondedBy.oneStarResponse = BigInt.fromI32(1)
+        }
+      respondedBy.save()
+    }
+
+
+    if (event.params.responseType == BigInt.fromI32(2)){
+
+        if (respondedBy.twoStarResponse !== null){
+          respondedBy.twoStarResponse = respondedBy.twoStarResponse.abs().plus(BigInt.fromI32(1))        
+          }else{
+            respondedBy.twoStarResponse = BigInt.fromI32(1)
+          }
+        respondedBy.save()
+    }
+
+    if (event.params.responseType == BigInt.fromI32(3)){
+        if (respondedBy.threeStarResponse !== null){
+          respondedBy.threeStarResponse = respondedBy.threeStarResponse.abs().plus(BigInt.fromI32(1))        
+          }else{
+            respondedBy.threeStarResponse = BigInt.fromI32(1)
+          }
+        respondedBy.save()
+    }
+
+    if (event.params.responseType == BigInt.fromI32(4)){
+        if (respondedBy.fourStarResponse !== null){
+        respondedBy.fourStarResponse = respondedBy.fourStarResponse.abs().plus(BigInt.fromI32(1))        
+        }else{
+        respondedBy.fourStarResponse = BigInt.fromI32(1)
+        }
+        respondedBy.save()
+    }
+
+    if (event.params.responseType == BigInt.fromI32(5)){
+
+        if (respondedBy.fiveStarResponse !== null){
+            respondedBy.fiveStarResponse = respondedBy.fiveStarResponse.abs().plus(BigInt.fromI32(1))        
+            }else{
+            respondedBy.fiveStarResponse = BigInt.fromI32(1)
+            }
+        respondedBy.save()
+    }
   
-    // }
 
-    // if (event.params.responseType == BigInt.fromI32(2)){
-    //   if (owner.badResponseCreated !== null){
-    //     owner.badResponseCreated = owner.badResponseCreated.abs().plus(BigInt.fromI32(1))
-    //       }else{
-    //     owner.badResponseCreated = BigInt.fromI32(1)
-    //     }
-    //   owner.save()
-
-    //   if (answerer.badResponseReceived !== null){
-    //     answerer.badResponseReceived = answerer.badResponseReceived.abs().plus(BigInt.fromI32(1))        
-    //     }else{
-    //       answerer.badResponseReceived = BigInt.fromI32(1)
-    //     }
-    //   answerer.save()
-    // }
-
-    // let message = MessageCreatedEntity.load(event.params.messageId.toHexString())
-    // if (message){
-    //   message.responseType = event.params.responseType
-    //   message.save()
-    // }
+    let message = MessageCreatedEntity.load(event.params.messageId.toHexString())
+    if (message){
+      message.responseType = event.params.responseType
+      message.save()
+    }
   
 }
 
@@ -358,11 +376,12 @@ export function handleResponseCreated(event: ResponseCreated): void {
     response.createdBy = event.params.createdBy.toHexString()
     response.respondedBy = event.params.respondedBy.toHexString()
     response.responseValue = event.params.responseValue
+    response.messageId = event.params.messageId.toHexString()
+
     response.answerLink = event.params.answerLink
     response.createdAt = event.block.timestamp
     response.txHash =  event.transaction.hash.toHex()
     response.respondedAt = event.block.timestamp
-    response.sessionId =  event.params.sessionId.toHexString()
     response.valueAfterDeduction = event.params.msgValueAfterDeduction
 
   response.save()
@@ -396,25 +415,4 @@ export function handleResponseCreated(event: ResponseCreated): void {
       creator.valueReceivedOnResponses = creator.valueReceivedOnResponses.plus(event.params.msgValueAfterDeduction)
       creator.save()
     }
-}
-
-export function handleRewardDistributedOnAma(event: RewardDistributedOnAma): void {
-
-    let session = SessionCreatedEntity.load(event.params.sessionId.toHexString())
-    if(session){
-        session.rewardPoolLeft  = event.params.rewardLeft
-        session.messagesSent = session.messagesSent.plus( BigInt.fromI32(1))
-        session.save()
-    }
-    
-    let rewardDistributed = new RewardDistributedOnAmaEntity(event.params.sessionId.toHexString())
-    rewardDistributed.txHash =  event.transaction.hash.toHex()
-    rewardDistributed.gasPrice =  event.transaction.gasPrice
-    rewardDistributed.gasLimit =  event.transaction.gasLimit
-    rewardDistributed.createdAt = event.block.timestamp
-    rewardDistributed.sessionId = event.params.sessionId.toHexString()
-    rewardDistributed.rewardsLeft = event.params.rewardLeft
-    rewardDistributed.rewardPerAMA = event.params.rewardPerAMA
-    rewardDistributed.messageId = event.params.messageId.toHexString()
-    rewardDistributed.save()
 }

@@ -10,6 +10,84 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
+export class AdminWithdrawForRole extends ethereum.Event {
+  get params(): AdminWithdrawForRole__Params {
+    return new AdminWithdrawForRole__Params(this);
+  }
+}
+
+export class AdminWithdrawForRole__Params {
+  _event: AdminWithdrawForRole;
+
+  constructor(event: AdminWithdrawForRole) {
+    this._event = event;
+  }
+
+  get signerOne(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get signerTwo(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get account(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+
+  get role(): Bytes {
+    return this._event.parameters[3].value.toBytes();
+  }
+
+  get amount(): BigInt {
+    return this._event.parameters[4].value.toBigInt();
+  }
+}
+
+export class AmountReceived extends ethereum.Event {
+  get params(): AmountReceived__Params {
+    return new AmountReceived__Params(this);
+  }
+}
+
+export class AmountReceived__Params {
+  _event: AmountReceived;
+
+  constructor(event: AmountReceived) {
+    this._event = event;
+  }
+
+  get receiver(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get amount(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+}
+
+export class FiatUserWithdraw extends ethereum.Event {
+  get params(): FiatUserWithdraw__Params {
+    return new FiatUserWithdraw__Params(this);
+  }
+}
+
+export class FiatUserWithdraw__Params {
+  _event: FiatUserWithdraw;
+
+  constructor(event: FiatUserWithdraw) {
+    this._event = event;
+  }
+
+  get sender(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get amount(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+}
+
 export class Transfer extends ethereum.Event {
   get params(): Transfer__Params {
     return new Transfer__Params(this);
@@ -78,6 +156,29 @@ export class CommonFacet extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  domainSeperator(): Bytes {
+    let result = super.call(
+      "domainSeperator",
+      "domainSeperator():(bytes32)",
+      []
+    );
+
+    return result[0].toBytes();
+  }
+
+  try_domainSeperator(): ethereum.CallResult<Bytes> {
+    let result = super.tryCall(
+      "domainSeperator",
+      "domainSeperator():(bytes32)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytes());
+  }
+
   userBalance(): BigInt {
     let result = super.call("userBalance", "userBalance():(uint256)", []);
 
@@ -94,36 +195,82 @@ export class CommonFacet extends ethereum.SmartContract {
   }
 }
 
-export class TransferCall extends ethereum.Call {
-  get inputs(): TransferCall__Inputs {
-    return new TransferCall__Inputs(this);
+export class AdminWithdrawCall extends ethereum.Call {
+  get inputs(): AdminWithdrawCall__Inputs {
+    return new AdminWithdrawCall__Inputs(this);
   }
 
-  get outputs(): TransferCall__Outputs {
-    return new TransferCall__Outputs(this);
+  get outputs(): AdminWithdrawCall__Outputs {
+    return new AdminWithdrawCall__Outputs(this);
   }
 }
 
-export class TransferCall__Inputs {
-  _call: TransferCall;
+export class AdminWithdrawCall__Inputs {
+  _call: AdminWithdrawCall;
 
-  constructor(call: TransferCall) {
+  constructor(call: AdminWithdrawCall) {
     this._call = call;
   }
 
-  get amount_(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
+  get role_(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
   }
 
-  get recipient_(): Address {
+  get dataOne_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+
+  get dataTwo_(): Bytes {
+    return this._call.inputValues[2].value.toBytes();
+  }
+
+  get signatureOne_(): Bytes {
+    return this._call.inputValues[3].value.toBytes();
+  }
+
+  get signatureTwo_(): Bytes {
+    return this._call.inputValues[4].value.toBytes();
+  }
+}
+
+export class AdminWithdrawCall__Outputs {
+  _call: AdminWithdrawCall;
+
+  constructor(call: AdminWithdrawCall) {
+    this._call = call;
+  }
+}
+
+export class InitCommonCall extends ethereum.Call {
+  get inputs(): InitCommonCall__Inputs {
+    return new InitCommonCall__Inputs(this);
+  }
+
+  get outputs(): InitCommonCall__Outputs {
+    return new InitCommonCall__Outputs(this);
+  }
+}
+
+export class InitCommonCall__Inputs {
+  _call: InitCommonCall;
+
+  constructor(call: InitCommonCall) {
+    this._call = call;
+  }
+
+  get version_(): string {
+    return this._call.inputValues[0].value.toString();
+  }
+
+  get amaFansAddress_(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
 }
 
-export class TransferCall__Outputs {
-  _call: TransferCall;
+export class InitCommonCall__Outputs {
+  _call: InitCommonCall;
 
-  constructor(call: TransferCall) {
+  constructor(call: InitCommonCall) {
     this._call = call;
   }
 }
@@ -145,8 +292,12 @@ export class WithdrawCall__Inputs {
     this._call = call;
   }
 
-  get _amount(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
+  get data_(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
   }
 }
 

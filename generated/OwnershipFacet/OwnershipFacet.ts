@@ -275,6 +275,74 @@ export class RevokeRoleCall__Outputs {
   }
 }
 
+export class SetupRoleCall extends ethereum.Call {
+  get inputs(): SetupRoleCall__Inputs {
+    return new SetupRoleCall__Inputs(this);
+  }
+
+  get outputs(): SetupRoleCall__Outputs {
+    return new SetupRoleCall__Outputs(this);
+  }
+}
+
+export class SetupRoleCall__Inputs {
+  _call: SetupRoleCall;
+
+  constructor(call: SetupRoleCall) {
+    this._call = call;
+  }
+
+  get role(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get account(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+}
+
+export class SetupRoleCall__Outputs {
+  _call: SetupRoleCall;
+
+  constructor(call: SetupRoleCall) {
+    this._call = call;
+  }
+}
+
+export class SetupRoleAdminCall extends ethereum.Call {
+  get inputs(): SetupRoleAdminCall__Inputs {
+    return new SetupRoleAdminCall__Inputs(this);
+  }
+
+  get outputs(): SetupRoleAdminCall__Outputs {
+    return new SetupRoleAdminCall__Outputs(this);
+  }
+}
+
+export class SetupRoleAdminCall__Inputs {
+  _call: SetupRoleAdminCall;
+
+  constructor(call: SetupRoleAdminCall) {
+    this._call = call;
+  }
+
+  get role(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get adminRole(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+}
+
+export class SetupRoleAdminCall__Outputs {
+  _call: SetupRoleAdminCall;
+
+  constructor(call: SetupRoleAdminCall) {
+    this._call = call;
+  }
+}
+
 export class TransferOwnershipCall extends ethereum.Call {
   get inputs(): TransferOwnershipCall__Inputs {
     return new TransferOwnershipCall__Inputs(this);

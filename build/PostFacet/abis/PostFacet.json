@@ -83,9 +83,14 @@
   {
     "inputs": [
       {
-        "internalType": "string",
-        "name": "postHash_",
-        "type": "string"
+        "internalType": "bytes",
+        "name": "data_",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes",
+        "name": "signature_",
+        "type": "bytes"
       }
     ],
     "name": "createPost",
@@ -102,9 +107,14 @@
   {
     "inputs": [
       {
-        "internalType": "bytes32",
-        "name": "postId_",
-        "type": "bytes32"
+        "internalType": "bytes",
+        "name": "data_",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes",
+        "name": "signature_",
+        "type": "bytes"
       }
     ],
     "name": "createPostTip",

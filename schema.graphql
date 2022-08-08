@@ -9,10 +9,9 @@ type ExampleEntity @entity {
 type AmaUserEntity @entity {
   id: ID!
   txHash: String!
+  fiatUser: Boolean
   messagesCreated: BigInt!
-  postsCreated: BigInt!
-  sessionsCreated: BigInt!
-
+  donationAddress: String!
 
   tipsCreated: BigInt!
   postTipsCreated: BigInt!
@@ -20,9 +19,15 @@ type AmaUserEntity @entity {
   blockUserCreated: BigInt!
   following: BigInt!
   whitelistUserCreated: BigInt!
-  goodResponseCreated: BigInt!
-  badResponseCreated: BigInt!
 
+  "Rating responses received"
+  oneStarResponse: BigInt!
+  twoStarResponse: BigInt!
+  threeStarResponse: BigInt!
+  fourStarResponse: BigInt!
+  fiveStarResponse: BigInt!
+
+  validations: [String!]
 
   messagesReceived: BigInt!
   responsesReceived: BigInt!
@@ -35,22 +40,13 @@ type AmaUserEntity @entity {
 
 
 
-  "The aggragte value which a user has spent on sessions" 
-  valueSpentOnSessions: BigInt!
-
 
   "The aggragte value which a user has spent on creating messages" 
   valueSpentOnMessages: BigInt!
 
-
-  "The aggragte value which a user has spent on creating posts"
-  valueSpentOnPosts: BigInt!
-
   "The aggragte value in tips which a user has spent on tipping on messages" 
   valueSpentOnTips: BigInt!
 
-  "The aggragte value in tips which a user has spent on tipping on posts"
-  valueSpentOnPostTips: BigInt!
 
 
   "The value which you get when you answer a question"
@@ -59,8 +55,6 @@ type AmaUserEntity @entity {
   "The aggragte value in tips which your Messages have received" 
   valueReceivedOnTips: BigInt!
 
-  "The aggragate value in tips which has been received on a user's post ha received" 
-  valueReceivedOnPostTips: BigInt!
 
 
   messagesClaimedBack: BigInt!
@@ -70,16 +64,8 @@ type AmaUserEntity @entity {
   tipsValueClaimedBack: BigInt!
 
   address: String!
-  twitterId: BigInt
   createdAt: BigInt!
   earningsWithdrawn: BigInt! 
-  twitterUsername: String
-
-  profileTipsSent: BigInt!
-  profileTipsValueSent: BigInt!
-
-  profileTipsReceived: BigInt!
-  profileTipsValueReceived: BigInt!
 
 }
 
@@ -102,12 +88,10 @@ type MessageCreatedEntity @entity {
   createdAt: BigInt!
   tips: BigInt!
   tipsTotalValue: BigInt!
-  messageType: BigInt!
   responseType: BigInt!
   responseValue: BigInt!
   valueAfterDeduction: BigInt!
   respondedAt: BigInt!
-  activeSessionId: String!
   gasLimit: BigInt!
   gasPrice: BigInt!
 }
@@ -116,15 +100,27 @@ type MessageCreatedEntity @entity {
 type ResponseCreatedEntity @entity {
   id: ID!
   txHash: String!
+  createdAt: BigInt!
+  gasLimit: BigInt!
+  gasPrice: BigInt!
   messageId: String!
-  sessionId: String!
   createdBy: String! 
   respondedBy: String! 
+  responseType: BigInt!
   responseValue: BigInt! 
   answerLink: String! 
   valueAfterDeduction: BigInt! 
-  createdAt: BigInt!
   respondedAt: BigInt!
+}
+
+type EResponseMarked @entity {
+  id: ID!
+  txHash: String!
+  createdAt: BigInt!
+  messageId: String!
+  createdBy: String!
+  respondedBy: String!
+  responseType: BigInt!
 }
 
 
@@ -170,6 +166,18 @@ type AmountReceivedEntity @entity {
   facet: String!
 }
 
+type EDonationMade @entity {
+  id: ID!
+  txHash: String!
+  sender: String!
+  donationAddress: String! 
+  value: BigInt! 
+  createdAt: BigInt!
+
+}
+
+
+
 type TransferEntity @entity {
   id: ID!
   txHash: String!
@@ -181,6 +189,23 @@ type TransferEntity @entity {
 
 
 
+type EUserValidation @entity {
+  id: ID!
+  txHash: String!
+  sender: String! 
+  receiver: String!
+  message: String!
+  createdAt: BigInt!
+}
+
+type EDonationAddressChanged @entity {
+  id: ID!
+  txHash: String!
+  sender: String! 
+  donationAddress: String!
+  createdAt: BigInt!
+
+}
 
 
 type BlockedEntity @entity {
@@ -240,133 +265,7 @@ type WithdrawEntity @entity {
   createdAt: BigInt!
 }
 
-type ResponseMarkedEntity @entity {
-  id: ID!
-  txHash: String!
-  messageId: String!
-  owner: String!
-  answerer: String!
-  createdAt: BigInt!
-  responseType: BigInt!
-}
 
-
-type PostEntity @entity {
-  id: ID!
-  txHash: String!
-  postId: String! 
-  createdBy: String!
-  value: BigInt!
-  link: String! 
-  createdAt: BigInt!
-  tips: BigInt!
-  tipsTotalValue: BigInt!
-  gasLimit: BigInt!
-  gasPrice: BigInt!
-}
-
-type PostTipEntity @entity {
-  id: ID!
-  txHash: String!
-  postId: String! 
-  postTipId: String! 
-  createdBy: String! 
-  value: BigInt! 
-  createdAt: BigInt!
-  gasLimit: BigInt!
-  gasPrice: BigInt!
-}
-
-type SessionCreatedEntity @entity {
-  id: ID!
-  sessionId: String!
-  txHash: String!
-  owner: String!
-  startTime: BigInt!
-  endTime: BigInt!
-  oldEndTime: BigInt!
-  rewardPerAMA: BigInt!
-  rewardPool: BigInt!
-  link: String!
-  rewardPoolLeft: BigInt!
-  valueRefunded: BigInt!
-  messagesSent: BigInt!
-  createdAt: BigInt!
-  gasLimit: BigInt!
-  gasPrice: BigInt!
-}
-
-type SessionLinkUpdatedEntity @entity {
-  id: ID!
-  txHash: String!
-  sessionId: String!
-  createdAt: BigInt!
-  link: String!  
-  gasLimit: BigInt!
-  gasPrice: BigInt! 
-
-  }
-
-type SessionTopUpEntity @entity {
-  id: ID!
-  txHash: String!
-  sessionId: String!
-  createdAt: BigInt!
-  newRewardPool: BigInt!
-  additionalFund: BigInt!
-  gasLimit: BigInt!
-  gasPrice: BigInt! 
-
-}
-
-
-type SessionEndTimeUpdateEntity @entity{
-  id: ID!
-  txHash: String!
-  sessionId: String!
-  createdAt: BigInt!
-  newEndTime: BigInt!
-  additionalTime: BigInt!
-  gasLimit: BigInt!
-  gasPrice: BigInt! 
-
-}
-
-type RewardDistributedOnAmaEntity @entity {
-  id: ID!
-  txHash: String!
-  sessionId: String!
-  messageId: String!
-  rewardPerAMA: BigInt!
-  createdAt: BigInt!
-  rewardsLeft: BigInt!
-  gasLimit: BigInt!
-  gasPrice: BigInt! 
-
-}
-
-type SessionEndedBeforeTimeEntity @entity {
-  id: ID!
-  txHash: String!
-  sessionId: String!
-  oldEndTime: BigInt!
-  createdAt: BigInt!
-  newTime: BigInt!
-  gasLimit: BigInt!
-  gasPrice: BigInt! 
-
-}
-
-type SessionRewardLeftClaimedEntity @entity {
-  id: ID!
-  txHash: String!
-  sessionId: String!
-  createdAt: BigInt!
-  rewardLeft: BigInt!
-  gasLimit: BigInt!
-  gasPrice: BigInt! 
-
-}
 
 
 type OwnershipTransferredEntity @entity{
@@ -413,5 +312,38 @@ type RoleRevokedEntity @entity {
   createdAt: BigInt!
   gasLimit: BigInt!
   gasPrice: BigInt! 
+}
 
+
+type FiatUserWithdrawEntity @entity {
+  id: ID!
+  sender: String!
+  amount: BigInt!
+  txHash: String!
+  createdAt: BigInt!
+  gasLimit: BigInt!
+  gasPrice: BigInt! 
+}
+
+type RoleWithdrawEntity @entity {
+  id: ID!
+  signerOne: String!
+  signerTwo: String!
+  sender: String!
+  account: String!
+  role: String!
+  amount: BigInt!
+  txHash: String!
+  createdAt: BigInt!
+  gasLimit: BigInt!
+  gasPrice: BigInt! 
+}
+
+type RegisterFiatUserEntity @entity {
+  id: ID!
+  sender: String!
+  txHash: String!
+  createdAt: BigInt!
+  gasLimit: BigInt!
+  gasPrice: BigInt! 
 }

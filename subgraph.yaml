@@ -6,9 +6,9 @@ dataSources:
     name: MessageFacet
     network: 'celo-alfajores'
     source:
-      address: '0x7A69E10EE5A0B6a39621e121EB61041f7b2727f3'
+      address: '0xB3Ee90BC8e1CbA349EDa2A138658660ee73343c3'
       abi: MessageFacet   
-      startBlock: 11797731
+      startBlock: 12608905
 
     mapping:
       kind: ethereum/events
@@ -22,20 +22,21 @@ dataSources:
         - TipValueClaimed
         - ResponseMarked
         - AmountReceived
-        - RewardDistributedOnAma
- 
+        - DonationMade
+        
       abis:
         - name: MessageFacet
           file: ./abis/MessageFacet.json
       eventHandlers:
 
-        - event: MessageCreated(indexed address,indexed address,indexed bytes32,bytes32,string,uint256,uint256,uint256)
+        - event: MessageCreated(indexed address,indexed address,indexed bytes32,string,uint256,uint256)
           handler: handleMessageCreated
 
         - event: MessageValueClaimed(indexed bytes32,indexed address,uint256)
           handler: handleMessageValueClaimed
 
-        - event: ResponseCreated(indexed address,indexed address,indexed bytes32,bytes32,string,uint256,uint256)
+
+        - event:  ResponseCreated(indexed address,indexed address,indexed bytes32,string,uint256,uint256)
           handler: handleResponseCreated
         
         - event: TipCreated(indexed bytes32,indexed bytes32,indexed address,uint256)
@@ -50,111 +51,26 @@ dataSources:
         - event: AmountReceived(indexed address,uint256)
           handler: handleAmountReceived
 
-        - event: RewardDistributedOnAma(indexed bytes32,indexed bytes32,uint256,uint256)
-          handler: handleRewardDistributedOnAma
+        - event: DonationMade(address,address,uint256)
+          handler: handleDonationMade
+
 
       file: ./src/mappingMessage.ts
-
-  - kind: ethereum
-    name: PostFacet
-    network: 'celo-alfajores'
-    source:
-      address: '0x7A69E10EE5A0B6a39621e121EB61041f7b2727f3'
-      abi: PostFacet   
-      startBlock: 11797731
-
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - AmountReceived
-        - PostCreated
-        - PostTipCreated
-
-      abis:
-        - name: PostFacet
-          file: ./abis/PostFacet.json
-      eventHandlers:
-        - event: AmountReceived(indexed address,uint256)
-          handler: handlePostAmountReceived
-
-        - event: PostCreated(indexed bytes32,indexed address,uint256,string)
-          handler: handlePostCreated
-
-        - event: PostTipCreated(indexed bytes32,indexed bytes32,indexed address,uint256)
-          handler: handlePostTipCreated
-
-      file: ./src/mappingPost.ts
-
-
-  - kind: ethereum
-    name: SessionFacet
-    network: 'celo-alfajores'
-    source:
-      address: '0x7A69E10EE5A0B6a39621e121EB61041f7b2727f3'
-      abi: SessionFacet   
-      startBlock: 11797731
-
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - SessionCreated
-        - SessionLinkUpdated
-        - SessionTopUp
-        - SessionEndTimeUpdated
-        - SessionEndedBeforeTime
-        - SessionRewardLeftClaimed
-        - AmountReceived
-        
-      abis:
-        - name: SessionFacet
-          file: ./abis/SessionFacet.json
-
-      eventHandlers:
-        - event: SessionCreated(indexed bytes32,indexed address,uint256,uint256,uint256,uint256,string)
-          handler: handleSessionCreated
-
-        - event: SessionLinkUpdated(indexed bytes32,string)
-          handler: handleSessionLinkUpdated
-
-        - event: SessionTopUp(indexed bytes32,uint256,uint256)
-          handler: handleSessionTopUp
-   
-        - event: SessionEndTimeUpdated(indexed bytes32,uint256,uint256)
-          handler: handleSessionEndTimeUpdated
-
-
-
-        - event: SessionEndedBeforeTime(indexed bytes32,uint256,uint256)
-          handler: handleSessionEndedBeforeTime
-
-        - event: SessionRewardLeftClaimed(indexed bytes32,uint256)
-          handler: handleSessionRewardLeftClaimed
-
-        - event: AmountReceived(indexed address,uint256)
-          handler: handleAmountReceived
-
-      file: ./src/mappingSession.ts
-
 
 
   - kind: ethereum
     name: UserFacet
     network: 'celo-alfajores'
     source:
-      address: '0x7A69E10EE5A0B6a39621e121EB61041f7b2727f3'
+      address: '0xB3Ee90BC8e1CbA349EDa2A138658660ee73343c3'
       abi: UserFacet   
-      startBlock: 11797731
+      startBlock: 12608905
 
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - AmountReceived
         - Withdraw
         - Blocked
         - UnBlock
@@ -186,7 +102,14 @@ dataSources:
         - event: UnFollow(indexed address,indexed address)
           handler: handleUnFollow
 
+        - event: RegisterFiatUser(indexed address)
+          handler: handleRegisterFiatUser
 
+        - event: UserValidation(address,address,string)
+          handler: handleUserValidation
+    
+        - event: DonationAddressChanged(address,address)
+          handler: handleDonationAddressChanged
 
       file: ./src/mappingUser.ts
 
@@ -195,9 +118,9 @@ dataSources:
     name: OwnershipFacet
     network: 'celo-alfajores'
     source:
-      address: '0x7A69E10EE5A0B6a39621e121EB61041f7b2727f3'
+      address: '0xB3Ee90BC8e1CbA349EDa2A138658660ee73343c3'
       abi: OwnershipFacet   
-      startBlock: 11797731
+      startBlock: 12608905
 
     mapping:
       kind: ethereum/events
@@ -231,9 +154,9 @@ dataSources:
     name: CommonFacet
     network: 'celo-alfajores'
     source:
-      address: '0x7A69E10EE5A0B6a39621e121EB61041f7b2727f3'
+      address: '0xB3Ee90BC8e1CbA349EDa2A138658660ee73343c3'
       abi: CommonFacet   
-      startBlock: 11797731
+      startBlock: 12608905
 
     mapping:
       kind: ethereum/events
@@ -242,6 +165,10 @@ dataSources:
       entities:
         - Transfer
         - withdraw
+        - FiatUserWithdraw
+        - AdminWithdrawForRole
+        - AmountReceived
+
       abis:
         - name: CommonFacet
           file: ./abis/CommonFacet.json
@@ -252,6 +179,13 @@ dataSources:
         - event: Withdraw(indexed address,uint256)
           handler: handleWithdraw
 
+        - event: FiatUserWithdraw(indexed address,uint256)
+          handler: handleFiatUserWithdraw
+
+        - event: AdminWithdrawForRole(indexed address,indexed address,indexed address,bytes32,uint256)
+          handler: handleRoleWithdraw
+    
+
       file: ./src/mappingCommon.ts
 
   # - kind: ethereum
@@ -260,7 +194,7 @@ dataSources:
   #   source:
   #     address: ''
   #     abi: DiamondCutFacet   
-  #     startBlock: 11797731
+  #     startBlock: 12608905
 
   #   mapping:
   #     kind: ethereum/events

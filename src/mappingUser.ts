@@ -10,14 +10,16 @@ import {
   UnWhitelisted,
   Follow,
   UnFollow,
-  Withdraw,
+  RegisterFiatUser,
+  UserValidation,
+  DonationAddressChanged
 } from "../generated/UserFacet/UserFacet"
 
 
 
-import { AmountReceivedEntity,  BlockedEntity, UnBlockedEntity,
-  FollowEntity, UnFollowEntity, WhitelistedEntity, UnWhitelistedEntity, WithdrawEntity,
-     AmaUserEntity, TransferEntity} from "../generated/schema"
+import {RegisterFiatUserEntity, BlockedEntity, UnBlockedEntity,
+  FollowEntity, UnFollowEntity, WhitelistedEntity, UnWhitelistedEntity, EUserValidation,
+  EDonationAddressChanged, AmaUserEntity} from "../generated/schema"
 
 
 
@@ -27,40 +29,40 @@ function insertUser(userAddress: string, timestamp: BigInt): AmaUserEntity{
     let user = new AmaUserEntity(userAddress)
     user.address = userAddress
     user.createdAt = timestamp
-
-    user.postsCreated = BigInt.fromI32(0)
+    user.donationAddress = ""
     user.messagesCreated = BigInt.fromI32(0)
     user.tipsCreated = BigInt.fromI32(0)
-    user.postTipsCreated = BigInt.fromI32(0)
-    user.postTipsCreated = BigInt.fromI32(0)
-    user.sessionsCreated = BigInt.fromI32(0)
+
     
     user.blockUserCreated = BigInt.fromI32(0)
     user.followers = BigInt.fromI32(0)
     user.whitelistUserCreated =  BigInt.fromI32(0)
     user.responsesCreated = BigInt.fromI32(0)
-    user.goodResponseCreated = BigInt.fromI32(0)
-    user.badResponseCreated = BigInt.fromI32(0)
+
+    user.oneStarResponse= BigInt.fromI32(0)
+    user.twoStarResponse= BigInt.fromI32(0)
+    user.threeStarResponse= BigInt.fromI32(0)
+    user.fourStarResponse= BigInt.fromI32(0)
+    user.fiveStarResponse= BigInt.fromI32(0)
+  
+    user.validations = [""]
+
   
     user.messagesReceived = BigInt.fromI32(0)
     user.responsesReceived = BigInt.fromI32(0)
     user.blockUserReceived = BigInt.fromI32(0)
     user.following = BigInt.fromI32(0)
     user.whitelistUserReceived = BigInt.fromI32(0)
-    user.goodResponseReceived = BigInt.fromI32(0)
-    user.badResponseReceived = BigInt.fromI32(0)
+
     
     //Value Spent by user
     user.valueSpentOnTips = BigInt.fromI32(0)
-    user.valueSpentOnPostTips = BigInt.fromI32(0)
     user.valueSpentOnMessages = BigInt.fromI32(0)
-    user.valueSpentOnSessions = BigInt.fromI32(0)
   
 
     //Value Received by user
     user.valueReceivedOnResponses = BigInt.fromI32(0)
     user.valueReceivedOnTips = BigInt.fromI32(0)
-    user.valueReceivedOnPostTips = BigInt.fromI32(0)
 
     //Number of uints claimed back by user
     user.messagesClaimedBack = BigInt.fromI32(0)
@@ -70,18 +72,91 @@ function insertUser(userAddress: string, timestamp: BigInt): AmaUserEntity{
     user.messagesValueClaimedBack = BigInt.fromI32(0)
     user.tipsValueClaimedBack = BigInt.fromI32(0)
   
-    user.twitterId = BigInt.fromI32(0)
-    user.twitterUsername = ""
+    // user.twitterId = BigInt.fromI32(0)
+    // user.twitterUsername = ""
 
     user.earningsWithdrawn = BigInt.fromI32(0)
-    user.profileTipsSent = BigInt.fromI32(0)
-    user.profileTipsValueSent = BigInt.fromI32(0)
-    user.profileTipsReceived = BigInt.fromI32(0)
-    user.profileTipsValueReceived = BigInt.fromI32(0)
+    // user.profileTipsSent = BigInt.fromI32(0)
+    // user.profileTipsValueSent = BigInt.fromI32(0)
+    // user.profileTipsReceived = BigInt.fromI32(0)
+    // user.profileTipsValueReceived = BigInt.fromI32(0)
 
     return user
   }
 
+
+
+   
+  export function handleUserValidation(event: UserValidation): void {
+    let id = event.transaction.hash.toHex() + "-" + event.logIndex.toString()
+    let user = new EUserValidation(id)
+    user.sender = event.params.sender.toHexString()
+    user.receiver = event.params.receiver.toHexString()
+    user.message = event.params.message
+    user.createdAt = event.block.timestamp
+    user.txHash =  event.transaction.hash.toHex()
+    user.txHash =  event.transaction.hash.toHex()
+
+    user.save()
+  
+    // let receiver = AmaUserEntity.load(event.params.receiver.toHexString())
+    // if(receiver == null){
+    //   receiver = insertUser(event.params.receiver.toHexString(), event.block.timestamp)
+    // }
+    
+    // if (receiver.validations == null){
+
+    // }else{
+    //   receiver.validations.append = true;
+    
+    // }
+    // sender.save()
+  
+  }
+  
+
+ 
+  export function handleDonationAddressChanged(event: DonationAddressChanged): void {
+    let id = event.transaction.hash.toHex() + "-" + event.logIndex.toString()
+    let user = new EDonationAddressChanged(id)
+    user.sender = event.params.sender.toHexString()
+    user.donationAddress = event.params.donationAddress.toHexString()
+    user.createdAt = event.block.timestamp
+    user.txHash =  event.transaction.hash.toHex()
+    user.txHash =  event.transaction.hash.toHex()
+
+    user.save()
+  
+    let sender = AmaUserEntity.load(event.params.sender.toHexString())
+    if(sender == null){
+      sender = insertUser(event.params.sender.toHexString(), event.block.timestamp)
+    }
+    sender.donationAddress = event.params.donationAddress.toHexString()
+    sender.save()
+  
+  }
+  
+
+ 
+export function handleRegisterFiatUser(event: RegisterFiatUser): void {
+  let id = event.transaction.hash.toHex() + "-" + event.logIndex.toString()
+  let fiatUser = new RegisterFiatUserEntity(id)
+  fiatUser.sender = event.params.user.toHexString()
+  fiatUser.createdAt = event.block.timestamp
+  fiatUser.txHash =  event.transaction.hash.toHex()
+  fiatUser.gasPrice =  event.transaction.gasPrice
+  fiatUser.gasLimit =  event.transaction.gasLimit
+  fiatUser.save()
+
+  let sender = AmaUserEntity.load(event.params.user.toHexString())
+  if(sender == null){
+    sender = insertUser(event.params.user.toHexString(), event.block.timestamp)
+  }
+  
+  sender.fiatUser = true;
+  sender.save()
+
+}
 
 
 export function handleBlocked(event: Blocked): void {
@@ -153,7 +228,7 @@ export function handleWhitelisted(event: Whitelisted): void {
   let id = event.transaction.hash.toHex() + "-" + event.logIndex.toString()
   let whitelisted = new WhitelistedEntity(id)
   whitelisted.sender = event.params.whitelister.toHexString()
-  whitelisted.receiver = event.params.whitelister.toHexString()
+  whitelisted.receiver = event.params.whitelisted.toHexString()
   whitelisted.createdAt = event.block.timestamp
   whitelisted.txHash =  event.transaction.hash.toHex()
 

@@ -32,6 +32,32 @@ export class AmountReceived__Params {
   }
 }
 
+export class DonationMade extends ethereum.Event {
+  get params(): DonationMade__Params {
+    return new DonationMade__Params(this);
+  }
+}
+
+export class DonationMade__Params {
+  _event: DonationMade;
+
+  constructor(event: DonationMade) {
+    this._event = event;
+  }
+
+  get sender(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get donationAddress(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get value(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+}
+
 export class MessageCreated extends ethereum.Event {
   get params(): MessageCreated__Params {
     return new MessageCreated__Params(this);
@@ -57,24 +83,16 @@ export class MessageCreated__Params {
     return this._event.parameters[2].value.toBytes();
   }
 
-  get activeSessionId(): Bytes {
-    return this._event.parameters[3].value.toBytes();
-  }
-
   get messageLink(): string {
-    return this._event.parameters[4].value.toString();
-  }
-
-  get messageType(): BigInt {
-    return this._event.parameters[5].value.toBigInt();
+    return this._event.parameters[3].value.toString();
   }
 
   get msgValue(): BigInt {
-    return this._event.parameters[6].value.toBigInt();
+    return this._event.parameters[4].value.toBigInt();
   }
 
   get timelock(): BigInt {
-    return this._event.parameters[7].value.toBigInt();
+    return this._event.parameters[5].value.toBigInt();
   }
 }
 
@@ -129,20 +147,16 @@ export class ResponseCreated__Params {
     return this._event.parameters[2].value.toBytes();
   }
 
-  get sessionId(): Bytes {
-    return this._event.parameters[3].value.toBytes();
-  }
-
   get answerLink(): string {
-    return this._event.parameters[4].value.toString();
+    return this._event.parameters[3].value.toString();
   }
 
   get responseValue(): BigInt {
-    return this._event.parameters[5].value.toBigInt();
+    return this._event.parameters[4].value.toBigInt();
   }
 
   get msgValueAfterDeduction(): BigInt {
-    return this._event.parameters[6].value.toBigInt();
+    return this._event.parameters[5].value.toBigInt();
   }
 }
 
@@ -172,36 +186,6 @@ export class ResponseMarked__Params {
   }
 
   get responseType(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
-  }
-}
-
-export class RewardDistributedOnAma extends ethereum.Event {
-  get params(): RewardDistributedOnAma__Params {
-    return new RewardDistributedOnAma__Params(this);
-  }
-}
-
-export class RewardDistributedOnAma__Params {
-  _event: RewardDistributedOnAma;
-
-  constructor(event: RewardDistributedOnAma) {
-    this._event = event;
-  }
-
-  get sessionId(): Bytes {
-    return this._event.parameters[0].value.toBytes();
-  }
-
-  get messageId(): Bytes {
-    return this._event.parameters[1].value.toBytes();
-  }
-
-  get rewardPerAMA(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
-  }
-
-  get rewardLeft(): BigInt {
     return this._event.parameters[3].value.toBigInt();
   }
 }
@@ -266,7 +250,7 @@ export class TipValueClaimed__Params {
   }
 }
 
-export class MessageFacet__gePublicMessageIdsResult {
+export class MessageFacet__geMessageIdsResult {
   value0: Array<Bytes>;
   value1: BigInt;
 
@@ -294,7 +278,6 @@ export class MessageFacet__getMessageResult {
   value7: BigInt;
   value8: BigInt;
   value9: BigInt;
-  value10: BigInt;
 
   constructor(
     value0: string,
@@ -306,8 +289,7 @@ export class MessageFacet__getMessageResult {
     value6: BigInt,
     value7: BigInt,
     value8: BigInt,
-    value9: BigInt,
-    value10: BigInt
+    value9: BigInt
   ) {
     this.value0 = value0;
     this.value1 = value1;
@@ -319,7 +301,6 @@ export class MessageFacet__getMessageResult {
     this.value7 = value7;
     this.value8 = value8;
     this.value9 = value9;
-    this.value10 = value10;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
@@ -334,24 +315,6 @@ export class MessageFacet__getMessageResult {
     map.set("value7", ethereum.Value.fromUnsignedBigInt(this.value7));
     map.set("value8", ethereum.Value.fromUnsignedBigInt(this.value8));
     map.set("value9", ethereum.Value.fromUnsignedBigInt(this.value9));
-    map.set("value10", ethereum.Value.fromUnsignedBigInt(this.value10));
-    return map;
-  }
-}
-
-export class MessageFacet__getPrivateMessageIdsResult {
-  value0: Array<Bytes>;
-  value1: BigInt;
-
-  constructor(value0: Array<Bytes>, value1: BigInt) {
-    this.value0 = value0;
-    this.value1 = value1;
-  }
-
-  toMap(): TypedMap<string, ethereum.Value> {
-    let map = new TypedMap<string, ethereum.Value>();
-    map.set("value0", ethereum.Value.fromFixedBytesArray(this.value0));
-    map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
     return map;
   }
 }
@@ -395,32 +358,32 @@ export class MessageFacet extends ethereum.SmartContract {
     return new MessageFacet("MessageFacet", address);
   }
 
-  gePublicMessageIds(
+  geMessageIds(
     skip_: BigInt,
     limit_: BigInt
-  ): MessageFacet__gePublicMessageIdsResult {
+  ): MessageFacet__geMessageIdsResult {
     let result = super.call(
-      "gePublicMessageIds",
-      "gePublicMessageIds(uint256,uint256):(bytes32[],uint256)",
+      "geMessageIds",
+      "geMessageIds(uint256,uint256):(bytes32[],uint256)",
       [
         ethereum.Value.fromUnsignedBigInt(skip_),
         ethereum.Value.fromUnsignedBigInt(limit_)
       ]
     );
 
-    return new MessageFacet__gePublicMessageIdsResult(
+    return new MessageFacet__geMessageIdsResult(
       result[0].toBytesArray(),
       result[1].toBigInt()
     );
   }
 
-  try_gePublicMessageIds(
+  try_geMessageIds(
     skip_: BigInt,
     limit_: BigInt
-  ): ethereum.CallResult<MessageFacet__gePublicMessageIdsResult> {
+  ): ethereum.CallResult<MessageFacet__geMessageIdsResult> {
     let result = super.tryCall(
-      "gePublicMessageIds",
-      "gePublicMessageIds(uint256,uint256):(bytes32[],uint256)",
+      "geMessageIds",
+      "geMessageIds(uint256,uint256):(bytes32[],uint256)",
       [
         ethereum.Value.fromUnsignedBigInt(skip_),
         ethereum.Value.fromUnsignedBigInt(limit_)
@@ -431,7 +394,7 @@ export class MessageFacet extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new MessageFacet__gePublicMessageIdsResult(
+      new MessageFacet__geMessageIdsResult(
         value[0].toBytesArray(),
         value[1].toBigInt()
       )
@@ -441,7 +404,7 @@ export class MessageFacet extends ethereum.SmartContract {
   getMessage(messageId_: Bytes): MessageFacet__getMessageResult {
     let result = super.call(
       "getMessage",
-      "getMessage(bytes32):(string,string,uint256,uint256,address,address,uint256,uint256,uint256,uint256,uint256)",
+      "getMessage(bytes32):(string,string,uint256,uint256,address,address,uint256,uint256,uint256,uint256)",
       [ethereum.Value.fromFixedBytes(messageId_)]
     );
 
@@ -455,8 +418,7 @@ export class MessageFacet extends ethereum.SmartContract {
       result[6].toBigInt(),
       result[7].toBigInt(),
       result[8].toBigInt(),
-      result[9].toBigInt(),
-      result[10].toBigInt()
+      result[9].toBigInt()
     );
   }
 
@@ -465,7 +427,7 @@ export class MessageFacet extends ethereum.SmartContract {
   ): ethereum.CallResult<MessageFacet__getMessageResult> {
     let result = super.tryCall(
       "getMessage",
-      "getMessage(bytes32):(string,string,uint256,uint256,address,address,uint256,uint256,uint256,uint256,uint256)",
+      "getMessage(bytes32):(string,string,uint256,uint256,address,address,uint256,uint256,uint256,uint256)",
       [ethereum.Value.fromFixedBytes(messageId_)]
     );
     if (result.reverted) {
@@ -483,74 +445,7 @@ export class MessageFacet extends ethereum.SmartContract {
         value[6].toBigInt(),
         value[7].toBigInt(),
         value[8].toBigInt(),
-        value[9].toBigInt(),
-        value[10].toBigInt()
-      )
-    );
-  }
-
-  getMinimumBid(_messageType: BigInt): BigInt {
-    let result = super.call(
-      "getMinimumBid",
-      "getMinimumBid(uint256):(uint256)",
-      [ethereum.Value.fromUnsignedBigInt(_messageType)]
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_getMinimumBid(_messageType: BigInt): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "getMinimumBid",
-      "getMinimumBid(uint256):(uint256)",
-      [ethereum.Value.fromUnsignedBigInt(_messageType)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  getPrivateMessageIds(
-    skip_: BigInt,
-    limit_: BigInt
-  ): MessageFacet__getPrivateMessageIdsResult {
-    let result = super.call(
-      "getPrivateMessageIds",
-      "getPrivateMessageIds(uint256,uint256):(bytes32[],uint256)",
-      [
-        ethereum.Value.fromUnsignedBigInt(skip_),
-        ethereum.Value.fromUnsignedBigInt(limit_)
-      ]
-    );
-
-    return new MessageFacet__getPrivateMessageIdsResult(
-      result[0].toBytesArray(),
-      result[1].toBigInt()
-    );
-  }
-
-  try_getPrivateMessageIds(
-    skip_: BigInt,
-    limit_: BigInt
-  ): ethereum.CallResult<MessageFacet__getPrivateMessageIdsResult> {
-    let result = super.tryCall(
-      "getPrivateMessageIds",
-      "getPrivateMessageIds(uint256,uint256):(bytes32[],uint256)",
-      [
-        ethereum.Value.fromUnsignedBigInt(skip_),
-        ethereum.Value.fromUnsignedBigInt(limit_)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(
-      new MessageFacet__getPrivateMessageIdsResult(
-        value[0].toBytesArray(),
-        value[1].toBigInt()
+        value[9].toBigInt()
       )
     );
   }
@@ -660,8 +555,12 @@ export class ClaimBackMessageValueCall__Inputs {
     this._call = call;
   }
 
-  get messageId_(): Bytes {
+  get data_(): Bytes {
     return this._call.inputValues[0].value.toBytes();
+  }
+
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
   }
 }
 
@@ -690,8 +589,12 @@ export class ClaimBackTipValueCall__Inputs {
     this._call = call;
   }
 
-  get tipId_(): Bytes {
+  get data_(): Bytes {
     return this._call.inputValues[0].value.toBytes();
+  }
+
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
   }
 }
 
@@ -720,20 +623,12 @@ export class CreateMessageCall__Inputs {
     this._call = call;
   }
 
-  get respondedBy(): Address {
-    return this._call.inputValues[0].value.toAddress();
+  get data_(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
   }
 
-  get timelock_(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-
-  get messageType_(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
-  }
-
-  get messageHash_(): string {
-    return this._call.inputValues[3].value.toString();
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
   }
 }
 
@@ -744,7 +639,7 @@ export class CreateMessageCall__Outputs {
     this._call = call;
   }
 
-  get messageId(): Bytes {
+  get value0(): Bytes {
     return this._call.outputValues[0].value.toBytes();
   }
 }
@@ -766,12 +661,12 @@ export class CreateResponseCall__Inputs {
     this._call = call;
   }
 
-  get messageId_(): Bytes {
+  get data_(): Bytes {
     return this._call.inputValues[0].value.toBytes();
   }
 
-  get answerHash_(): string {
-    return this._call.inputValues[1].value.toString();
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
   }
 }
 
@@ -800,8 +695,12 @@ export class CreateTipCall__Inputs {
     this._call = call;
   }
 
-  get messageId_(): Bytes {
+  get data_(): Bytes {
     return this._call.inputValues[0].value.toBytes();
+  }
+
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
   }
 }
 
@@ -830,16 +729,12 @@ export class InitMessageCall__Inputs {
     this._call = call;
   }
 
-  get minimumBid_(): BigInt {
+  get feeNumerator_(): BigInt {
     return this._call.inputValues[0].value.toBigInt();
   }
 
-  get feeNumerator_(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-
   get baseURI_(): string {
-    return this._call.inputValues[2].value.toString();
+    return this._call.inputValues[1].value.toString();
   }
 }
 
@@ -847,6 +742,40 @@ export class InitMessageCall__Outputs {
   _call: InitMessageCall;
 
   constructor(call: InitMessageCall) {
+    this._call = call;
+  }
+}
+
+export class MarkResponseCall extends ethereum.Call {
+  get inputs(): MarkResponseCall__Inputs {
+    return new MarkResponseCall__Inputs(this);
+  }
+
+  get outputs(): MarkResponseCall__Outputs {
+    return new MarkResponseCall__Outputs(this);
+  }
+}
+
+export class MarkResponseCall__Inputs {
+  _call: MarkResponseCall;
+
+  constructor(call: MarkResponseCall) {
+    this._call = call;
+  }
+
+  get data_(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+}
+
+export class MarkResponseCall__Outputs {
+  _call: MarkResponseCall;
+
+  constructor(call: MarkResponseCall) {
     this._call = call;
   }
 }
@@ -877,70 +806,6 @@ export class SetMessageBaseURICall__Outputs {
   _call: SetMessageBaseURICall;
 
   constructor(call: SetMessageBaseURICall) {
-    this._call = call;
-  }
-}
-
-export class SetMinimumBidCall extends ethereum.Call {
-  get inputs(): SetMinimumBidCall__Inputs {
-    return new SetMinimumBidCall__Inputs(this);
-  }
-
-  get outputs(): SetMinimumBidCall__Outputs {
-    return new SetMinimumBidCall__Outputs(this);
-  }
-}
-
-export class SetMinimumBidCall__Inputs {
-  _call: SetMinimumBidCall;
-
-  constructor(call: SetMinimumBidCall) {
-    this._call = call;
-  }
-
-  get minimumBid_(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-
-  get messageType_(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-}
-
-export class SetMinimumBidCall__Outputs {
-  _call: SetMinimumBidCall;
-
-  constructor(call: SetMinimumBidCall) {
-    this._call = call;
-  }
-}
-
-export class SetRecipientUpFrontCall extends ethereum.Call {
-  get inputs(): SetRecipientUpFrontCall__Inputs {
-    return new SetRecipientUpFrontCall__Inputs(this);
-  }
-
-  get outputs(): SetRecipientUpFrontCall__Outputs {
-    return new SetRecipientUpFrontCall__Outputs(this);
-  }
-}
-
-export class SetRecipientUpFrontCall__Inputs {
-  _call: SetRecipientUpFrontCall;
-
-  constructor(call: SetRecipientUpFrontCall) {
-    this._call = call;
-  }
-
-  get _recipientUpFront(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-}
-
-export class SetRecipientUpFrontCall__Outputs {
-  _call: SetRecipientUpFrontCall;
-
-  constructor(call: SetRecipientUpFrontCall) {
     this._call = call;
   }
 }

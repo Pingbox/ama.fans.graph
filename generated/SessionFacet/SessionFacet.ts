@@ -257,8 +257,12 @@ export class ClaimRewardLeftCall__Inputs {
     this._call = call;
   }
 
-  get sessionId_(): Bytes {
+  get data_(): Bytes {
     return this._call.inputValues[0].value.toBytes();
+  }
+
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
   }
 }
 
@@ -287,20 +291,12 @@ export class CreateSessionCall__Inputs {
     this._call = call;
   }
 
-  get startTime_(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
+  get data_(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
   }
 
-  get endTime_(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-
-  get rewardPerAMA_(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
-  }
-
-  get sessionHash_(): string {
-    return this._call.inputValues[3].value.toString();
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
   }
 }
 
@@ -333,8 +329,12 @@ export class EndSessionCall__Inputs {
     this._call = call;
   }
 
-  get sessionId_(): Bytes {
+  get data_(): Bytes {
     return this._call.inputValues[0].value.toBytes();
+  }
+
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
   }
 }
 
@@ -363,12 +363,12 @@ export class ExtendSessionCall__Inputs {
     this._call = call;
   }
 
-  get sessionId_(): Bytes {
+  get data_(): Bytes {
     return this._call.inputValues[0].value.toBytes();
   }
 
-  get additionalTime_(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
   }
 }
 
@@ -461,8 +461,12 @@ export class TopUpSessionCall__Inputs {
     this._call = call;
   }
 
-  get sessionId_(): Bytes {
+  get data_(): Bytes {
     return this._call.inputValues[0].value.toBytes();
+  }
+
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
   }
 }
 
@@ -491,12 +495,12 @@ export class UpdateSessionLinkCall__Inputs {
     this._call = call;
   }
 
-  get sessionId_(): Bytes {
+  get data_(): Bytes {
     return this._call.inputValues[0].value.toBytes();
   }
 
-  get newHash_(): string {
-    return this._call.inputValues[1].value.toString();
+  get signature_(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
   }
 }
 

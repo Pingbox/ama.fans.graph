@@ -22,6 +22,31 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "donationAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "DonationMade",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "address",
         "name": "createdBy",
@@ -41,21 +66,9 @@
       },
       {
         "indexed": false,
-        "internalType": "bytes32",
-        "name": "activeSessionId",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
         "internalType": "string",
         "name": "messageLink",
         "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "messageType",
-        "type": "uint256"
       },
       {
         "indexed": false,
@@ -121,12 +134,6 @@
       },
       {
         "indexed": false,
-        "internalType": "bytes32",
-        "name": "sessionId",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
         "internalType": "string",
         "name": "answerLink",
         "type": "string"
@@ -176,37 +183,6 @@
       }
     ],
     "name": "ResponseMarked",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "sessionId",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "messageId",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "rewardPerAMA",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "rewardLeft",
-        "type": "uint256"
-      }
-    ],
-    "name": "RewardDistributedOnAma",
     "type": "event"
   },
   {
@@ -274,9 +250,14 @@
   {
     "inputs": [
       {
-        "internalType": "bytes32",
-        "name": "messageId_",
-        "type": "bytes32"
+        "internalType": "bytes",
+        "name": "data_",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes",
+        "name": "signature_",
+        "type": "bytes"
       }
     ],
     "name": "claimBackMessageValue",
@@ -287,9 +268,14 @@
   {
     "inputs": [
       {
-        "internalType": "bytes32",
-        "name": "tipId_",
-        "type": "bytes32"
+        "internalType": "bytes",
+        "name": "data_",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes",
+        "name": "signature_",
+        "type": "bytes"
       }
     ],
     "name": "claimBackTipValue",
@@ -300,31 +286,21 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "respondedBy",
-        "type": "address"
+        "internalType": "bytes",
+        "name": "data_",
+        "type": "bytes"
       },
       {
-        "internalType": "uint256",
-        "name": "timelock_",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "messageType_",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "messageHash_",
-        "type": "string"
+        "internalType": "bytes",
+        "name": "signature_",
+        "type": "bytes"
       }
     ],
     "name": "createMessage",
     "outputs": [
       {
         "internalType": "bytes32",
-        "name": "messageId",
+        "name": "",
         "type": "bytes32"
       }
     ],
@@ -334,14 +310,14 @@
   {
     "inputs": [
       {
-        "internalType": "bytes32",
-        "name": "messageId_",
-        "type": "bytes32"
+        "internalType": "bytes",
+        "name": "data_",
+        "type": "bytes"
       },
       {
-        "internalType": "string",
-        "name": "answerHash_",
-        "type": "string"
+        "internalType": "bytes",
+        "name": "signature_",
+        "type": "bytes"
       }
     ],
     "name": "createResponse",
@@ -352,9 +328,14 @@
   {
     "inputs": [
       {
-        "internalType": "bytes32",
-        "name": "messageId_",
-        "type": "bytes32"
+        "internalType": "bytes",
+        "name": "data_",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes",
+        "name": "signature_",
+        "type": "bytes"
       }
     ],
     "name": "createTip",
@@ -375,7 +356,7 @@
         "type": "uint256"
       }
     ],
-    "name": "gePublicMessageIds",
+    "name": "geMessageIds",
     "outputs": [
       {
         "internalType": "bytes32[]",
@@ -445,59 +426,6 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_messageType",
-        "type": "uint256"
-      }
-    ],
-    "name": "getMinimumBid",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "skip_",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "limit_",
-        "type": "uint256"
-      }
-    ],
-    "name": "getPrivateMessageIds",
-    "outputs": [
-      {
-        "internalType": "bytes32[]",
-        "name": "",
-        "type": "bytes32[]"
       },
       {
         "internalType": "uint256",
@@ -575,11 +503,6 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "minimumBid_",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
         "name": "feeNumerator_",
         "type": "uint256"
       },
@@ -597,43 +520,30 @@
   {
     "inputs": [
       {
+        "internalType": "bytes",
+        "name": "data_",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes",
+        "name": "signature_",
+        "type": "bytes"
+      }
+    ],
+    "name": "markResponse",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "string",
         "name": "_baseURI",
         "type": "string"
       }
     ],
     "name": "setMessageBaseURI",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "minimumBid_",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "messageType_",
-        "type": "uint256"
-      }
-    ],
-    "name": "setMinimumBid",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_recipientUpFront",
-        "type": "uint256"
-      }
-    ],
-    "name": "setRecipientUpFront",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

@@ -183,9 +183,14 @@
   {
     "inputs": [
       {
-        "internalType": "bytes32",
-        "name": "sessionId_",
-        "type": "bytes32"
+        "internalType": "bytes",
+        "name": "data_",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes",
+        "name": "signature_",
+        "type": "bytes"
       }
     ],
     "name": "claimRewardLeft",
@@ -196,24 +201,14 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "startTime_",
-        "type": "uint256"
+        "internalType": "bytes",
+        "name": "data_",
+        "type": "bytes"
       },
       {
-        "internalType": "uint256",
-        "name": "endTime_",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "rewardPerAMA_",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "sessionHash_",
-        "type": "string"
+        "internalType": "bytes",
+        "name": "signature_",
+        "type": "bytes"
       }
     ],
     "name": "createSession",
@@ -230,9 +225,14 @@
   {
     "inputs": [
       {
-        "internalType": "bytes32",
-        "name": "sessionId_",
-        "type": "bytes32"
+        "internalType": "bytes",
+        "name": "data_",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes",
+        "name": "signature_",
+        "type": "bytes"
       }
     ],
     "name": "endSession",
@@ -243,14 +243,14 @@
   {
     "inputs": [
       {
-        "internalType": "bytes32",
-        "name": "sessionId_",
-        "type": "bytes32"
+        "internalType": "bytes",
+        "name": "data_",
+        "type": "bytes"
       },
       {
-        "internalType": "uint256",
-        "name": "additionalTime_",
-        "type": "uint256"
+        "internalType": "bytes",
+        "name": "signature_",
+        "type": "bytes"
       }
     ],
     "name": "extendSession",
@@ -324,9 +324,14 @@
   {
     "inputs": [
       {
-        "internalType": "bytes32",
-        "name": "sessionId_",
-        "type": "bytes32"
+        "internalType": "bytes",
+        "name": "data_",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes",
+        "name": "signature_",
+        "type": "bytes"
       }
     ],
     "name": "topUpSession",
@@ -337,14 +342,14 @@
   {
     "inputs": [
       {
-        "internalType": "bytes32",
-        "name": "sessionId_",
-        "type": "bytes32"
+        "internalType": "bytes",
+        "name": "data_",
+        "type": "bytes"
       },
       {
-        "internalType": "string",
-        "name": "newHash_",
-        "type": "string"
+        "internalType": "bytes",
+        "name": "signature_",
+        "type": "bytes"
       }
     ],
     "name": "updateSessionLink",

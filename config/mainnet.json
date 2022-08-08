@@ -1,5 +1,5 @@
 {
-    "network": "celo",
-    "mainAddress": "0x3bE48045B592CF184af09106Bd2A2998468E39A8",
-    "startBlock": "12787216"
+    "network": "matic",
+    "mainAddress": "0xD12706Ae0DBc1D6961c3493DA93C6D92cEC61D06",
+    "startBlock": "30869050"
   }
